@@ -36,6 +36,8 @@ export default function RemovedFromShelvesTasks({
     },
     notifyId: 0,
     profile_image_url: '',
+    is_hot: 0,
+    is_top: 0,
   },
   open,
   onClose,
@@ -147,7 +149,7 @@ export default function RemovedFromShelvesTasks({
             </Grid.Item>
           </Grid>
         </Grid.Item>
-        
+
         <Grid.Item>
           <Card className="!bg-[--primary-card-body-color]">
             <Grid columns={1} gap={12}>

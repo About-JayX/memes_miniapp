@@ -38,7 +38,8 @@ export default function TaskList() {
     },
     notifyId: 0,
     profile_image_url: '',
-    is_top:0
+    is_top: 0,
+    is_hot: 0,
   })
   const [removeData, setRemoveData] = useState<ItaskData>({
     Id: 0,
@@ -58,7 +59,8 @@ export default function TaskList() {
     },
     notifyId: 0,
     profile_image_url: '',
-    is_top:0
+    is_top: 0,
+    is_hot: 0,
   })
   const { taskOptions } = useAppSelector(state => state.telegram)
   const { userTask } = useAppSelector(state => state.list)

@@ -46,6 +46,7 @@ interface TaskUrls {
 }
 
 export interface ItaskData {
+  is_hot: number
   Id: number // 帖子 ID
   name: string // 用户名称
   userId: number // 用户 ID
@@ -61,7 +62,7 @@ export interface ItaskData {
   urls: TaskUrls // 包含 URL 信息
   notifyId: number // 通知 ID
   profile_image_url: string // 用户头像 URL
-  is_top:number
+  is_top: number
 }
 
 export interface IinviteData {

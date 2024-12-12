@@ -1,23 +1,23 @@
-import { Button, Ellipsis, Grid, Image } from "antd-mobile";
-import { Fragment, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Button, Ellipsis, Grid, Image } from 'antd-mobile'
+import { Fragment, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
-import { Container } from "@/components/box";
-import MButton from "@/components/button";
-import Card from "@/components/card";
-import Icon from "@/components/icon";
-import InfiniteScroll from "@/components/infiniteScroll";
-import LinkTwitter from "@/components/lib/linkTwitter";
-import ParticipateTasks from "@/components/lib/participateTasks";
-import Share from "@/components/lib/share";
-import ShowTaskTweet from "@/components/lib/showTaskTweet";
-import TgsAnimation from "@/components/tgsAnimation";
-import { useTelegram } from "@/providers/telegram";
-import { useAppDispatch, useAppSelector } from "@/store";
-import { ItaskData, TaskModel } from "@/store/interface";
-import { asyncGetTaskList } from "@/store/list";
-import { updateInitTask } from "@/store/telegram";
-import { getstratParams, semicolon } from "@/util";
+import { Container } from '@/components/box'
+import MButton from '@/components/button'
+import Card from '@/components/card'
+import Icon from '@/components/icon'
+import InfiniteScroll from '@/components/infiniteScroll'
+import LinkTwitter from '@/components/lib/linkTwitter'
+import ParticipateTasks from '@/components/lib/participateTasks'
+import Share from '@/components/lib/share'
+import ShowTaskTweet from '@/components/lib/showTaskTweet'
+import TgsAnimation from '@/components/tgsAnimation'
+import { useTelegram } from '@/providers/telegram'
+import { useAppDispatch, useAppSelector } from '@/store'
+import { ItaskData, TaskModel } from '@/store/interface'
+import { asyncGetTaskList } from '@/store/list'
+import { updateInitTask } from '@/store/telegram'
+import { getstratParams, semicolon } from '@/util'
 
 export const TaskItem = ({
   image,
@@ -26,28 +26,28 @@ export const TaskItem = ({
   onShare,
   ...props
 }: {
-  image?: React.ReactNode;
-  onShow?: () => void;
-  onChange?: () => Promise<any>;
-  onShare?: () => void;
+  image?: React.ReactNode
+  onShow?: () => void
+  onChange?: () => Promise<any>
+  onShare?: () => void
 } & ItaskData) => {
-  const { t } = useTranslation();
-  const [loading, setLoading] = useState(false);
+  const { t } = useTranslation()
+  const [loading, setLoading] = useState(false)
 
   const GetStatus = () => {
-    switch (props.is_top) {
-      case 0:
-        return <TgsAnimation icon="hot" className="w-7 h-7" />;
+    switch (props.is_hot) {
       case 1:
-        return <TgsAnimation icon="integrals_5" className="w-7 h-7" />;
+        return <TgsAnimation icon="hot" className="w-7 h-7" />
       case 2:
+        return <TgsAnimation icon="integrals_5" className="w-7 h-7" />
+      case 0:
         return (
           <span className="text-sm font-normal text-white/50">
-            {t("public.completing")}
+            {t('public.completing')}
           </span>
-        );
+        )
     }
-  };
+  }
   return (
     <Fragment>
       <Card animation={false}>
@@ -55,7 +55,7 @@ export const TaskItem = ({
           <Grid.Item className="flex items-center gap-2">
             <div className="flex justify-center items-center relative">
               <Image
-                src={props.profile_image_url || ""}
+                src={props.profile_image_url || ''}
                 className="!w-[54px] !h-[54px] rounded-full border-[--primary] !bg-[--primary]"
               />
               <TgsAnimation
@@ -66,7 +66,7 @@ export const TaskItem = ({
 
             <Grid columns={1} gap={0}>
               <Grid.Item className="text-base font-bold whitespace-nowrap overflow-hidden text-ellipsis">
-                {props.name || ""}
+                {props.name || ''}
               </Grid.Item>
               <Grid.Item className="text-xs font-normal flex items-center">
                 {`@${props.onwer}`}
@@ -79,11 +79,11 @@ export const TaskItem = ({
             <MButton animation={false}>
               <span className="overflow-hidden   inline-block break-all text-sm font-normal text-white/50">
                 {(() => {
-                  const texts = t("task.hostTexts", {
+                  const texts = t('task.hostTexts', {
                     returnObjects: true,
-                  }) as Array<string>;
+                  }) as Array<string>
 
-                  return texts[Math.floor(Math.random() * texts.length)];
+                  return texts[Math.floor(Math.random() * texts.length)]
                 })()}
               </span>
             </MButton>
@@ -94,8 +94,8 @@ export const TaskItem = ({
                 direction="end"
                 content={`+${semicolon(
                   props.models.reduce((acc: number, model: TaskModel) => {
-                    acc += Number(model.reward);
-                    return acc;
+                    acc += Number(model.reward)
+                    return acc
                   }, 0)
                 )}`}
                 className="flex-1 break-all"
@@ -122,111 +122,113 @@ export const TaskItem = ({
               color="primary"
               loading={loading}
               onClick={async () => {
-                setLoading(true);
+                setLoading(true)
                 try {
-                  onChange && (await onChange());
+                  onChange && (await onChange())
                 } catch (error) {
-                  console.log(error);
+                  console.log(error)
                 }
-                setLoading(false);
+                setLoading(false)
               }}
               size="middle"
             >
-              {t("public.participate")}
+              {t('public.participate')}
             </Button>
           </Grid.Item>
         </Grid>
       </Card>
     </Fragment>
-  );
-};
+  )
+}
 
 export default function Task() {
-  const { t } = useTranslation();
-  const { user, taskOptions } = useAppSelector((state) => state.telegram);
-  const [taskStatus, setTaskStatus] = useState<boolean>(false);
-  const dispatch = useAppDispatch();
-  const [openLinkTwitter, setOpenLinkTwitter] = useState<boolean>(false);
-  const { webApp } = useTelegram();
+  const { t } = useTranslation()
+  const { user, taskOptions } = useAppSelector(state => state.telegram)
+  const [taskStatus, setTaskStatus] = useState<boolean>(false)
+  const dispatch = useAppDispatch()
+  const [openLinkTwitter, setOpenLinkTwitter] = useState<boolean>(false)
+  const { webApp } = useTelegram()
 
   const [taskData, setTaskData] = useState<ItaskData>({
     Id: 0,
-    name: "",
+    name: '',
     userId: 0,
-    onwer: "",
-    description: "",
+    onwer: '',
+    description: '',
     is_enabled: 0,
     created_at: 0,
     updated_at: 0,
-    rewards: "",
-    pay_amount: "",
-    remaining_amount: "",
+    rewards: '',
+    pay_amount: '',
+    remaining_amount: '',
     models: [],
     urls: {
-      TweetId: "",
+      TweetId: '',
     },
     notifyId: 0,
-    profile_image_url: "",
+    profile_image_url: '',
     is_top: 0,
-  });
-  const [showStatus, setShowStatus] = useState(false);
+    is_hot: 0,
+  })
+  const [showStatus, setShowStatus] = useState(false)
   const [showForm, setShowForm] = useState<ItaskData>({
     Id: 0,
-    name: "",
+    name: '',
     userId: 0,
-    onwer: "",
-    description: "",
+    onwer: '',
+    description: '',
     is_enabled: 0,
     created_at: 0,
     updated_at: 0,
-    rewards: "",
-    pay_amount: "",
-    remaining_amount: "",
+    rewards: '',
+    pay_amount: '',
+    remaining_amount: '',
     models: [],
     urls: {
-      TweetId: "",
+      TweetId: '',
     },
     notifyId: 0,
-    profile_image_url: "",
+    profile_image_url: '',
     is_top: 0,
-  });
-  const [shareStatus, setShareStatus] = useState(false);
-  const { task } = useAppSelector((state) => state.list);
-  const { initTask } = useAppSelector((state) => state.telegram);
+    is_hot: 0,
+  })
+  const [shareStatus, setShareStatus] = useState(false)
+  const { task } = useAppSelector(state => state.list)
+  const { initTask } = useAppSelector(state => state.telegram)
   const getTaskData = async () => {
-    if (task.data.length >= task.total) return;
-    await dispatch(asyncGetTaskList({}));
-  };
+    if (task.data.length >= task.total) return
+    await dispatch(asyncGetTaskList({}))
+  }
   const getTaskDetail = async (item: ItaskData) => {
-    setTaskData(item);
-    setTaskStatus(true);
-  };
+    setTaskData(item)
+    setTaskStatus(true)
+  }
   const init = async () => {
     if (!webApp || !Object.keys(webApp).length || !task.data.length || initTask)
-      return;
-    dispatch(updateInitTask(true));
+      return
+    dispatch(updateInitTask(true))
     const startParams =
-      (webApp.initDataUnsafe && webApp.initDataUnsafe.start_param) || "";
-    if (!startParams || !startParams.includes("task")) return;
-    const result = getstratParams(startParams);
-    const taskId = result.task;
-    const data = task.data.find((item) => item.Id === Number(taskId));
-    if (!data) return;
-    getTaskDetail(data);
-  };
+      (webApp.initDataUnsafe && webApp.initDataUnsafe.start_param) || ''
+    if (!startParams || !startParams.includes('task')) return
+    const result = getstratParams(startParams)
+    const taskId = result.task
+    const data = task.data.find(item => item.Id === Number(taskId))
+    if (!data) return
+    getTaskDetail(data)
+  }
 
   useEffect(() => {
-    init();
-  }, [webApp, task]);
+    init()
+  }, [webApp, task])
 
   const onShow = (res: ItaskData) => {
-    setShowForm(res);
-    setShowStatus(true);
-  };
+    setShowForm(res)
+    setShowStatus(true)
+  }
 
   const onShare = (res: ItaskData) => {
-    setShareStatus(true);
-  };
+    setShareStatus(true)
+  }
   return (
     <>
       <LinkTwitter
@@ -239,21 +241,21 @@ export default function Task() {
         visible={showStatus}
         onClose={() => setShowStatus(false)}
         onChange={async () => {
-          setShowStatus(false);
-          showForm && (await getTaskDetail(showForm));
+          setShowStatus(false)
+          showForm && (await getTaskDetail(showForm))
         }}
       />
       <Share
         open={shareStatus}
         onClose={() => setShareStatus(false)}
         icon="money_task"
-        title={t("task.share.title")}
-        text={t("task.share.text")}
+        title={t('task.share.title')}
+        text={t('task.share.text')}
         url="https://www.baidu.com"
       />
       <ParticipateTasks
         initTaskDetail={async (item: ItaskData) => {
-          await getTaskDetail(item);
+          await getTaskDetail(item)
         }}
         data={taskData}
         open={taskStatus}
@@ -274,10 +276,10 @@ export default function Task() {
                   <Grid.Item>
                     <Grid columns={1} gap={4} className="text-center">
                       <Grid.Item className="text-2xl font-bold">
-                        {t("task.title")}
+                        {t('task.title')}
                       </Grid.Item>
                       <Grid.Item className="text-base font-normal text-white/50">
-                        {t("task.text")}
+                        {t('task.text')}
                       </Grid.Item>
                     </Grid>
                   </Grid.Item>
@@ -292,7 +294,7 @@ export default function Task() {
                 <TaskItem
                   {...data[index]}
                   onChange={async () => {
-                    await getTaskDetail(data[index]);
+                    await getTaskDetail(data[index])
                   }}
                   onShow={() => onShow(data[index])}
                   onShare={() => onShare(data[index])}
@@ -303,5 +305,5 @@ export default function Task() {
         </Grid>
       </Container>
     </>
-  );
+  )
 }

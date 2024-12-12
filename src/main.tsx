@@ -1,4 +1,3 @@
-import '@/style/global.scss'
 import 'virtual:svg-icons-register'
 import '@/i18n'
 
@@ -11,6 +10,9 @@ import App from '@/App'
 import { store } from '@/store'
 
 import TelegramProvider from './providers/telegram'
+
+const env = import.meta.env.MODE.split('-')[1]
+import(`@/style/${env}/global.scss`)
 
 ReactDOM.createRoot(document.getElementById('root')! as HTMLElement).render(
   <React.StrictMode>

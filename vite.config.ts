@@ -157,5 +157,5 @@ export default defineConfig({
       strict: true,
     },
   },
-  assetsInclude: ['**/*.tgs', '**/*.svg', '**/*.json'],
+  assetsInclude: ['**/*.tgs'],
 })

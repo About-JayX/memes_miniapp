@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import api from '@/api'
+import { symbol } from '@/config'
 import { useAppDispatch, useAppSelector } from '@/store'
 import { ItaskData } from '@/store/interface'
 import {
@@ -101,7 +102,7 @@ export default function RemovedFromShelvesTasks({
               {semicolon(
                 Number(data.pay_amount) - Number(data.remaining_amount)
               )}{' '}
-              $MEMES
+              ${symbol}
             </span>
           </Grid.Item>
 

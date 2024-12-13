@@ -31,6 +31,7 @@ import UserHeader from "@/components/lib/userHeader";
 import Vote from "@/components/lib/vote";
 import Search from "@/components/search";
 import TgsAnimation from "@/components/tgsAnimation";
+import { symbol } from "@/config";
 // import { pollingData } from "@/hooks/initData";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { ItokenData } from "@/store/interface";
@@ -60,7 +61,7 @@ export const Votes = ({
   const { tokens } = useAppSelector((state) => state.list);
 
   return (
-    <Grid.Item {...props}>
+    <Grid.Item {...props} >
       <Card animation={false}>
         <div className="grid grid-flow-col grid-cols-[3fr] !items-center !justify-between gap-3">
           {/* 代币信息 */}
@@ -365,7 +366,7 @@ export default function List() {
           </Container>
         }
         body={
-          <MemesCard>
+          <MemesCard type="primary">
             <Grid columns={1} gap={18}>
               <Grid.Item>
                 <Grid columns={1} gap={4} className="justify-items-center">
@@ -388,7 +389,7 @@ export default function List() {
                     </a>
                   </Grid.Item>
                   <Grid.Item className="text-3xl font-bold">
-                    {semicolon(user.token || "0") + " $MEMES"}
+                    {semicolon(user.token || "0") + ` $${symbol}`}
                   </Grid.Item>
                 </Grid>
               </Grid.Item>

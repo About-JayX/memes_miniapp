@@ -7,6 +7,7 @@ import Box, { Container } from '@/components/box'
 import MCard from '@/components/card'
 import InfiniteScroll from '@/components/infiniteScroll'
 import TgsAnimation from '@/components/tgsAnimation'
+import { symbol } from '@/config'
 import { useAppDispatch, useAppSelector } from '@/store'
 import { asyncRankList } from '@/store/list'
 import { getTextColorForBackground, semicolon } from '@/util'
@@ -253,7 +254,7 @@ export const PointsList = () => {
                               icon="integrals"
                               className="w-4 h-4 mt-[-3px]"
                             />
-                            &nbsp;{semicolon(data[index].score)}&nbsp;$MEMES
+                            &nbsp;{semicolon(data[index].score)}&nbsp;${symbol}
                           </Grid.Item>
                         </Grid>
                       </div>
@@ -321,7 +322,7 @@ export const PointsList = () => {
                     icon="integrals"
                     className="w-4 h-4 mt-[-3px]"
                   />
-                  &nbsp;{semicolon(ranks.userRank.score)}&nbsp;$MEMES
+                  &nbsp;{semicolon(ranks.userRank.score)}&nbsp;${symbol}
                 </Grid.Item>
               </Grid>
             </div>

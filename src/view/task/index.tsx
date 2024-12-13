@@ -18,6 +18,7 @@ import { ItaskData, TaskModel } from '@/store/interface'
 import { asyncGetTaskList } from '@/store/list'
 import { updateInitTask } from '@/store/telegram'
 import { getstratParams, semicolon } from '@/util'
+import { symbol } from '@/config'
 
 export const TaskItem = ({
   image,
@@ -100,7 +101,7 @@ export const TaskItem = ({
                 )}`}
                 className="flex-1 break-all"
               />
-              &nbsp;$MEMES
+              &nbsp;${symbol}
             </span>
             <div className="flex-1" />
             <Button

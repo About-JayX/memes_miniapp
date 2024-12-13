@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import CountUp from 'react-countup'
 import { useTranslation } from 'react-i18next'
 
+import { symbol } from '@/config'
 import { useAppSelector } from '@/store'
 
 import Popup from '../popup'
@@ -100,7 +101,7 @@ export default function NewUserRewards({
                   +<CountUp end={count} />
                 </>
               )}
-              &nbsp;$MEMES
+              &nbsp;${symbol}
             </Grid.Item>
             <Grid.Item className="text-base font-normal">
               {t('public.newUserRewards')}&nbsp;

@@ -12,6 +12,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import api from "@/api";
+import { symbol } from "@/config";
 import sliderConfig from "@/config/sliderConfig";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { ITaskOptions } from "@/store/interface";
@@ -221,7 +222,7 @@ export default function PublishTasks({
                   Need to pay :{" "}
                 </span>
                 <span className="font-bold">
-                  {semicolon(publishTaskDetails.pay_amount)} $MEMES
+                  {semicolon(publishTaskDetails.pay_amount)} ${symbol}
                 </span>
               </Grid.Item>
             )}
@@ -317,7 +318,7 @@ export default function PublishTasks({
                   <Grid.Item className="text-xs font-medium">
                     {t("public.taskSelection")}&nbsp;
                     <span className="text-white/50">
-                      ({t("public.everyTask")} 100 $MEMES)
+                      ({t("public.everyTask")} 100 ${symbol})
                     </span>
                     &nbsp;<span className="text-[--error-color]">*</span>
                   </Grid.Item>

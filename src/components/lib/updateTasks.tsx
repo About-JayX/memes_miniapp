@@ -11,6 +11,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import api from '@/api'
+import { symbol } from '@/config'
 import sliderConfig from '@/config/sliderConfig'
 import { useAppDispatch, useAppSelector } from '@/store'
 import { ItaskData } from '@/store/interface'
@@ -176,7 +177,7 @@ export default function UpdateTasks({
               <Grid.Item className="text-xs font-medium">
                 {t('public.taskSelection')}&nbsp;
                 <span className="text-white/50">
-                  ({t('public.everyTask')} 100 $MEMES)
+                  ({t('public.everyTask')} 100 ${symbol})
                 </span>
                 &nbsp;<span className="text-[--error-color]">*</span>
               </Grid.Item>

@@ -10,6 +10,7 @@ import LinkTwitter from "@/components/lib/linkTwitter";
 import Lang from "@/components/lib/userHeader/lang";
 import Popup from "@/components/popup";
 import TgsAnimation from "@/components/tgsAnimation";
+import { symbol } from "@/config";
 import { useAppSelector } from "@/store";
 import { semicolon } from "@/util";
 
@@ -72,7 +73,7 @@ export const ProfileList = ({
           title={t("public.myMemes")}
           clickable
         >
-          {semicolon(user.token)} $MEMES
+          {semicolon(user.token)} ${symbol}
         </List.Item>
         <List.Item
           onClick={() => onClick({ path: "/collect" })}

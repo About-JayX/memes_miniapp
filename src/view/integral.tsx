@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import { Container } from "@/components/box";
 import InfiniteScroll from "@/components/infiniteScroll";
+import { symbol } from "@/config";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { asyncDetailsList } from "@/store/list";
 import { semicolon } from "@/util";
@@ -24,7 +25,7 @@ export const PointsDetails = () => {
             {t("public.toGainPoints")}
           </Grid.Item>
           <Grid.Item className="text-4xl font-bold">
-            {semicolon(user.token)} $MEMES
+            {semicolon(user.token)} ${symbol}
           </Grid.Item>
         </Grid>
       </Grid.Item>

@@ -17,5 +17,13 @@ import TelegramProvider from './providers/telegram'
 console.log(document.getElementById('root')!, 'ente!!!')
 
 ReactDOM.createRoot(document.getElementById('root')! as HTMLElement).render(
-  <App />
+  <React.StrictMode>
+    <BrowserRouter>
+      <Provider store={store}>
+        <TelegramProvider>
+          <App />
+        </TelegramProvider>
+      </Provider>
+    </BrowserRouter>
+  </React.StrictMode>
 )

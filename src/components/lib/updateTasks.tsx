@@ -101,6 +101,7 @@ export default function UpdateTasks({
         content: t('message.edit.success'),
       })
     } catch (error) {
+      console.log(error, 'error_')
       Toast({
         tgs,
         type: 'error',

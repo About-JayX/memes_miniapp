@@ -16,6 +16,7 @@ export const asyncLoading = createAsyncThunk(
       const result = data?.callBack && (await data?.callBack())
       return result
     } catch (error) {
+      console.log(error, 'error_')
       return error
     }
   }
@@ -34,6 +35,7 @@ export const asyncGetSginin = createAsyncThunk(
 
       return result
     } catch (error) {
+      console.log(error, 'error_')
       return telegram.signInInfo
     }
   }

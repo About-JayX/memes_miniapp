@@ -35,6 +35,7 @@ export default async () => {
           }
           re({ name: name, data: unzippedData })
         } catch (e) {
+          console.log(e, 'error_')
           re(null)
         }
       })

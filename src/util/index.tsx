@@ -68,7 +68,8 @@ export const copy = async (
       type: 'success',
       content: t('message.copy.success'),
     })
-  } catch (_) {
+  } catch (error) {
+    console.log(error, 'error_')
     const textArea = document.createElement('textarea')
     textArea.value = inviteLink
     document.body.appendChild(textArea)
@@ -81,7 +82,8 @@ export const copy = async (
         type: 'success',
         content: t('message.copy.success'),
       })
-    } catch (_) {
+    } catch (error) {
+      console.log(error, 'error_')
       return
     }
     document.body.removeChild(textArea)

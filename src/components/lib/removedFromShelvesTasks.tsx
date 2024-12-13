@@ -80,6 +80,7 @@ export default function RemovedFromShelvesTasks({
       })
       onClose && onClose()
     } catch (error) {
+      console.log(error, 'error_')
       Toast({
         tgs,
         type: 'error',

@@ -52,6 +52,7 @@ export default function LinkTwitter({
           })
         }
       } catch (error) {
+        console.log(error, 'error_')
         Toast({
           tgs,
           type: 'error',

@@ -3,14 +3,12 @@ import autoprefixer from 'autoprefixer'
 import cssnano from 'cssnano'
 import path from 'path'
 import postcssPxtoRem from 'postcss-pxtorem'
-import copy from 'rollup-plugin-copy'
 import tailwindcss from 'tailwindcss'
 import { defineConfig } from 'vite'
-// import { createHtmlPlugin } from 'vite-plugin-html'
 import viteImagemin from 'vite-plugin-imagemin'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+import copy from 'rollup-plugin-copy'
 
-// const env = process.argv[process.argv.indexOf('--mode') + 1].split('-')[1]
 export default defineConfig({
   plugins: [
     createSvgIconsPlugin({
@@ -45,35 +43,6 @@ export default defineConfig({
         ],
       },
     }),
-    // createHtmlPlugin({
-    //   minify: true,
-    //   entry: "src/main.tsx",
-    //   template: "index.html",
-    //   inject: {
-    //     data:{
-    //       title: `${env === "memes"?"MEMES":"MEGO"} - A Web3-Powered Telegram Game.`,
-    //       description:`${env === "memes"?"MEMES":"MEGO"} - A Web3-Powered Telegram Game.`,
-    //     },
-    //     tags: [
-    //       {
-    //         injectTo: "head",
-    //         tag: "link",
-    //         attrs: {
-    //           rel: "stylesheet",
-    //           href: env === "memes"?"./src/style/memes/global.scss":"./src/style/mego/global.scss",
-    //           as: "style",
-    //         },
-    //       },
-    //       {
-    //         injectTo: "body-prepend",
-    //         tag: "div",
-    //         attrs: {
-    //           id: "root",
-    //         },
-    //       },
-    //     ],
-    //   },
-    // }),
   ],
   esbuild: {
     target: 'esnext',
@@ -118,18 +87,18 @@ export default defineConfig({
         }),
       ],
     },
-    // terserOptions: {
-    //   compress: {
-    //     drop_console: true,
-    //     drop_debugger: true,
-    //     pure_funcs: ["console.log"],
-    //     passes: 2,
-    //     toplevel: true,
-    //   },
-    //   format: {
-    //     comments: false,
-    //   },
-    // },
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+        pure_funcs: ['console.log'],
+        passes: 2,
+        toplevel: true,
+      },
+      format: {
+        comments: false,
+      },
+    },
     cssCodeSplit: true,
   },
   server: {

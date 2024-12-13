@@ -1,5 +1,5 @@
 import lottie, { AnimationItem } from 'lottie-web'
-import { useCallback,useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { useAppSelector } from '@/store'
 

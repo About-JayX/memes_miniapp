@@ -6,15 +6,12 @@
   "scripts": {
     "dev-mego": "vite --mode dev-mego",
     "dev-memes": "vite --mode dev-memes",
-    "build-mego": "npm install --frozen-lockfile && tsc -b && vite build --mode build-mego",
-    "build-memes": "npm install --frozen-lockfile && tsc -b && vite build --mode build-memes",
+    "build-mego": "tsc -b && vite build --mode build-mego",
+    "build-memes": "tsc -b && vite build --mode build-memes",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "preinstall": "git checkout yarn.lock",
     "remote": "./remote.sh"
-  },
-  "engines": {
-    "npm": ">=9.6.7"
   },
   "dependencies": {
     "axios": "^1.7.7",

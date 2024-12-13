@@ -1,7 +1,7 @@
 import "./index.scss";
 
 import { Fragment } from "react";
-const isMemes = import.meta.env.MODE === "dev-memes";
+const isMemes = import.meta.env.MODE.split('-')[1] === 'memes'
 export default function Button({
   animation = true,
   className = "",

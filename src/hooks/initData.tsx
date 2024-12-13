@@ -29,8 +29,8 @@ export const initDataHook = (loadData = false) => {
 
     initLock.current = true
     if (!(typeof postData === 'object' && Object.keys(postData).length)) return
-
-    import.meta.env.MODE === 'development' && eruda.init()
+    const env = import.meta.env.MODE.split('-')[0]
+    env === 'dev' && eruda.init()
     dispatch(asyncUploadTgs())
     const loginResult = await api.user.loginAPI(postData)
     const user: Iuser = {

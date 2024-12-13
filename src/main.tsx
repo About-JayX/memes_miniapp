@@ -14,6 +14,8 @@ import TelegramProvider from './providers/telegram'
 // const env = import.meta.env.MODE.split('-')[1]
 // import(`@/style/${env}/global.scss`)
 
+console.log(document.getElementById('root')!, 'ente!!!')
+
 ReactDOM.createRoot(document.getElementById('root')! as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>

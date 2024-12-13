@@ -15,6 +15,8 @@ export default async () => {
 
         if (symbol && symbol !== env) return re(null)
 
+        console.log(import.meta.env.MODE, '  import.meta.env.MODE')
+
         const response = await fetch(
           import.meta.env.MODE.includes('dev')
             ? key

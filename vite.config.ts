@@ -1,22 +1,21 @@
-import react from "@vitejs/plugin-react-swc";
-import autoprefixer from "autoprefixer";
-import cssnano from "cssnano";
-import path from "path";
-import postcssPxtoRem from "postcss-pxtorem";
-import copy from "rollup-plugin-copy";
-import tailwindcss from "tailwindcss";
-import { defineConfig } from "vite";
-import { createHtmlPlugin } from "vite-plugin-html";
-import viteImagemin from "vite-plugin-imagemin";
-import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
-
+import react from '@vitejs/plugin-react-swc'
+import autoprefixer from 'autoprefixer'
+import cssnano from 'cssnano'
+import path from 'path'
+import postcssPxtoRem from 'postcss-pxtorem'
+import copy from 'rollup-plugin-copy'
+import tailwindcss from 'tailwindcss'
+import { defineConfig } from 'vite'
+import { createHtmlPlugin } from 'vite-plugin-html'
+import viteImagemin from 'vite-plugin-imagemin'
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
 const env = process.argv[process.argv.indexOf('--mode') + 1].split('-')[1]
 export default defineConfig({
   plugins: [
     createSvgIconsPlugin({
-      iconDirs: [path.resolve(process.cwd(), "./src/assets/icon")],
-      symbolId: "icon-[name]",
+      iconDirs: [path.resolve(process.cwd(), './src/assets/icon')],
+      symbolId: 'icon-[name]',
     }),
     react(),
     viteImagemin({
@@ -37,10 +36,10 @@ export default defineConfig({
       svgo: {
         plugins: [
           {
-            name: "removeViewBox",
+            name: 'removeViewBox',
           },
           {
-            name: "removeEmptyAttrs",
+            name: 'removeEmptyAttrs',
             active: false,
           },
         ],
@@ -48,28 +47,35 @@ export default defineConfig({
     }),
     createHtmlPlugin({
       minify: true,
-      entry: "src/main.tsx",
-      template: "index.html",
+      entry: 'src/main.tsx',
+      template: 'index.html',
       inject: {
-        data:{
-          title: `${env === "memes"?"MEMES":"MEGO"} - A Web3-Powered Telegram Game.`,
-          description:`${env === "memes"?"MEMES":"MEGO"} - A Web3-Powered Telegram Game.`,
+        data: {
+          title: `${
+            env === 'memes' ? 'MEMES' : 'MEGO'
+          } - A Web3-Powered Telegram Game.`,
+          description: `${
+            env === 'memes' ? 'MEMES' : 'MEGO'
+          } - A Web3-Powered Telegram Game.`,
         },
         tags: [
           {
-            injectTo: "head",
-            tag: "link",
+            injectTo: 'head',
+            tag: 'link',
             attrs: {
-              rel: "stylesheet",
-              href: env === "memes"?"./src/style/memes/global.scss":"./src/style/mego/global.scss",
-              as: "style",
+              rel: 'stylesheet',
+              href:
+                env === 'memes'
+                  ? './src/style/memes/global.scss'
+                  : './src/style/mego/global.scss',
+              as: 'style',
             },
           },
           {
-            injectTo: "body-prepend",
-            tag: "div",
+            injectTo: 'body-prepend',
+            tag: 'div',
             attrs: {
-              id: "root",
+              id: 'root',
             },
           },
         ],
@@ -77,8 +83,9 @@ export default defineConfig({
     }),
   ],
   esbuild: {
-    target: "esnext",
+    target: 'esnext',
   },
+  base: './',
   css: {
     preprocessorOptions: {
       scss: {
@@ -89,33 +96,33 @@ export default defineConfig({
       plugins: [
         tailwindcss,
         autoprefixer,
-        postcssPxtoRem({ rootValue: 16, propList: ["*"] }),
-        cssnano({ preset: "default" }),
+        postcssPxtoRem({ rootValue: 16, propList: ['*'] }),
+        cssnano({ preset: 'default' }),
       ],
     },
   },
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      '@': path.resolve(__dirname, './src'),
     },
   },
   build: {
     rollupOptions: {
       output: {
-        entryFileNames: "assets/[name].js",
-        chunkFileNames: "assets/[name].js",
-        assetFileNames: "assets/[name].[ext]",
+        entryFileNames: 'assets/[name].js',
+        chunkFileNames: 'assets/[name].js',
+        assetFileNames: 'assets/[name].[ext]',
       },
       plugins: [
         copy({
           targets: [
             {
-              src: "src/assets/**/*.tgs",
-              dest: "dist/assets",
+              src: 'src/assets/**/*.tgs',
+              dest: 'dist/assets',
             }, // 忽略 .tgs 文件
-            { src: "src/assets/**/*.json", dest: "dist/assets" }, // 包含 .json 文件
+            { src: 'src/assets/**/*.json', dest: 'dist/assets' }, // 包含 .json 文件
           ],
-          hook: "writeBundle", // 在写入包时执行
+          hook: 'writeBundle', // 在写入包时执行
         }),
       ],
     },
@@ -137,9 +144,9 @@ export default defineConfig({
     host: true,
     hmr: true,
     proxy: {
-      "/api": {
+      '/api': {
         changeOrigin: true,
-        target: "https://memes2.slerf.yachts",
+        target: 'https://memes2.slerf.yachts',
         // rewrite: path => path.replace('/api', ''),
       },
     },
@@ -150,5 +157,5 @@ export default defineConfig({
       strict: true,
     },
   },
-  assetsInclude: ["**/*.tgs"], // 确保 Vite 包含这些文件
-});
+  assetsInclude: ['**/*.tgs'], // 确保 Vite 包含这些文件
+})

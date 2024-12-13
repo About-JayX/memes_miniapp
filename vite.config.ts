@@ -119,18 +119,18 @@ export default defineConfig({
         }),
       ],
     },
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true,
-        pure_funcs: ["console.log"],
-        passes: 2,
-        toplevel: true,
-      },
-      format: {
-        comments: false,
-      },
-    },
+    // terserOptions: {
+    //   compress: {
+    //     drop_console: true,
+    //     drop_debugger: true,
+    //     pure_funcs: ["console.log"],
+    //     passes: 2,
+    //     toplevel: true,
+    //   },
+    //   format: {
+    //     comments: false,
+    //   },
+    // },
     cssCodeSplit: true,
   },
   server: {

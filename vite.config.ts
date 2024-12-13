@@ -3,14 +3,19 @@ import autoprefixer from 'autoprefixer'
 import cssnano from 'cssnano'
 import path from 'path'
 import postcssPxtoRem from 'postcss-pxtorem'
+import copy from 'rollup-plugin-copy'
 import tailwindcss from 'tailwindcss'
 import { defineConfig } from 'vite'
+import { createHtmlPlugin } from 'vite-plugin-html'
 import viteImagemin from 'vite-plugin-imagemin'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
-import copy from 'rollup-plugin-copy'
+import commonjs from '@rollup/plugin-commonjs'
+
+const env = process.argv[process.argv.indexOf('--mode') + 1].split('-')[1]
 
 export default defineConfig({
   plugins: [
+    commonjs(),
     createSvgIconsPlugin({
       iconDirs: [path.resolve(process.cwd(), './src/assets/icon')],
       symbolId: 'icon-[name]',
@@ -43,6 +48,43 @@ export default defineConfig({
         ],
       },
     }),
+    createHtmlPlugin({
+      minify: true,
+      entry: 'src/main.tsx',
+      template: 'index.html',
+      inject: {
+        data: {
+          title: `${
+            env === 'memes' ? 'MEMES' : 'MEGO'
+          } - A Web3-Powered Telegram Game.`,
+          description: `${
+            env === 'memes' ? 'MEMES' : 'MEGO'
+          } - A Web3-Powered Telegram Game.`,
+        },
+        tags: [
+          {
+            injectTo: 'head',
+            tag: 'link',
+            attrs: {
+              rel: 'stylesheet',
+              href: `/${
+                env === 'memes'
+                  ? 'src/style/memes/global.scss'
+                  : 'src/style/mego/global.scss'
+              }`,
+              as: 'style',
+            },
+          },
+          {
+            injectTo: 'body-prepend',
+            tag: 'div',
+            attrs: {
+              id: 'root',
+            },
+          },
+        ],
+      },
+    }),
   ],
   esbuild: {
     target: 'esnext',
@@ -71,19 +113,23 @@ export default defineConfig({
     rollupOptions: {
       output: {
         entryFileNames: 'assets/[name].js',
-        chunkFileNames: 'assets/[name].js',
-        assetFileNames: 'assets/[name].[ext]',
+        chunkFileNames: 'assets/[name]-[hash].js', // 加上哈希，防止缓存问题
+        assetFileNames: 'assets/[name]-[hash].[ext]',
       },
       plugins: [
         copy({
           targets: [
+            // 根据环境变量动态处理 .tgs 文件的拷贝
             {
-              src: 'src/assets/**/*.tgs',
+              src: `src/assets/tgs/${env}/**/*.tgs`, // 根据 env 确定复制的源文件夹
+              dest: 'dist/assets/tgs',
+            },
+            {
+              src: 'src/assets/**/*.json', // 拷贝所有的 .json 文件
               dest: 'dist/assets',
-            }, // 忽略 .tgs 文件
-            { src: 'src/assets/**/*.json', dest: 'dist/assets' }, // 包含 .json 文件
+            },
           ],
-          hook: 'writeBundle', // 在写入包时执行
+          hook: 'writeBundle',
         }),
       ],
     },
@@ -118,5 +164,5 @@ export default defineConfig({
       strict: true,
     },
   },
-  assetsInclude: ['**/*.tgs'], // 确保 Vite 包含这些文件
+  assetsInclude: ['**/*.tgs'],
 })

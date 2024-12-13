@@ -9,6 +9,7 @@ import { getTextColorForBackground } from "@/util";
 
 import Lang from "./lang";
 import Profile from "./profile";
+const isMemes = import.meta.env.MODE === "dev-memes";
 
 export const UserIcon = ({
   children,
@@ -18,7 +19,7 @@ export const UserIcon = ({
   calssName?: string;
   onClick?: () => void;
 }) => {
-  return <MButton onClick={onClick}>{children}</MButton>;
+  return <MButton className={`${isMemes?"":"!rounded-full"}`} onClick={onClick}>{children}</MButton>;
 };
 
 export default function UserHeader() {

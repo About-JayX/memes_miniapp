@@ -4,6 +4,7 @@ import { Grid } from 'antd-mobile'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { symbol } from '@/config'
 import { useTelegram } from '@/providers/telegram'
 
 import Icon from '../icon'
@@ -71,7 +72,7 @@ export default function OpenScreenAnimation({
               <Grid.Item>
                 <Grid columns={1} gap={2} className="text-center">
                   <Grid.Item className="text-5xl italic font-black bg-clip-text text-transparent bg-gradient-to-b from-[--primary-text-color] to-[--primary]">
-                    $MEMES
+                    ${symbol}
                   </Grid.Item>
                   <Grid.Item className="text-base font-normal opacity-80">
                     {t('openScreenAnimation.text')}

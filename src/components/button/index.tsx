@@ -1,7 +1,10 @@
 import "./index.scss";
+
+import { Fragment } from "react";
+const isMemes = import.meta.env.MODE === "dev-memes";
 export default function Button({
   animation = true,
-  className="",
+  className = "",
   ...props
 }: {
   children?: React.ReactNode;
@@ -12,12 +15,18 @@ export default function Button({
   return (
     <a
       id="memes-button-icon"
-      className={`relative text-current font-bold ${className}`}
+      className={`relative text-current font-bold ${isMemes?"":"!bg-white/5"} ${className} `}
       {...props}
     >
-      {animation && <div className="filterBorder" />}
+      {isMemes ? (
+        <Fragment>
+          {animation && <div className="filterBorder" />}
+          {animation && <div className="filterBg" />}
+        </Fragment>
+      ) : (
+        ""
+      )}
 
-      <div className="filterBg" />
       {props.children}
     </a>
   );

@@ -11,8 +11,8 @@ import { store } from '@/store'
 
 import TelegramProvider from './providers/telegram'
 
-const env = import.meta.env.MODE.split('-')[1]
-import(`@/style/${env}/global.scss`)
+// const env = import.meta.env.MODE.split('-')[1]
+// import(`@/style/${env}/global.scss`)
 
 ReactDOM.createRoot(document.getElementById('root')! as HTMLElement).render(
   <React.StrictMode>

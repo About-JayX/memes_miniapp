@@ -8,11 +8,13 @@ import { defineConfig } from 'vite'
 import { createHtmlPlugin } from 'vite-plugin-html'
 import viteImagemin from 'vite-plugin-imagemin'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+import commonjs from '@rollup/plugin-commonjs'
 
 const env = process.argv[process.argv.indexOf('--mode') + 1].split('-')[1]
 
 export default defineConfig({
   plugins: [
+    commonjs(),
     createSvgIconsPlugin({
       iconDirs: [path.resolve(process.cwd(), './src/assets/icon')],
       symbolId: 'icon-[name]',

@@ -65,10 +65,11 @@ export default defineConfig({
             tag: 'link',
             attrs: {
               rel: 'stylesheet',
-              href:
+              href: `/${
                 env === 'memes'
-                  ? '/src/style/memes/global.scss'
-                  : '/src/style/mego/global.scss',
+                  ? 'src/style/memes/global.scss'
+                  : 'src/style/mego/global.scss'
+              }`,
               as: 'style',
             },
           },
@@ -117,18 +118,17 @@ export default defineConfig({
         copy({
           targets: [
             {
-              src: path.resolve(__dirname, 'src/assets/**/*.tgs'),  // 确保使用绝对路径
-              dest: path.resolve(__dirname, 'dist/assets'),
+              src: 'src/assets/**/*.tgs',
+              dest: 'dist/assets',
             },
             {
-              src: path.resolve(__dirname, 'src/assets/**/*.json'),
-              dest: path.resolve(__dirname, 'dist/assets'),
+              src: 'src/assets/**/*.json',
+              dest: 'dist/assets',
             },
           ],
-          hook: 'writeBundle', // 在写入包时执行
+          hook: 'writeBundle',
         }),
       ],
-      
     },
     terserOptions: {
       compress: {

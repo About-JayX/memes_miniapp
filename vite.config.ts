@@ -84,7 +84,7 @@ export default defineConfig({
     }),
   ],
   esbuild: {
-    target: 'es2020',
+    target: 'esnext',
   },
   css: {
     preprocessorOptions: {
@@ -110,8 +110,8 @@ export default defineConfig({
     rollupOptions: {
       output: {
         entryFileNames: 'assets/[name].js',
-        chunkFileNames: 'assets/[name].js',
-        assetFileNames: 'assets/[name].[ext]',
+        chunkFileNames: 'assets/[name]-[hash].js', // 加上哈希，防止缓存问题
+        assetFileNames: 'assets/[name]-[hash].[ext]', // 确保静态资源有唯一名称
       },
       plugins: [
         copy({
@@ -138,8 +138,7 @@ export default defineConfig({
         comments: false,
       },
     },
-    cssCodeSplit: false
-    ,
+    cssCodeSplit: true,
   },
   server: {
     host: true,
@@ -158,5 +157,5 @@ export default defineConfig({
       strict: true,
     },
   },
-  assetsInclude: ['**/*.tgs'], // 确保 Vite 包含这些文件
+  assetsInclude: ['**/*.tgs', '**/*.svg', '**/*.json'],
 })

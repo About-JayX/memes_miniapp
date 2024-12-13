@@ -11,7 +11,10 @@ import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
 const env = process.argv[process.argv.indexOf('--mode') + 1].split('-')[1]
 
+console.log(process.env, 'process.env_')
+
 export default defineConfig({
+  base: '/', // 确保资源的相对路径正确
   plugins: [
     createSvgIconsPlugin({
       iconDirs: [path.resolve(process.cwd(), './src/assets/icon')],

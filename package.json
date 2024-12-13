@@ -6,8 +6,8 @@
   "scripts": {
     "dev-mego": "vite --mode dev-mego",
     "dev-memes": "vite --mode dev-memes",
-    "build-mego": "APP_ENV=build-mego tsc -b && vite build --mode build-mego",
-    "build-memes": "APP_ENV=build-memes tsc -b && vite build --mode build-memes",
+    "build-mego": "tsc -b && vite build --mode build-mego",
+    "build-memes": "tsc -b && vite build --mode build-memes",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "preinstall": "git checkout yarn.lock",

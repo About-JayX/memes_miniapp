@@ -3,7 +3,6 @@ import autoprefixer from 'autoprefixer'
 import cssnano from 'cssnano'
 import path from 'path'
 import postcssPxtoRem from 'postcss-pxtorem'
-import copy from 'rollup-plugin-copy'
 import tailwindcss from 'tailwindcss'
 import { defineConfig } from 'vite'
 import { createHtmlPlugin } from 'vite-plugin-html'
@@ -111,24 +110,22 @@ export default defineConfig({
     rollupOptions: {
       output: {
         entryFileNames: 'assets/[name].js',
-        chunkFileNames: 'assets/[name]-[hash].js', // 加上哈希，防止缓存问题
-        assetFileNames: 'assets/[name]-[hash].[ext]',
+        chunkFileNames: file => {
+          // 只在非 .tgs 文件时生成 chunk 文件
+          if (file.facadeModuleId && file.facadeModuleId.endsWith('.tgs')) {
+            return 'assets/tgs/[name].js'
+          }
+          return 'assets/[name]-[hash].js'
+        },
+        assetFileNames: assetInfo => {
+          // 确保 .tgs 文件不会被打包成 JS
+          if (assetInfo.name?.endsWith('.tgs')) {
+            return `assets/tgs/${assetInfo.name}`
+          }
+          return 'assets/[name]-[hash].[ext]'
+        },
       },
-      plugins: [
-        copy({
-          targets: [
-            {
-              src: 'src/assets/**/*.tgs',
-              dest: 'dist/assets',
-            },
-            {
-              src: 'src/assets/**/*.json',
-              dest: 'dist/assets',
-            },
-          ],
-          hook: 'writeBundle',
-        }),
-      ],
+      plugins: [],
     },
     terserOptions: {
       compress: {
@@ -161,5 +158,5 @@ export default defineConfig({
       strict: true,
     },
   },
-  assetsInclude: ['**/*.tgs'],
+  assetsInclude: ['**/*.tgs'], // 确保 Vite 处理 .tgs 文件作为静态资源
 })

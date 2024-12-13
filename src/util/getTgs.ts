@@ -16,7 +16,9 @@ export default async () => {
         if (symbol && symbol !== env) return re(null)
 
         const response = await fetch(
-          import.meta.env.MODE.includes('dev') ? key : `/assets/${name}.${type}`
+          import.meta.env.MODE.includes('dev')
+            ? key
+            : `/assets/tgs/${name}.${type}`
         ) // 确保路径正确
 
         const data = await response.arrayBuffer()

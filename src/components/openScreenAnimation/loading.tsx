@@ -47,7 +47,8 @@ export default function OpenScreenAnimation({
     <div {...props}>
       <div className="fixed top-0 left-0 w-full h-full bg-[url('/image/openScreenAnimation/bg.jpg')] bg-bottom bg-cover bg-no-repeat">
         <div className="grid justify-items-center w-auto h-full p-4">
-          {webApp?.initDataUnsafe.user.username ? (
+          {webApp?.initDataUnsafe.user &&
+          webApp?.initDataUnsafe.user.username ? (
             <Grid
               columns={1}
               gap={29}
@@ -111,7 +112,7 @@ export default function OpenScreenAnimation({
             </div>
           )}
         </div>
-        {webApp?.initDataUnsafe.user.username
+        {webApp?.initDataUnsafe.user && webApp?.initDataUnsafe.user.username
           ? !status && (
               <div
                 className="openScreenAnimation absolute bottom-0 w-full pb-4 h-[50vh] flex justify-center"

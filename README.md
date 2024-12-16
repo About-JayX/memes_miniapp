@@ -28,3 +28,10 @@ export default {
 - Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
 - Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
 - Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+
+### 部署流程
+1.创建pages项目,连接对应的github仓库 build-memes为打包为memes的项目,build-mego为打包成mego的项目
+1.CloudFlare根据package.json 配置构建命令
+2.发生版本错误,配置node变量和yarn变量指定版本
+
+

@@ -45,7 +45,7 @@ export default function App() {
 
     navigate('/task')
   }, [webApp])
-  webApp?.initDataUnsafe.user && initDataHook()
+  initDataHook()
   // Locale Mapping
   const localeMap: any = {
     'en-US': enUS,

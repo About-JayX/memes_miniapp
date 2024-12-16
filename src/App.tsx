@@ -79,7 +79,6 @@ export default function App() {
 
   useEffect(() => {
     window.addEventListener('focusout', () => {
-      "enter_      miniapp_"
       setTimeout(() => {
         window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
       }, 101)

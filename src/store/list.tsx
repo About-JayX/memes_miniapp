@@ -290,6 +290,7 @@ export const asyncNotifyList = createAsyncThunk(
 
       return result.data
     } catch (error) {
+      console.log(error, 'error_')
       return notifys
     }
   }

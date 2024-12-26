@@ -14,22 +14,19 @@ export default function TgsAnimation({
   const animationContainer = useRef<HTMLDivElement | null>(null)
   const animationRef = useRef<AnimationItem | null>(null)
   const [isVisible, setIsVisible] = useState(false)
+  const tgs = propsTgs || useAppSelector(state => state.tgs.tgs)
 
-  // 使用 useAppSelector 获取数据
-  const tgs = propsTgs || useAppSelector(state => state.tgs).tgs
-
-  // 初始化动画
   const init = useCallback(() => {
+    if (!tgs?.length) return
+    
     const tgsData = tgs.find(item => item.name === icon)
-
-    // 如果动画未加载过，才进行初始化
     if (tgsData && tgsData.data && !animationRef.current) {
       animationRef.current = lottie.loadAnimation({
         container: animationContainer.current!,
         renderer: 'canvas',
         loop: true,
         autoplay: true,
-        animationData: JSON.parse(tgsData.data), // 使用转换后的 JSON 数据
+        animationData: JSON.parse(tgsData.data),
       })
     }
   }, [tgs, icon])
@@ -73,5 +70,6 @@ export default function TgsAnimation({
     }
   }, [])
 
+  if (!tgs?.length) return null
   return <div ref={animationContainer} {...props} />
 }

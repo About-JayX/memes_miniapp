@@ -1,107 +1,65 @@
-import { useBackButtonRaw } from '@telegram-apps/sdk-react'
+// 第三方库导入
 import { ConfigProvider, TabBar } from 'antd-mobile'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
-
-import api from '@/api'
 import Icon from '@/components/icon'
-import NewUserRewards from '@/components/lib/newUserRewards'
-import PublishTasks from '@/components/lib/publishTasks'
 import Loading from '@/components/loading'
+import NewUserRewards from '@/components/lib/newUserRewards'
 import OpenScreenAnimation from '@/components/openScreenAnimation/loading'
+import PublishTasks from '@/components/lib/publishTasks'
+import Router from '@/router'
 import TgsAnimation from '@/components/tgsAnimation'
+// 本地配置和工具导入
 import { antdLocale, type LocaleCode } from '@/config/locale'
+import { PUBLISH_BUTTON_STYLE, TAB_ITEMS } from '@/config/tabBar'
 import { initDataHook } from '@/hooks/initData'
 import { useTelegram } from '@/providers/telegram'
-import Router from '@/router'
-import { useAppDispatch, useAppSelector } from '@/store'
-import { asyncLoading, asynUpdateTaskOptions } from '@/store/telegram'
+import { useAppSelector } from '@/store'
+import { useBackButton } from '@/hooks/useBackButton'
+import { useTask } from '@/hooks/useTask'
+import { usePageRefresh } from '@/hooks/usePageRefresh'
 
 const isMemes = import.meta.env.MODE.split('-')[1] === 'memes'
 
 export default function App() {
-  const backButton = useBackButtonRaw(true)?.result
-  const { t, i18n } = useTranslation()
-  const { language } = i18n
+  const {
+    t,
+    i18n: { language },
+  } = useTranslation()
+  const locale = antdLocale?.[language as LocaleCode] || antdLocale['en-US']
+
   const navigate = useNavigate()
   const { task } = useAppSelector(state => state.list)
   const { tgs } = useAppSelector(state => state.tgs)
-  const { pathname, state } = useLocation()
+  const { pathname } = useLocation()
   const [iconKey, setIconKey] = useState<string>('')
-  const switchRouter = (key: string) => navigate(key)
   const { webApp } = useTelegram()
   const { load } = useAppSelector(state => state.telegram)
-  useEffect(() => {
-    if (!webApp || !Object.keys(webApp).length) return
-    const startParams =
-      (webApp.initDataUnsafe && webApp.initDataUnsafe.start_param) || ''
-    if (!startParams || !startParams.includes('task')) return
-    navigate('/task')
-  }, [webApp])
-  initDataHook()
-  const locale = antdLocale?.[language as LocaleCode] || antdLocale['en-US']
-  // Paths where TabBar should be hidden
-  const hideTabBarPaths = [
-    '/list/details',
-    '/invite',
-    '/signin',
-    '/integral',
-    '/task/list',
-    '/collect',
-  ]
-  const showTabBar = !hideTabBarPaths.includes(pathname)
-
-  if (!showTabBar && backButton) {
-    backButton.show()
-
-    backButton.on('click', () => {
-      navigate(state.path || '/')
-      backButton.hide()
-    })
-  }
-
-  useEffect(() => {
-    window.addEventListener('focusout', () => {
-      setTimeout(() => {
-        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
-      }, 101)
-    })
-
-    // 检查页面是否已经刷新过一次
-    const hasRefreshed = sessionStorage.getItem('refreshed')
-
-    if (!hasRefreshed) {
-      // 如果没有刷新过，刷新页面并记录标志
-      sessionStorage.setItem('refreshed', 'true')
-      window.location.reload()
-    }
-
-    // 不需要移除 'refreshed' 标志，保证刷新后不会再次触发刷新
-  }, [])
-
-  const { taskOptions } = useAppSelector(state => state.telegram)
-  const [publishTaskStatus, setPublishTaskStatus] = useState<boolean>(false)
-  const dispatch = useAppDispatch()
-
-  const sumbitTask = async () => {
-    if (!taskOptions.data.length) {
-      await dispatch(
-        asyncLoading({
-          globalText: t('public.loading'),
-          callBack: async () => {
-            const reslut = await api.task.taskOptionsAPI('Twitter')
-            await dispatch(asynUpdateTaskOptions(reslut))
-          },
-        })
-      )
-    }
-    setTimeout(() => {
-      setPublishTaskStatus(true)
-    }, 100)
-  }
-
+  const [publishTaskStatus, setPublishTaskStatus] = useState(false)
   const [status, setStatus] = useState(true)
+
+  // 优化hook_
+  const { showTabBar } = useBackButton()
+  const { submitTask } = useTask()
+  usePageRefresh()
+  initDataHook()
+
+  const handleTabChange = async (key: string) => {
+    if (key !== '/publish' && key !== '/publish1') {
+      navigate(key)
+      setIconKey(key)
+    } else {
+      await submitTask()
+      setTimeout(() => setPublishTaskStatus(true), 100)
+    }
+  }
+  
+  useEffect(() => {
+    if (!webApp?.initDataUnsafe?.start_param?.includes('task')) return
+    navigate('/task')
+  }, [webApp, navigate])
+
   return (
     <ConfigProvider locale={locale}>
       {status ? (
@@ -142,94 +100,65 @@ export default function App() {
                 <TabBar
                   className="z-[999] mb-7"
                   safeArea
-                  onChange={key => {
-                    if (key !== '/publish' && key !== '/publish1') {
-                      switchRouter(key)
-                      setIconKey(key)
-                    } else {
-                      sumbitTask()
-                    }
-                  }}
+                  onChange={handleTabChange}
                   activeKey={iconKey || pathname}
                   defaultActiveKey="/"
                 >
-                  <TabBar.Item
-                    className={`transition duration-300 ease-in-out ${
-                      pathname === '/' ? 'scale-100' : 'scale-90'
-                    }`}
-                    key={'/'}
-                    icon={(active: boolean) => (
-                      <Icon name={active ? 'tab/active/home' : 'tab/home'} />
-                    )}
-                    title={t('public.home')}
-                  />
-                  <TabBar.Item
-                    className={`transition duration-300 ease-in-out ${
-                      pathname === '/list' ? 'scale-100' : 'scale-90'
-                    }`}
-                    key={'/list'}
-                    icon={(active: boolean) => (
-                      <Icon name={active ? 'tab/active/list' : 'tab/list'} />
-                    )}
-                    title={t('public.tabRank')}
-                  />
-                  <TabBar.Item
-                    key={'/publish1'}
-                    icon={(active: boolean) => (
-                      <div className="opacity-0">
-                        <Icon name={active ? 'tab/active/list' : 'tab/list'} />
-                      </div>
-                    )}
-                  />
-                  <TabBar.Item
-                    className="!absolute left-0 top-[-20px] !w-full pointer-events-none transition duration-300 ease-in-out active:scale-90 active:opacity-80"
-                    key={'/publish'}
-                    icon={(_: boolean) => (
-                      <div
-                        className={`!h-[52px] !w-[52px]  ${
-                          isMemes ? 'rounded-2xl' : '!rounded-full'
-                        } flex justify-center items-center pointer-events-auto`}
-                        style={{
-                          background: `${
-                            isMemes
-                              ? 'linear-gradient(15deg, #A440FD 15.65%, #0DC8EC 74.83%)'
-                              : 'linear-gradient(56deg, rgb(0, 171, 94) 5.75%, rgb(35, 255, 156) 93.71%)'
-                          }`,
-                        }}
-                      >
-                        {
-                          <TgsAnimation
-                            className="h-12 w-12"
-                            style={{ position: 'absolute', top: '0' }}
-                            icon="tabsAdd"
-                          ></TgsAnimation>
-                        }
-                      </div>
-                    )}
-                  />
-                  <TabBar.Item
-                    className={`transition duration-300 ease-in-out ${
-                      pathname === '/task' ? 'scale-100' : 'scale-90'
-                    }`}
-                    badge={task.total}
-                    key={'/task'}
-                    icon={(active: boolean) => (
-                      <Icon name={active ? 'tab/active/task' : 'tab/task'} />
-                    )}
-                    title={t('public.task')}
-                  />
-                  <TabBar.Item
-                    className={`transition duration-300 ease-in-out ${
-                      pathname === '/profile' ? 'scale-100' : 'scale-90'
-                    }`}
-                    key={'/profile'}
-                    icon={(active: boolean) => (
-                      <Icon
-                        name={active ? 'tab/active/profile' : 'tab/profile'}
-                      />
-                    )}
-                    title={t('public.profile')}
-                  />
+                  {TAB_ITEMS.map(item => (
+                    <TabBar.Item
+                      key={item.key}
+                      className={
+                        item.isPublish
+                          ? item.className
+                          : `transition duration-300 ease-in-out ${
+                              pathname === item.key ? 'scale-100' : 'scale-90'
+                            }`
+                      }
+                      title={item.title && t(item.title)}
+                      badge={item.key === '/task' ? task.total : undefined}
+                      icon={
+                        item.isPublish
+                          ? (_: boolean) => (
+                              <div
+                                className={`!h-[52px] !w-[52px] ${
+                                  isMemes ? 'rounded-2xl' : '!rounded-full'
+                                } flex justify-center items-center pointer-events-auto`}
+                                style={{
+                                  background: isMemes
+                                    ? PUBLISH_BUTTON_STYLE.memes
+                                    : PUBLISH_BUTTON_STYLE.mego,
+                                }}
+                              >
+                                <TgsAnimation
+                                  className="h-12 w-12"
+                                  style={{ position: 'absolute', top: '0' }}
+                                  icon="tabsAdd"
+                                />
+                              </div>
+                            )
+                          : (active: boolean) =>
+                              item.hidden ? (
+                                <div className="opacity-0">
+                                  <Icon
+                                    name={
+                                      active
+                                        ? item.icon!.active
+                                        : item.icon!.default
+                                    }
+                                  />
+                                </div>
+                              ) : (
+                                <Icon
+                                  name={
+                                    active
+                                      ? item.icon!.active
+                                      : item.icon!.default
+                                  }
+                                />
+                              )
+                      }
+                    />
+                  ))}
                 </TabBar>
               </div>
             )}

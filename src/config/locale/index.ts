@@ -1,17 +1,34 @@
-import megoEnUS from "./mego/en-US";
-import megoKoKR from "./mego/ko-KR";
-import megoZhCn from "./mego/zh-CN";
-import megoZhHk from "./mego/zh-HK";
-import memesEnUS from "./memes/en-US";
-import memesKoKR from "./memes/ko-KR";
-import memesZhCn from "./memes/zh-CN";
-import memesZhHk from "./memes/zh-HK";
+// 第三方库导入
+import enUS from 'antd-mobile/es/locales/en-US'
+import koKR from 'antd-mobile/es/locales/ko-KR'
+import zhCN from 'antd-mobile/es/locales/zh-CN'
+import zhHk from 'antd-mobile/es/locales/zh-HK'
 
-const env = import.meta.env.MODE.split("-")[1];
+// 本地模块导入
+import mego from './mego'
+import memes from './memes'
+// 类型定义
+export enum LocaleCode {
+  EN_US = 'en-US',
+  KO_KR = 'ko-KR',
+  ZH_CN = 'zh-CN',
+  ZH_HK = 'zh-HK',
+}
+type EnvType = 'mego' | 'memes'
+// 常量定义
+const locale = { memes, mego }
+const env = import.meta.env.MODE.split('-')[1] as EnvType
+// 导出配置
+export const antdLocale: Record<LocaleCode, typeof enUS> = {
+  [LocaleCode.EN_US]: enUS,
+  [LocaleCode.KO_KR]: koKR,
+  [LocaleCode.ZH_CN]: zhCN,
+  [LocaleCode.ZH_HK]: zhHk,
+}
 
 export default {
-  "en-US": env === "memes" ? memesEnUS : megoEnUS, // 英语（美式）
-  "ko-KR": env === "memes" ? memesKoKR : megoKoKR, // 韩语
-  "zh-CN": env === "memes" ? memesZhCn : megoZhCn, // 简体中文
-  "zh-HK": env === "memes" ? memesZhHk : megoZhHk, // 繁体中文（中国香港）
-} as any;
+  [LocaleCode.EN_US]: locale[env][LocaleCode.EN_US],
+  [LocaleCode.KO_KR]: locale[env][LocaleCode.KO_KR],
+  [LocaleCode.ZH_CN]: locale[env][LocaleCode.ZH_CN],
+  [LocaleCode.ZH_HK]: locale[env][LocaleCode.ZH_HK],
+} as const

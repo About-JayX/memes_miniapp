@@ -1,27 +1,22 @@
 import { useBackButtonRaw } from '@telegram-apps/sdk-react'
 import { ConfigProvider, TabBar } from 'antd-mobile'
-import enUS from 'antd-mobile/es/locales/en-US'
-import koKR from 'antd-mobile/es/locales/ko-KR'
-import zhCN from 'antd-mobile/es/locales/zh-CN'
-import zhHk from 'antd-mobile/es/locales/zh-HK'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
 
+import api from '@/api'
+import Icon from '@/components/icon'
+import NewUserRewards from '@/components/lib/newUserRewards'
+import PublishTasks from '@/components/lib/publishTasks'
+import Loading from '@/components/loading'
+import OpenScreenAnimation from '@/components/openScreenAnimation/loading'
+import TgsAnimation from '@/components/tgsAnimation'
+import { antdLocale, type LocaleCode } from '@/config/locale'
+import { initDataHook } from '@/hooks/initData'
+import { useTelegram } from '@/providers/telegram'
 import Router from '@/router'
-
-import api from './api'
-import Icon from './components/icon'
-import NewUserRewards from './components/lib/newUserRewards'
-import PublishTasks from './components/lib/publishTasks'
-import Loading from './components/loading'
-// import Loading from "./components/loading";
-import OpenScreenAnimation from './components/openScreenAnimation/loading'
-import TgsAnimation from './components/tgsAnimation'
-import { initDataHook } from './hooks/initData'
-import { useTelegram } from './providers/telegram'
-import { useAppDispatch, useAppSelector } from './store'
-import { asyncLoading, asynUpdateTaskOptions } from './store/telegram'
+import { useAppDispatch, useAppSelector } from '@/store'
+import { asyncLoading, asynUpdateTaskOptions } from '@/store/telegram'
 
 const isMemes = import.meta.env.MODE.split('-')[1] === 'memes'
 
@@ -42,21 +37,10 @@ export default function App() {
     const startParams =
       (webApp.initDataUnsafe && webApp.initDataUnsafe.start_param) || ''
     if (!startParams || !startParams.includes('task')) return
-
     navigate('/task')
   }, [webApp])
   initDataHook()
-  // Locale Mapping
-  const localeMap: any = {
-    'en-US': enUS,
-    'zh-CN': zhCN,
-    'ko-KR': koKR,
-    'zh-HK': zhHk,
-  }
-
-  // Determine Locale
-  const locale = localeMap?.[language] || enUS
-
+  const locale = antdLocale?.[language as LocaleCode] || antdLocale['en-US']
   // Paths where TabBar should be hidden
   const hideTabBarPaths = [
     '/list/details',

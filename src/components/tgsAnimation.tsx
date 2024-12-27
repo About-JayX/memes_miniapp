@@ -18,7 +18,7 @@ export default function TgsAnimation({
 
   const init = useCallback(() => {
     if (!tgs?.length) return
-    
+
     const tgsData = tgs.find(item => item.name === icon)
     if (tgsData && tgsData.data && !animationRef.current) {
       animationRef.current = lottie.loadAnimation({

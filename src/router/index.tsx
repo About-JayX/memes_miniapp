@@ -8,7 +8,12 @@ import { ImportMetaGlobType, RouterDataType } from '@/router/type'
 
 const param: Record<string, string[]> = RouterConfig.param
 
-const view = import.meta.glob<ImportMetaGlobType>('@/view/**/*.tsx')
+// 只导入直接位于 view 目录下的 tsx 文件和子目录下的 index.tsx，排除 components 文件夹
+const view = import.meta.glob<ImportMetaGlobType>([
+  '@/view/*.tsx',
+  '@/view/*/index.tsx',
+  '!@/view/**/components/**/*.tsx'
+])
 
 const generateRoutes = (
   pages: [string, () => Promise<{ default: React.ComponentType }>][]
@@ -20,17 +25,32 @@ const generateRoutes = (
       .slice(segments.indexOf('view') + 1)
       .map(seg => seg.toLowerCase())
       .join('/')
-    const routePath =
-      componentName === 'index'
-        ? `/${dirPath}`
-        : `/${dirPath}/${componentName.toLowerCase()}`
+
+    // 处理路由路径
+    let routePath = ''
+    if (dirPath === 'index' && componentName === 'index') {
+      // view/index/index.tsx 映射到根路径 "/"
+      routePath = '/'
+    } else if (componentName === 'index') {
+      // 其他 index.tsx 映射到目录路径
+      routePath = `/${dirPath}`
+    } else {
+      // 非 index 文件映射到完整路径
+      routePath = `/${dirPath}/${componentName.toLowerCase()}`
+    }
+
+    // 移除多余的斜杠
+    routePath = routePath.replace(/\/+/g, '/')
+    if (routePath !== '/' && routePath.endsWith('/')) {
+      routePath = routePath.slice(0, -1)
+    }
 
     const Component = lazy(() =>
       page().then(module => ({ default: module.default }))
     )
 
     return {
-      path: routePath === '' ? '/' : routePath,
+      path: routePath,
       element: <Component />,
     }
   })
@@ -50,6 +70,14 @@ export default function Router() {
           param[route.path]?.length > 0
             ? `/:${param[route.path].join('/:')}`
             : ''
+
+        // 不要为根路径添加语言前缀的重复路由
+        if (route.path === '/') {
+          return [
+            { ...route },
+            { ...route, path: `/${params}`.replace(/\/+/g, '/') },
+          ]
+        }
 
         return [
           { ...route, path: `/${langKey}${route.path}` },

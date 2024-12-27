@@ -1,4 +1,4 @@
-import {  Card, Ellipsis, Grid, Image } from 'antd-mobile'
+import { Card, Ellipsis, Grid, Image } from 'antd-mobile'
 import { Fragment, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router'

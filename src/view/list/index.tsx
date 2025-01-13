@@ -11,16 +11,22 @@ import { symbol } from '@/config'
 import { useAppDispatch, useAppSelector } from '@/store'
 import { asyncRankList } from '@/store/list'
 import { getTextColorForBackground, semicolon } from '@/util'
+import Loading from '@/components/loading'
 
 export const PointsList = () => {
   const { t } = useTranslation()
   const { ranks } = useAppSelector(state => state.list)
   const dispatch = useAppDispatch()
+  const [loading, setLoading] = useState(true)
 
   const getPointsData = async () => {
     if (ranks.data.data.length >= ranks.total) return
-
-    await dispatch(asyncRankList({}))
+    setLoading(true)
+    try {
+      await dispatch(asyncRankList({}))
+    } finally {
+      setLoading(false)
+    }
   }
 
   const [bodyHeight, setBodyHeight] = useState(0)
@@ -30,7 +36,7 @@ export const PointsList = () => {
   const navigate = useNavigate()
 
   return (
-    <Fragment>
+    <div className="h-[calc(100vh-3rem)]">
       <Box
         onBodyHeight={e => setBodyHeight(e)}
         body={
@@ -39,6 +45,11 @@ export const PointsList = () => {
             gap={24}
             className="justify-items-center text-center pb-4 mx-[-16px]"
           >
+            {loading && (
+              <div className="fixed inset-0 z-50">
+                <Loading loading={loading} type="fullscreen" />
+              </div>
+            )}
             {/* 前三名 */}
             <Grid.Item className="grid items-end gap-8 justify-center w-full grid-cols-[auto,1fr,auto] px-6">
               <Grid columns={1} gap={2} className="justify-items-center">
@@ -330,7 +341,7 @@ export const PointsList = () => {
           </div>
         </Card>
       </div>
-    </Fragment>
+    </div>
   )
 }
 

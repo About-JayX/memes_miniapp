@@ -50,3 +50,12 @@ svg {
 @import url(./base.scss);
 @import url(./components.scss);
 @import url(./utilities.scss);
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

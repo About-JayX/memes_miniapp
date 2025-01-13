@@ -39,7 +39,7 @@ export default {
   list: "列表",
   task: "任务",
   collect: "收藏",
-  profile: "个人资料",
+  profile: "个人",
   selectTime: "选择时间",
   day: "日",
   moon: "月",

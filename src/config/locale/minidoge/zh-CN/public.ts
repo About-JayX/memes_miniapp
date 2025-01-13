@@ -37,9 +37,9 @@ export default {
   get: "获取",
   home: "首页",
   list: "列表",
-  task: "任务",
+  task: "MEMES",
   collect: "收藏",
-  profile: "个人资料",
+  profile: "个人",
   selectTime: "选择时间",
   day: "日",
   moon: "月",
@@ -113,4 +113,5 @@ export default {
   goToBinding: "前往绑定",
   year: "年",
   newUserRewards: "新用户奖励",
+  tabRank: '排行榜',
 };

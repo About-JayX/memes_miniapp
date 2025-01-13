@@ -1,56 +1,57 @@
-import './index.scss'
+import "./index.scss";
 
-import { Grid } from 'antd-mobile'
-import { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { Grid } from "antd-mobile";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
-import { symbol } from '@/config'
-import { useTelegram } from '@/providers/telegram'
-import { ProjectImage } from '@/utils/imageLoader'
-import Button from '@/components/button'
+import { symbol } from "@/config";
+import { useTelegram } from "@/providers/telegram";
+import { ProjectImage } from "@/utils/imageLoader";
+import Button from "@/components/button";
 
-import Icon from '../icon'
+import Icon from "../icon";
+
+const envName = import.meta.env.MODE.split("-")[1];
 
 export default function OpenScreenAnimation({
   status,
   onChange,
   ...props
 }: {
-  status?: boolean
-  onChange?: (e: boolean) => void
+  status?: boolean;
+  onChange?: (e: boolean) => void;
 } & React.HTMLAttributes<HTMLDivElement>) {
-  const { t } = useTranslation()
-  const [touchStartY, setTouchStartY] = useState(0)
-  const [touchEndY, setTouchEndY] = useState(0)
-  const { webApp } = useTelegram()
+  const { t } = useTranslation();
+  const [touchStartY, setTouchStartY] = useState(0);
+  const [touchEndY, setTouchEndY] = useState(0);
+  const { webApp } = useTelegram();
   // 记录触摸开始的Y坐标
   const handleTouchStart = (e: any) => {
-    setTouchStartY(e.targetTouches[0].clientY)
-  }
+    setTouchStartY(e.targetTouches[0].clientY);
+  };
 
   // 记录触摸结束的Y坐标
   const handleTouchEnd = (e: any) => {
-    setTouchEndY(e.changedTouches[0].clientY)
-    handleSwipe()
-  }
+    setTouchEndY(e.changedTouches[0].clientY);
+    handleSwipe();
+  };
 
   // 检查是否为从下往上的滑动，若是则导航到指定页面
   const handleSwipe = () => {
-    onChange && onChange(true)
-    const swipeDistance = touchStartY - touchEndY
+    onChange && onChange(true);
+    const swipeDistance = touchStartY - touchEndY;
     if (swipeDistance > 50) {
-      onChange && onChange(true)
+      onChange && onChange(true);
     }
-  }
+  };
   useEffect(() => {
-    console.log(webApp, 'webApp')
-  }, [webApp])
+    console.log(webApp, "webApp");
+  }, [webApp]);
   return (
     <div {...props} onClick={() => onChange && onChange(true)}>
-
       {/* 暂时不需要背景图片 */}
       {/* <div className="fixed top-0 left-0 w-full h-full bg-[url('/image/openScreenAnimation/bg.jpg')] bg-bottom bg-cover bg-no-repeat"></div> */}
-      
+
       <div className="fixed top-0 left-0 w-full h-full animated-bg -z-10">
         <div className="glow"></div>
         <div className="grid justify-items-center w-auto h-full p-4">
@@ -60,7 +61,7 @@ export default function OpenScreenAnimation({
               gap={29}
               className="justify-items-center text-center h-fit mt-[4em]"
             >
-              <Grid.Item className={`${status ? 'opacity-100' : 'opacity-0'}`}>
+              <Grid.Item className={`${status ? "opacity-100" : "opacity-0"}`}>
                 <div className="login">
                   <div className="ui-loader loader-blk">
                     <svg viewBox="22 22 44 44" className="multiColor-loader">
@@ -79,39 +80,49 @@ export default function OpenScreenAnimation({
               <Grid.Item className="flex flex-col items-center gap-6">
                 <div className="text-center space-y-6">
                   <div className="w-24 h-24 mb-8 mx-auto relative z-10 logo-bounce">
-                    <ProjectImage 
+                    <ProjectImage
                       path="pics/logo.png"
                       className="w-full h-full object-contain"
                     />
                   </div>
-                  <h1 className="text-4xl font-bold tracking-wide bg-clip-text text-transparent bg-gradient-to-b from-[--primary-text-color] to-[--primary]">
-                    {t('openScreenAnimation.title')}
+                  <h1
+                    className={`${envName=== "minidoge"?"text-[#ffbd09]":"bg-clip-text text-transparent bg-gradient-to-b from-[--primary-text-color] to-[--primary]"} text-4xl font-bold tracking-wide`}
+                  >
+                    {t("openScreenAnimation.title")}
                   </h1>
                   <div className="flex flex-col gap-4">
                     <div className="text-lg font-medium text-[--secondary-text-color] opacity-90 italic">
-                      {t('openScreenAnimation.text')}
+                      {t("openScreenAnimation.text")}
                     </div>
                     <div className="text-base font-normal text-[--tertiary-text-color] opacity-90">
-                      {t('openScreenAnimation.paratext')}
+                      {t("openScreenAnimation.paratext")}
                     </div>
                   </div>
                 </div>
               </Grid.Item>
               <Grid.Item className="flex flex-wrap gap-4 items-center">
-                <a href={t('openScreenAnimation.telegramUrl')} target="_blank" onClick={(e) => e.stopPropagation()}>
+                <a
+                  href={t("openScreenAnimation.telegramUrl")}
+                  target="_blank"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <Icon
                     name="telegram"
                     className="!w-12 !h-12 p-2 bg-black/50  rounded-xl border border-[--primary-border-color]"
                   />
                 </a>
-                <a href={t('openScreenAnimation.twitterUrl')} target="_blank" onClick={(e) => e.stopPropagation()}>
+                <a
+                  href={t("openScreenAnimation.twitterUrl")}
+                  target="_blank"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <Icon
                     name="twitter"
                     className="!w-12 !h-12 p-2 bg-black/80 rounded-xl border border-[--primary-border-color]"
                   />
                 </a>
                 <a
-                  href={t('openScreenAnimation.officialWebsiteUrl')}
+                  href={t("openScreenAnimation.officialWebsiteUrl")}
                   target="_blank"
                   onClick={(e) => e.stopPropagation()}
                 >
@@ -122,15 +133,18 @@ export default function OpenScreenAnimation({
                 </a>
               </Grid.Item>
               <Grid.Item>
-                <Button className="px-8 py-2" onClick={() => onChange && onChange(true)}>
-                  {t('openScreenAnimation.exploreButton')}
+                <Button
+                  className="px-8 py-2"
+                  onClick={() => onChange && onChange(true)}
+                >
+                  {t("openScreenAnimation.exploreButton")}
                 </Button>
               </Grid.Item>
             </Grid>
           ) : (
             <div className="text-base font-normal opacity-80 mt-12">
-              {' '}
-              {t('public.settingUserName')}
+              {" "}
+              {t("public.settingUserName")}
             </div>
           )}
         </div>
@@ -155,13 +169,13 @@ export default function OpenScreenAnimation({
                     </div>
                   </Grid.Item>
                   <Grid.Item className="animate-float">
-                    {t('openScreenAnimation.hintText')}
+                    {t("openScreenAnimation.hintText")}
                   </Grid.Item>
                 </Grid>
               </div>
             )
-          : ''}
+          : ""}
       </div>
     </div>
-  )
+  );
 }

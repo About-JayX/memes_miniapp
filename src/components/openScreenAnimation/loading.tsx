@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 
 import { symbol } from '@/config'
 import { useTelegram } from '@/providers/telegram'
+import { ProjectImage } from '@/utils/imageLoader'
 
 import Icon from '../icon'
 
@@ -49,7 +50,8 @@ export default function OpenScreenAnimation({
       {/* 暂时不需要背景图片 */}
       {/* <div className="fixed top-0 left-0 w-full h-full bg-[url('/image/openScreenAnimation/bg.jpg')] bg-bottom bg-cover bg-no-repeat"></div> */}
       
-      <div className="fixed top-0 left-0 w-full h-full bg-[--primary-body-color]">
+      <div className="fixed top-0 left-0 w-full h-full animated-bg -z-10">
+        <div className="glow"></div>
         <div className="grid justify-items-center w-auto h-full p-4">
           {webApp?.initDataUnsafe.user.username ? (
             <Grid
@@ -73,15 +75,26 @@ export default function OpenScreenAnimation({
                   </div>
                 </div>
               </Grid.Item>
-              <Grid.Item>
-                <Grid columns={1} gap={2} className="text-center">
-                  <Grid.Item className="text-5xl italic font-black bg-clip-text text-transparent bg-gradient-to-b from-[--primary-text-color] to-[--primary]">
-                    ${symbol}
-                  </Grid.Item>
-                  <Grid.Item className="text-base font-normal opacity-80">
-                    {t('openScreenAnimation.text')}
-                  </Grid.Item>
-                </Grid>
+              <Grid.Item className="flex flex-col items-center gap-6">
+                <div className="text-center space-y-6">
+                  <div className="w-24 h-24 mb-8 mx-auto relative z-10">
+                    <ProjectImage 
+                      path="pics/logo.png"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <h1 className="text-4xl font-bold tracking-wide bg-clip-text text-transparent bg-gradient-to-b from-[--primary-text-color] to-[--primary]">
+                    {t('openScreenAnimation.title')}
+                  </h1>
+                  <div className="flex flex-col gap-4">
+                    <div className="text-lg font-medium text-[--secondary-text-color] opacity-90 italic">
+                      {t('openScreenAnimation.text')}
+                    </div>
+                    <div className="text-base font-normal text-[--tertiary-text-color] opacity-90">
+                      {t('openScreenAnimation.paratext')}
+                    </div>
+                  </div>
+                </div>
               </Grid.Item>
               <Grid.Item className="flex flex-wrap gap-4 items-center">
                 <a href={t('openScreenAnimation.telegramUrl')} target="_blank">

@@ -124,3 +124,150 @@
   }
 }
 
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes glowingLight {
+  0% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  100% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+}
+
+@keyframes techGridMove {
+  0% {
+    background-position: 0 0;
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    background-position: 50px 50px;
+    opacity: 0.3;
+  }
+}
+
+@keyframes techLightPulse {
+  0% {
+    opacity: 0;
+    transform: translateY(10%) scale(0.95);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10%) scale(0.95);
+  }
+}
+
+@keyframes fluid {
+  0% {
+    transform: rotate(0deg) scale(1.5) translateY(10px);
+  }
+  25% {
+    transform: rotate(3deg) scale(1.4) translateY(-15px);
+  }
+  50% {
+    transform: rotate(-2deg) scale(1.6) translateY(5px);
+  }
+  75% {
+    transform: rotate(1deg) scale(1.5) translateY(-10px);
+  }
+  100% {
+    transform: rotate(0deg) scale(1.5) translateY(10px);
+  }
+}
+
+@keyframes fluidWave {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translate(-45%, -45%) scale(1.1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.4;
+  }
+}
+
+.animated-bg {
+  position: relative;
+  background: #0a0a0a;
+  overflow: hidden;
+
+  // 主要流体效果
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 200%;
+    background: 
+      radial-gradient(ellipse at center, rgba(255, 189, 9, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 30% 50%, rgba(76, 175, 80, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 70% 50%, rgba(33, 150, 243, 0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 40% 60%, rgba(156, 39, 176, 0.1) 0%, transparent 50%);
+    animation: fluidWave 15s ease-in-out infinite;
+    mix-blend-mode: screen;
+    transform-origin: center;
+  }
+
+  // 次要流体效果
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 200%;
+    background: 
+      radial-gradient(circle at 50% 50%, rgba(255, 189, 9, 0.12) 0%, transparent 45%),
+      radial-gradient(ellipse at 60% 40%, rgba(76, 175, 80, 0.08) 0%, transparent 45%),
+      radial-gradient(circle at 40% 60%, rgba(33, 150, 243, 0.1) 0%, transparent 45%),
+      radial-gradient(ellipse at 55% 45%, rgba(156, 39, 176, 0.08) 0%, transparent 45%);
+    animation: fluidWave 12s ease-in-out infinite reverse;
+    mix-blend-mode: screen;
+    transform-origin: center;
+  }
+
+  // 光晕效果
+  .glow {
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    top: -25%;
+    left: -25%;
+    background: 
+      radial-gradient(circle at 30% 20%, rgba(255, 189, 9, 0.15) 0%, transparent 35%),
+      radial-gradient(circle at 70% 80%, rgba(33, 150, 243, 0.12) 0%, transparent 35%),
+      radial-gradient(ellipse at 50% 50%, rgba(76, 175, 80, 0.1) 0%, transparent 40%);
+    filter: blur(30px);
+    mix-blend-mode: screen;
+    animation: fluid 20s ease-in-out infinite;
+  }
+}
+

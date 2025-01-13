@@ -1,9 +1,10 @@
 export default {
-  title: "MiniDoge",
-  text: "让社区更强大",
-  paratext: "简单操作，真实回报",
-  twitterUrl: "https://twitter.com/minidoge",
-  telegramUrl: "https://t.me/minidoge",
-  officialWebsiteUrl: "https://minidoge.io",
+  title: "MINIDOGE",
+  text: "$MINIDOGE represents the inheritance of $DOGE",
+  paratext: 'Elon Musk: "Doge & Minidoge"',
+  twitterUrl: "https://x.com/MINIDOGE_X",
+  telegramUrl: " https://t.me/MINIDOGE_PORTAL",
+  officialWebsiteUrl: "https://mini-doge.com",
   hintText: "点击或上滑以打开"
 };
+ 

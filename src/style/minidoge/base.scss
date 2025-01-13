@@ -1,8 +1,8 @@
 :root {
-  --primary: #5b44e8;
-  --success-color: #00cd88;
+  --primary: #ffbd09;
+  --success-color: #4CAF50;
   --error-color: #dc2626;
-  --warning-color: #ea580c;
+  --warning-color: #ff9800;
   --info-color: #0284c7;
   --radius: 16px;
   --adm-color-primary: var(--primary) !important;
@@ -12,21 +12,25 @@
 }
 
 .light {
-  --primary-font-color: #ffffff;
-  --primary-text-color: #ffffff;
-  --primary-bg-color: #100e1d;
-  --primary-body-color: #161329;
-  --primary-card-body-color: #211f39;
-  --primary-border-color: rgba(255, 255, 255, 0.05);
+  --primary-font-color: #f8f9fa;
+  --primary-text-color: #ffbd09;
+  --secondary-text-color: #5c6064;
+  --tertiary-text-color: #d1d5db;
+  --primary-bg-color: #1a1a1a;
+  --primary-body-color: #242424;
+  --primary-card-body-color: #2d2d2d;
+  --primary-border-color: rgba(255, 255, 255, 0.08);
 }
 
 .dark {
-  --primary-font-color: #ffffff;
-  --primary-text-color: #ffffff;
-  --primary-bg-color: #100e1d;
-  --primary-body-color: #161329;
-  --primary-card-body-color: #1d1b4b4b;
-  --primary-border-color: rgba(255, 255, 255, 0.05);
+  --primary-font-color: #f8f9fa;
+  --primary-text-color: #ffbd09;
+  --secondary-text-color: #5c6064;
+  --tertiary-text-color: #d1d5db;
+  --primary-bg-color: #141414;
+  --primary-body-color: #1c1c1c;
+  --primary-card-body-color: #262626;
+  --primary-border-color: rgba(255, 255, 255, 0.08);
 }
 
 html body {

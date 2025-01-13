@@ -271,3 +271,28 @@
   }
 }
 
+@keyframes gentle-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes logo-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 189, 9, 0.3),
+                0 0 40px rgba(255, 189, 9, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 189, 9, 0.4),
+                0 0 60px rgba(255, 189, 9, 0.3);
+  }
+}
+
+.logo-bounce {
+  animation: gentle-bounce 3s ease-in-out infinite, logo-glow 4s ease-in-out infinite;
+  border-radius: 50%;
+}
+

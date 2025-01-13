@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { symbol } from '@/config'
 import { useTelegram } from '@/providers/telegram'
 import { ProjectImage } from '@/utils/imageLoader'
+import Button from '@/components/button'
 
 import Icon from '../icon'
 
@@ -77,7 +78,7 @@ export default function OpenScreenAnimation({
               </Grid.Item>
               <Grid.Item className="flex flex-col items-center gap-6">
                 <div className="text-center space-y-6">
-                  <div className="w-24 h-24 mb-8 mx-auto relative z-10">
+                  <div className="w-24 h-24 mb-8 mx-auto relative z-10 logo-bounce">
                     <ProjectImage 
                       path="pics/logo.png"
                       className="w-full h-full object-contain"
@@ -118,6 +119,11 @@ export default function OpenScreenAnimation({
                     className="!w-12 !h-12 p-2 bg-black/50 rounded-xl border border-[--primary-border-color]"
                   />
                 </a>
+              </Grid.Item>
+              <Grid.Item>
+                <Button className="px-8 py-2" onClick={() => onChange && onChange(true)}>
+                  {t('openScreenAnimation.exploreButton')}
+                </Button>
               </Grid.Item>
             </Grid>
           ) : (

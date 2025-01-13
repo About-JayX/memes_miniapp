@@ -78,7 +78,7 @@ export const PointsList = () => {
                             .toLocaleUpperCase()}
                         </div>
                       )}
-                      <div className="absolute bottom-[-6px] rounded-full bg-[#919EAE] w-6 h-6 flex items-center justify-center text-sm font-bold">
+                      <div className="absolute bottom-[-6px] rounded-full bg-[#919EAE] w-6 h-6 flex items-center justify-center text-[1.125rem] font-extrabold text-[#F6B734]">
                         2
                       </div>
                     </Grid.Item>
@@ -90,7 +90,7 @@ export const PointsList = () => {
                         icon="integrals"
                         className="w-4 h-4 mt-[2px]"
                       />
-                      &nbsp;{semicolon(ranks.data.data?.[1]?.score || 0)}
+                      &nbsp;<span className="text-[#F6B734] font-bold">{semicolon(ranks.data.data?.[1]?.score || 0)}&nbsp;${symbol}</span>
                     </Grid.Item>
                   </Fragment>
                 ) : (
@@ -128,7 +128,7 @@ export const PointsList = () => {
                             .toLocaleUpperCase()}
                         </div>
                       )}
-                      <div className="absolute bottom-[-6px] rounded-full bg-[#F6B734] w-6 h-6 flex items-center justify-center text-sm font-bold z-10">
+                      <div className="absolute bottom-[-6px] rounded-full bg-[#F6B734] w-6 h-6 flex items-center justify-center text-[1.125rem] font-extrabold text-black">
                         1
                       </div>
                       <TgsAnimation
@@ -144,7 +144,7 @@ export const PointsList = () => {
                         icon="integrals"
                         className="w-4 h-4 mt-[2px]"
                       />
-                      &nbsp;{semicolon(ranks.data.data?.[0]?.score || 0)}
+                      &nbsp;<span className="text-[#F6B734] font-bold">{semicolon(ranks.data.data?.[0]?.score || 0)}&nbsp;${symbol}</span>
                     </Grid.Item>
                   </Fragment>
                 ) : (
@@ -179,7 +179,7 @@ export const PointsList = () => {
                             .toLocaleUpperCase()}
                         </div>
                       )}
-                      <div className="absolute bottom-[-6px] rounded-full bg-[#D47F19] w-6 h-6 flex items-center justify-center text-sm font-bold">
+                      <div className="absolute bottom-[-6px] rounded-full bg-[#D47F19] w-6 h-6 flex items-center justify-center text-[1.125rem] font-extrabold text-[#F6B734]">
                         3
                       </div>
                     </Grid.Item>
@@ -191,7 +191,7 @@ export const PointsList = () => {
                         icon="integrals"
                         className="w-4 h-4 mt-[2px]"
                       />
-                      &nbsp;{semicolon(ranks.data.data?.[2]?.score || 0)}
+                      &nbsp;<span className="text-[#F6B734] font-bold">{semicolon(ranks.data.data?.[2]?.score || 0)}&nbsp;${symbol}</span>
                     </Grid.Item>
                   </Fragment>
                 ) : (
@@ -266,13 +266,23 @@ export const PointsList = () => {
                               icon="integrals"
                               className="w-4 h-4 mt-[-3px]"
                             />
-                            &nbsp;{semicolon(data[index].score)}&nbsp;${symbol}
+                            &nbsp;<span className="text-[#F6B734] font-bold">{semicolon(data[index].score)}&nbsp;${symbol}</span>
                           </Grid.Item>
                         </Grid>
                       </div>
-                      <span className="w-[30px] h-[30px] flex items-center justify-center text-sm font-light">{`#${
-                        index + 1
-                      }`}</span>
+                      <span className={`w-[30px] h-[30px] flex items-center justify-center text-[1.125rem] font-extrabold ${index < 10 ? 'text-[#F6B734]' : ''}`}>
+                        {index <= 2 ? (
+                          <div className="flex items-center">
+                            <TgsAnimation
+                              icon="top"
+                              className="w-4 h-4 mt-[-3px]"
+                            />
+                            {index + 1}
+                          </div>
+                        ) : (
+                          `#${index + 1}`
+                        )}
+                      </span>
                     </div>
                   </MCard>
                 )}
@@ -335,11 +345,11 @@ export const PointsList = () => {
                     icon="integrals"
                     className="w-4 h-4 mt-[-3px]"
                   />
-                  &nbsp;{semicolon(ranks.userRank.score)}&nbsp;${symbol}
+                  &nbsp;<span className="text-[#F6B734] font-bold">{semicolon(ranks.userRank.score)}&nbsp;${symbol}</span>
                 </Grid.Item>
               </Grid>
             </div>
-            <span className="w-[30px] h-[30px] flex items-center justify-center text-sm font-bold">{`#${ranks.userRank.rank}`}</span>
+            <span className="w-[30px] h-[30px] flex items-center justify-center text-[1.125rem] font-extrabold">{`#${ranks.userRank.rank}`}</span>
           </div>
         </Card>
       </div>

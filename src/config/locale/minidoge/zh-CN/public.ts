@@ -25,7 +25,7 @@ export default {
   pointsDetails: "积分详情",
   pointsList: "积分列表",
   yourCurrentRanking: "当前排名",
-  rankingList: "排行榜",
+  rankingList: "#Minidoge 领导榜",
   ok: "确定",
   signedIn: "已登录",
   pointsTask: "积分任务",
@@ -113,5 +113,5 @@ export default {
   goToBinding: "前往绑定",
   year: "年",
   newUserRewards: "新用户奖励",
-  tabRank: '排行榜',
+  tabRank: '排行',
 };

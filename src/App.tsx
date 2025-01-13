@@ -233,6 +233,9 @@ export default function App() {
                       <Icon name={active ? 'tab/active/task' : 'tab/task'} />
                     )}
                     title={t('public.task')}
+                    onClick={() => {
+                      window.location.href = 'https://mini-doge.com/memes'
+                    }}
                   />
                   <TabBar.Item
                     className={`transition duration-300 ease-in-out ${

@@ -1,7 +1,7 @@
 export default {
   asset: 'Asset',
   price: 'Price',
-  vote: 'Vote',
+  vote: 'Boost',
   newCreations: 'New Creations',
   completing: 'Completing',
   completed: 'Completed',

@@ -1,10 +1,11 @@
 export default {
-  title: "MINIDOGE",
+  title: "$MINIDOGE",
   text: "$MINIDOGE represents the inheritance of $DOGE",
   paratext: 'Elon Musk: "Doge & Minidoge"',
   twitterUrl: "https://x.com/MINIDOGE_X",
   telegramUrl: " https://t.me/MINIDOGE_PORTAL",
   officialWebsiteUrl: "https://mini-doge.com",
-  hintText: "点击或上滑以打开"
+  hintText:"Click Or Swipe Up To Unlock",
+  exploreButton: '探索'
 };
  

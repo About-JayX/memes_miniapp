@@ -45,7 +45,11 @@ export default function OpenScreenAnimation({
   }, [webApp])
   return (
     <div {...props}>
-      <div className="fixed top-0 left-0 w-full h-full bg-[url('/image/openScreenAnimation/bg.jpg')] bg-bottom bg-cover bg-no-repeat">
+
+      {/* 暂时不需要背景图片 */}
+      {/* <div className="fixed top-0 left-0 w-full h-full bg-[url('/image/openScreenAnimation/bg.jpg')] bg-bottom bg-cover bg-no-repeat"></div> */}
+      
+      <div className="fixed top-0 left-0 w-full h-full bg-[--primary-body-color]">
         <div className="grid justify-items-center w-auto h-full p-4">
           {webApp?.initDataUnsafe.user.username ? (
             <Grid
@@ -76,7 +80,6 @@ export default function OpenScreenAnimation({
                   </Grid.Item>
                   <Grid.Item className="text-base font-normal opacity-80">
                     {t('openScreenAnimation.text')}
-                    {/* Anti-vc, make society great again! */}
                   </Grid.Item>
                 </Grid>
               </Grid.Item>

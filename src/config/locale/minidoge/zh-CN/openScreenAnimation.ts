@@ -1,9 +1,9 @@
 export default {
-  title: "测试标题",
-  text: "测试文本",
-  paratext: "但是每个方法采取了不同的方式，并作出了不同的权衡。",
-  twitterUrl: "",
-  telegramUrl: "",
-  officialWebsiteUrl: "",
+  title: "MiniDoge",
+  text: "让社区更强大",
+  paratext: "简单操作，真实回报",
+  twitterUrl: "https://twitter.com/minidoge",
+  telegramUrl: "https://t.me/minidoge",
+  officialWebsiteUrl: "https://minidoge.io",
   hintText: "点击或上滑以打开"
 };

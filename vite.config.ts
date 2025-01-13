@@ -14,6 +14,7 @@ import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 const env = process.argv[process.argv.indexOf('--mode') + 1].split('-')[1]
 export default defineConfig({
   base: '/',
+  assetsInclude: ['**/*.tgs', '**/*.json'],
   plugins: [
     createSvgIconsPlugin({
       iconDirs: [path.resolve(process.cwd(), "./src/assets/icon")],
@@ -152,5 +153,4 @@ export default defineConfig({
       strict: true,
     },
   },
-  assetsInclude: ["**/*.tgs"], // 确保 Vite 包含这些文件
 });

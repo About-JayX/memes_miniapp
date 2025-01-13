@@ -46,7 +46,7 @@ export default function OpenScreenAnimation({
     console.log(webApp, 'webApp')
   }, [webApp])
   return (
-    <div {...props}>
+    <div {...props} onClick={() => onChange && onChange(true)}>
 
       {/* 暂时不需要背景图片 */}
       {/* <div className="fixed top-0 left-0 w-full h-full bg-[url('/image/openScreenAnimation/bg.jpg')] bg-bottom bg-cover bg-no-repeat"></div> */}
@@ -98,13 +98,13 @@ export default function OpenScreenAnimation({
                 </div>
               </Grid.Item>
               <Grid.Item className="flex flex-wrap gap-4 items-center">
-                <a href={t('openScreenAnimation.telegramUrl')} target="_blank">
+                <a href={t('openScreenAnimation.telegramUrl')} target="_blank" onClick={(e) => e.stopPropagation()}>
                   <Icon
                     name="telegram"
                     className="!w-12 !h-12 p-2 bg-black/50  rounded-xl border border-[--primary-border-color]"
                   />
                 </a>
-                <a href={t('openScreenAnimation.twitterUrl')} target="_blank">
+                <a href={t('openScreenAnimation.twitterUrl')} target="_blank" onClick={(e) => e.stopPropagation()}>
                   <Icon
                     name="twitter"
                     className="!w-12 !h-12 p-2 bg-black/80 rounded-xl border border-[--primary-border-color]"
@@ -113,6 +113,7 @@ export default function OpenScreenAnimation({
                 <a
                   href={t('openScreenAnimation.officialWebsiteUrl')}
                   target="_blank"
+                  onClick={(e) => e.stopPropagation()}
                 >
                   <Icon
                     name="officialWebsite"

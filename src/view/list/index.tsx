@@ -82,7 +82,7 @@ export const PointsList = () => {
                         2
                       </div>
                     </Grid.Item>
-                    <Grid.Item className="text-base font-medium truncate mt-[10px] w-[66px]">
+                    <Grid.Item className="text-base font-medium truncate mt-[10px] w-[66px] opacity-50">
                       @{ranks.data.data?.[1]?.username}
                     </Grid.Item>
                     <Grid.Item className="text-sm font-normal text-[#DADADA] flex">
@@ -136,7 +136,7 @@ export const PointsList = () => {
                         className="absolute bottom-[12px] z-10 w-6 h-6 text-[--primary] mt-[-6px] ml-[4px] inline-block"
                       />
                     </Grid.Item>
-                    <Grid.Item className="text-base font-medium truncate mt-[10px] w-[90px]">
+                    <Grid.Item className="text-base font-medium truncate mt-[10px] w-[90px] opacity-75">
                       @{ranks.data.data?.[0]?.username}
                     </Grid.Item>
                     <Grid.Item className="text-sm font-normal text-[#DADADA] flex">
@@ -183,7 +183,7 @@ export const PointsList = () => {
                         3
                       </div>
                     </Grid.Item>
-                    <Grid.Item className="text-base font-medium truncate mt-[10px] w-[66px]">
+                    <Grid.Item className="text-base font-medium truncate mt-[10px] w-[66px] opacity-75">
                       @{ranks.data.data?.[2]?.username}
                     </Grid.Item>
                     <Grid.Item className="text-sm font-normal text-[#DADADA] flex">
@@ -251,6 +251,7 @@ export const PointsList = () => {
                             <Ellipsis
                               direction="end"
                               content={`@${data[index].username}`}
+                              className="opacity-75"
                             />
                             &nbsp;
                             {index <= 1 && (
@@ -309,6 +310,7 @@ export const PointsList = () => {
                   <Ellipsis
                     direction="end"
                     content={`@${ranks.userRank.username}`}
+                    className="opacity-75"
                   />
                   &nbsp;
                   <TgsAnimation

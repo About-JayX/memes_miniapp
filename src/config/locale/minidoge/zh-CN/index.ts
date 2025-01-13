@@ -11,7 +11,7 @@ import vote from "./vote";
 export default {
   translation: {
     language: "简体中文",
-    lang: "语言",
+    lang: "简",
     public: _public,
     task,
     integral,

@@ -1,7 +1,7 @@
 export default {
   asset: "资产",
   price: "价格",
-  vote: "投票",
+  vote: "Boost",
   newCreations: "新创作",
   completing: "进行中",
   completed: "已完成",
@@ -43,7 +43,7 @@ export default {
   selectTime: "选择时间",
   day: "日",
   moon: "月",
-  search: "搜索",
+  search: "通过地址/代币搜索",
   cancel: "取消",
   nextStep: "下一步",
   previousStep: "上一步",

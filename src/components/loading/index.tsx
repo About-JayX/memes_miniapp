@@ -13,28 +13,27 @@ const Loading = ({
   if (!loading) return null
 
   const LoadingContent = () => (
-    <div className="flex flex-col items-center gap-4">
-      <div className="relative">
+    <div className="flex flex-col items-center">
+      <div className="relative scale-120">
         <ProjectImage 
           path="pics/logo.png"
-          className="w-12 h-12 object-contain"
+          className="w-14 h-14 object-contain"
         />
         <div className="absolute inset-0 flex items-center justify-center">
           <div 
-            className="absolute w-16 h-16 border-2 border-transparent border-t-[--primary] rounded-full"
+            className="absolute w-[4.5rem] h-[4.5rem] border-2 border-transparent border-t-[--primary] rounded-full"
             style={{
               animation: "spin 1s linear infinite"
             }}
           />
           <div 
-            className="absolute w-14 h-14 border-2 border-transparent border-t-[--primary-text-color] rounded-full"
+            className="absolute w-16 h-16 border-2 border-transparent border-t-[--primary-text-color] rounded-full"
             style={{
               animation: "spin 1.2s linear infinite reverse"
             }}
           />
         </div>
       </div>
-      <span className="text-sm font-normal">{t('public.loading')}</span>
     </div>
   )
 

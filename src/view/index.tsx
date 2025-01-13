@@ -108,23 +108,17 @@ export const Votes = ({
             }}
           >
             <Grid columns={1} gap={2} className="text-end justify-items-end">
-              <Grid.Item className="text-sm font-bold">
+              <Grid.Item className="text-sm font-bold opacity-50">
                 {data?.pair ? <>{data?.pair?.priceUsd || 0} $</> : <>---</>}
               </Grid.Item>
               <Grid.Item
-                className={`text-xs w-fit font-medium ${
-                  true ? "text-[--success-color]" : "text-[--error-color]"
-                } grid grid-flow-col !grid-cols-[repeat(10px,1fr)] items-center gap-1`}
+                className={`text-xs w-fit font-bold text-[--success-color] grid grid-flow-col !grid-cols-[repeat(10px,1fr)] items-center gap-1`}
               >
-                {/* <Icon
-                  name={`${uPstatus ? 'quotes/up' : 'quotes/down'}`}
-                  className="w-[10px] h-[10px]"
-                /> */}
                 {data?.pair ? (
-                  <>
-                    {" "}
-                    🚀 {data?.votes || 0}
-                  </>
+                  <div className="flex items-center gap-1">
+                    <span className="text-[1.2em]">{data?.votes || 0}</span>
+                    <span>🚀</span>
+                  </div>
                 ) : (
                   <>---</>
                 )}
@@ -524,7 +518,7 @@ export default function List() {
             data={tokens.data.bases}
             loadMore={getVoteData}
             count={tokens.total}
-            className={`${searchStatus ? "opacity-0":"opacity-100"}`}
+            className={`${searchStatus ? "hidden" : "block"}`}
             render={({ index, data }) => (
               <Votes
                 data={data[index]}

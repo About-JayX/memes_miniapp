@@ -10,8 +10,8 @@ import vote from "./vote";
 
 export default {
   translation: {
-    language: "繁體中文（中國香港）",
-    lang: "語言",
+    language: "繁體中文",
+    lang: "繁",
     public: _public,
     task,
     integral,

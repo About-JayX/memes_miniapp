@@ -182,13 +182,14 @@ export default function App() {
                   />
                   <TabBar.Item
                     className={`transition duration-300 ease-in-out ${
-                      pathname === "/list" ? "scale-100" : "scale-90"
+                      pathname === "/task" ? "scale-100" : "scale-90"
                     }`}
-                    key={"/list"}
+                    badge={task.total}
+                    key={"/task"}
                     icon={(active: boolean) => (
-                      <Icon name={active ? "tab/active/list" : "tab/list"} />
+                      <Icon name={active ? "tab/active/task" : "tab/task"} />
                     )}
-                    title={t("public.tabRank")}
+                    title={t("public.task")}
                   />
                   <TabBar.Item
                     key={"/publish1"}
@@ -235,17 +236,13 @@ export default function App() {
                   />
                   <TabBar.Item
                     className={`transition duration-300 ease-in-out ${
-                      pathname === "/task" ? "scale-100" : "scale-90"
+                      pathname === "/list" ? "scale-100" : "scale-90"
                     }`}
-                    badge={task.total}
-                    key={"/task"}
+                    key={"/list"}
                     icon={(active: boolean) => (
-                      <Icon name={active ? "tab/active/task" : "tab/task"} />
+                      <Icon name={active ? "tab/active/list" : "tab/list"} />
                     )}
-                    title={t("public.task")}
-                    onClick={() => {
-                      window.location.href = "https://mini-doge.com/memes";
-                    }}
+                    title={t("public.tabRank")}
                   />
                   <TabBar.Item
                     className={`transition duration-300 ease-in-out ${

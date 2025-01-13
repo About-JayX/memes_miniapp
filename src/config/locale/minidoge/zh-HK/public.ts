@@ -43,7 +43,7 @@ export default {
   selectTime: "選擇時間",
   day: "日",
   moon: "月",
-  search: "搜索",
+  search: "通过地址/代币搜索",
   cancel: "取消",
   nextStep: "下一步",
   previousStep: "上一步",

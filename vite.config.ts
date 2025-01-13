@@ -13,7 +13,7 @@ import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 
 const env = process.argv[process.argv.indexOf('--mode') + 1].split('-')[1]
 export default defineConfig({
-  base: './',
+  base: '/',
   plugins: [
     createSvgIconsPlugin({
       iconDirs: [path.resolve(process.cwd(), "./src/assets/icon")],

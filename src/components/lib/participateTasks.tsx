@@ -148,12 +148,10 @@ export default function ParticipateTasks({
                 </span>
               ) : (
                 <Button
-                  onClick={async () =>
-                    setOpenLinkTwitter && setOpenLinkTwitter(true)
-                  }
                   color="default"
                   size="mini"
-                  className="!border !border-[--primary-border-color] !text-sm font-bold"
+                  className="!border !border-[--primary-border-color] !text-sm font-bold opacity-50 cursor-not-allowed"
+                  disabled
                 >
                   {t('public.link')}
                 </Button>

@@ -1,8 +1,8 @@
 export default {
-  title: '連接 MEGO 機械人',
+  title: '連接 MINIDOGE 機器人',
   text: '解鎖任務 • 獲取積分 • 分享到您的群組',
 
-  text2: '將其發送到群聊以激活 MEGO 機械人',
+  text2: '將其發送到群聊以啟動 MINIDOGE 機器人',
   user: [
     {
       text: [
@@ -12,7 +12,7 @@ export default {
       ],
       copy: false,
       copyText: '',
-      imgUrl: 'https://www.baidu.com',
+      imgUrl: 'https://mini-doge.com',
     },
     {
       text: [
@@ -41,25 +41,12 @@ export default {
     },
     {
       text: [
-        { content: '機械人添加到群組後，輸入', status: false },
+        { content: '機器人添加到群組後，輸入', status: false },
         { content: '/Bind {{code}}', status: true },
       ],
       copy: true,
       copyText: '/Bind {{code}}',
-      imgUrl: 'https://www.baidu.com',
-    },
-    {
-      text: [
-        { content: '最後，您將看到', status: false },
-        { content: '"Connected"', status: true },
-        {
-          content: ' 顯示在群聊中。',
-          status: false,
-        },
-      ],
-      copy: false,
-      copyText: '',
-      imgUrl: '',
+      imgUrl: 'https://mini-doge.com',
     },
   ],
 }

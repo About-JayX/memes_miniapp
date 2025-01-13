@@ -1,9 +1,11 @@
 export default {
-  title: "測試標題",
-  text: "測試文字",
-  paratext: "但每個方法採取不同的方法，並作出不同的權衡。",
-  twitterUrl: "",
-  telegramUrl: "",
-  officialWebsiteUrl: "",
-  hintText: "點擊或上滑以開啟"
+  title: "$MINIDOGE",
+  text: "$MINIDOGE 是 $DOGE 的傳承",
+  paratext: 'Elon Musk: "Doge & Minidoge"',
+  twitterUrl: "https://x.com/MINIDOGE_X",
+  telegramUrl: "https://t.me/MINIDOGE_PORTAL",
+  officialWebsiteUrl: "https://mini-doge.com",
+  hintText: "點擊進入",
+  exploreButton: "開始探索"
 };
+ 

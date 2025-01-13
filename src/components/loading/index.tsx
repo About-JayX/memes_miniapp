@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { ProjectImage } from '@/utils/imageLoader'
+import { ProjectImage } from '@/util/imageLoader.ts'
 
 const Loading = ({
   loading = false,

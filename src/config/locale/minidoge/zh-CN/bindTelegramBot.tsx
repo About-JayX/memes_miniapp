@@ -1,8 +1,8 @@
 export default {
-  title: '连接 MEGO 机器人',
+  title: '连接 MINIDOGE 机器人',
   text: '解锁任务 • 获取积分 • 分享到您的群组',
 
-  text2: '将其发送到群聊以激活 MEGO 机器人',
+  text2: '将其发送到群聊以激活 MINIDOGE 机器人',
   user: [
     {
       text: [
@@ -12,7 +12,7 @@ export default {
       ],
       copy: false,
       copyText: '',
-      imgUrl: 'https://www.baidu.com',
+      imgUrl: 'https://mini-doge.com',
     },
     {
       text: [
@@ -46,7 +46,7 @@ export default {
       ],
       copy: true,
       copyText: '/Bind {{code}}',
-      imgUrl: 'https://www.baidu.com',
+      imgUrl: 'https://mini-doge.com',
     },
     {
       text: [

@@ -135,7 +135,6 @@ export default function App() {
           {load.globalLoading ? (
             <Loading
               loading={load.globalLoading}
-              text={load.globalText}
             ></Loading>
           ) : (
             ""

@@ -11,7 +11,7 @@ import minidogeKoKR from "./minidoge/ko-KR";
 import minidogeZhCn from "./minidoge/zh-CN";
 import minidogeZhHk from "./minidoge/zh-HK";
 
-const env = import.meta.env.MODE.split("-")[1];
+import { env } from "@/config";
 
 export default {
   "en-US": env === "memes" ? memesEnUS : env === "minidoge" ? minidogeEnUS : megoEnUS, // 英语（美式）

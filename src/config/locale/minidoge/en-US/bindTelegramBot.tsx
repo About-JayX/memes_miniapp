@@ -1,25 +1,25 @@
 export default {
-  title: 'Connect with MEGO Bot',
-  text: 'Unlock Tasks • Earn Points • Share in Your Group',
+  title: 'Connect MINIDOGE Bot',
+  text: 'Unlock Tasks • Earn Points • Share to Groups',
 
-  text2: 'Send it in the group chat to activate MEGO Bot',
+  text2: 'Send to group chat to activate MINIDOGE Bot',
   user: [
     {
       text: [
-        { content: '点击"', status: false },
-        { content: '开始', status: true },
-        { content: '"绑定到您的个人聊天窗口', status: false },
+        { content: 'Click "', status: false },
+        { content: 'Start', status: true },
+        { content: '" to bind to your personal chat', status: false },
       ],
       copy: false,
       copyText: '',
-      imgUrl: 'https://www.baidu.com',
+      imgUrl: 'https://mini-doge.com',
     },
     {
       text: [
-        { content: '绑定完成后，您将看到', status: false },
-        { content: '成功', status: true, copy: false },
+        { content: 'After binding, you will see ', status: false },
+        { content: 'Success', status: true, copy: false },
         {
-          content: ' 显示，您可以选择此通知方式来接收未来通知的交易提醒',
+          content: ' displayed. You can choose this notification method for future trade alerts',
           status: false,
         },
       ],
@@ -31,9 +31,9 @@ export default {
   group: [
     {
       text: [
-        { content: 'Open', status: false },
+        { content: 'Open ', status: false },
         { content: '{{botName}}', status: true },
-        { content: 'add it to your Telegram group ', status: false },
+        { content: ' and add it to your Telegram group', status: false },
       ],
       copy: false,
       copyText: '',
@@ -41,25 +41,12 @@ export default {
     },
     {
       text: [
-        { content: 'Once the bot is added to your group, enter', status: false },
+        { content: 'After adding the bot to group, enter ', status: false },
         { content: '/Bind {{code}}', status: true },
       ],
       copy: true,
       copyText: '/Bind {{code}}',
-      imgUrl: 'https://www.baidu.com',
-    },
-    {
-      text: [
-        { content: 'Finally, you will see', status: false },
-        { content: '"Connected"', status: true },
-        {
-          content: ' displayed in your group chat..',
-          status: false,
-        },
-      ],
-      copy: false,
-      copyText: '',
-      imgUrl: '',
+      imgUrl: 'https://mini-doge.com',
     },
   ],
 }

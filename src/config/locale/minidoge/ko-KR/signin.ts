@@ -1,11 +1,11 @@
 export default {
-  title: '임무를 완료하여 포인트 적립',
-  text: '임무를 완료하여 포인트를 적립하거나 게시된 임무를 사용할 수 있습니다.',
-  checkin_days: '{{type}} {{day}}일 동안 체크인',
-  consecutive: '연속',
+  title: '매일 출석체크',
+  text: '연속 출석으로 더 많은 𝕏Ð 포인트 획득',
+  checkin_days: '{{type}}{{day}}일 출석',
+  consecutive: '연속 ',
   cumulative: '누적',
-  extra_reward: '{{type}} 체크인으로 추가로 +{{reward}} 보상을 받습니다',
-  received: '수령 완료',
+  extra_reward: '{{type}} 출석, 추가 +{{reward}} 𝕏Ð 포인트',
+  received: '수령완료',
   notReceived: '미수령',
-  pending: '대기 중',
-}
+  pending: '대기중',
+};

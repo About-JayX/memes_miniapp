@@ -13,6 +13,7 @@ import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 
 const env = process.argv[process.argv.indexOf('--mode') + 1].split('-')[1]
 export default defineConfig({
+  base: './',
   plugins: [
     createSvgIconsPlugin({
       iconDirs: [path.resolve(process.cwd(), "./src/assets/icon")],
@@ -52,8 +53,8 @@ export default defineConfig({
       template: "index.html",
       inject: {
         data:{
-          title: `${env === "memes"?"MEMES":"MEGO"} - A Web3-Powered Telegram Game.`,
-          description:`${env === "memes"?"MEMES":"MEGO"} - A Web3-Powered Telegram Game.`,
+          title: `${env === "memes" ? "MEMES" : env === "minidoge" ? "MINIDOGE" : "MEGO"}`,
+          description: `${env === "memes" ? "MEMES" : env === "minidoge" ? "MINIDOGE" : "MEGO"}`,
         },
         tags: [
           {
@@ -61,8 +62,8 @@ export default defineConfig({
             tag: "link",
             attrs: {
               rel: "stylesheet",
-              href: env === "memes"?"./src/style/memes/global.scss":"./src/style/mego/global.scss",
-              as: "style",
+              href: env === "memes" ? "./src/style/memes/global.scss" : env === "minidoge" ? "./src/style/minidoge/global.scss" : "./src/style/mego/global.scss",
+              type: "text/css",
             },
           },
           {
@@ -83,6 +84,7 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         quietDeps: true,
+        additionalData: `$env: "${env}";`,
       },
     },
     postcss: {
@@ -139,7 +141,7 @@ export default defineConfig({
     proxy: {
       "/api": {
         changeOrigin: true,
-        target: "https://memes2.slerf.yachts",
+        target: "https://memes2.slerf.yachts:8443",
         // rewrite: path => path.replace('/api', ''),
       },
     },

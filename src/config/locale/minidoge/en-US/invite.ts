@@ -1,7 +1,6 @@
 export default {
-  title: "Earn points by completing tasks",
-  text: "You can earn points by completing tasks or you can use Post Tasks.",
-  inviteFriendsText:
-    "If you successfully invite a friend, you can get +100 points",
-  inviteFriendsTexts: "invitation copywriting",
+  title: "Invite Friends",
+  text: "More invites, more 𝕏Ð points",
+  inviteFriendsText: "Get +100 𝕏Ð points for each successful invite",
+  inviteFriendsTexts: "Join the $MINIDOGE community to earn token/NFT airdrops! Global CTO Community: https://t.me/MINIDOGE_PORTAL",
 };

@@ -1,29 +1,28 @@
 export default {
-  title: "Earn Plaza",
-  text: "Browse tasks, complete them, and start earning points!",
+  title: "Earn Points by Completing Tasks",
+  text: "You can earn points by completing tasks or using Post Tasks.",
   participate: {
-    linkText: "Jump to this tweet",
+    linkText: "Go to Tweet",
     walletAddressText:
-      "Fill in the corresponding wallet address to receive airdrops.",
+      "Enter your wallet address to receive the airdrop.",
   },
   taskManagement: {
-    title: "Task Creation Hub ",
-    text: "Design Tasks | Assign Rewards | Boost Visibility",
-    contractAddressText: "",
+    title: "Admin Panel",
+    text: "Each method takes a different approach and makes different trade-offs.",
+    contractAddressText: "Enter your contract address for display. Ignore if not needed!"
   },
-  telegramBotText: "",
-
+  telegramBotText: "Enter your contract address for display. Ignore if not needed!",
   uploadTelegramBotImg: {
-    title: "Upload Your Own Image",
-    text: "This image will display with MEGO bot’s messages in your Telegram group!",
+    title: "Upload Telegram Bot Image",
+    text: "Please enter your contract address for display. Ignore if not needed!",
   },
   hostTexts: [
-    "💰✨ Earn points with every click! 🚀 MEGO makes it simple—just complete tasks and watch your points grow! 🔥🎉",
-    "📲🎯 One click, more points! 💎💵 MEGO rewards your actions—complete tasks effortlessly and start earning now! 🚀💰",
-    "🌟🔥 Tap, complete, and earn points! 💰📈 With MEGO, every click brings you closer to bigger rewards. Start now! 🎉💎",
+    '💰✨ Earn points with every click! 🚀 𝕏Ð makes it simple—just complete tasks and watch your points grow! 🔥🎉',
+    '📲🎯 One click, more points! 💎💵 𝕏Ð rewards your actions—complete tasks easily and start earning! 🚀💰',
+    '🌟🔥 Click, complete, and earn! 💰📈 With 𝕏Ð, every click brings you closer to bigger rewards. Start now! 🎉💎',
   ],
   share:{
-    title:"Earn Plaza",
-    text:"Earn Plaza Text"
+    title:"Earning Plaza",
+    text:"Earning Plaza"
   }
 };

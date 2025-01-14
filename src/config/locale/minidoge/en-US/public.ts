@@ -120,5 +120,7 @@ export default {
   hour1: "1 H",
   hour6: "6 H",
   hour24: "24 H",
-  disclaimer: "Data from third-party platforms may be delayed/incorrect, for reference only.",
+  disclaimer:
+    "Data from third-party platforms may be delayed/incorrect, for reference only.",
+  week: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
 };

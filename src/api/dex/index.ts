@@ -105,8 +105,14 @@ export async function getPairByChainAndAddress(
 }
 
 export async function getPairByTokens(address: string): Promise<PairsResponse> {
-  const response = await httpService.get(`/latest/dex/tokens/${address}`)
-  return { pairs: response.data.pairs, address }
+  if (address === '8J6CexwfJ8CSzn2DgWhzQe1NHd2hK9DKX59FCNNMo2hu') {
+    console.log('API Call - getPairByTokens for MINIDOGE:', { address });
+  }
+  const response = await httpService.get(`/latest/dex/tokens/${address}`);
+  if (address === '8J6CexwfJ8CSzn2DgWhzQe1NHd2hK9DKX59FCNNMo2hu') {
+    console.log('API Response - getPairByTokens for MINIDOGE:', response.data);
+  }
+  return { pairs: response.data.pairs, address };
 }
 
 export async function searchTokens(q: string): Promise<PairsResponse> {

@@ -77,27 +77,7 @@ export const asyncSearchList = createAsyncThunk(
   async (data: { page?: number; pageSize?: number }, { getState }) => {
     const { search } = (getState() as RootState).list
 
-    // try {
-    //   let result: IRankPageList<IRank> = await api.user.userPointRank({
-    //     page: data.page ? data.page : search.page,
-    //     pageSize: data.pageSize ? data.pageSize : search.pageSize,
-    //   })
-    //   if (!data.page) {
-    //     result.data.data = [...search.data.data, ...result.data.data]
-    //   }
-
-    //   const o: IRankPageList<IRank> = {
-    //     page: data.page ? data.page + 1 : search.page + 1,
-    //     pageSize: 10,
-    //     data: result.data,
-    //     total: result.total,
-    //     userRank: result.userRank,
-    //   }
-    //   return o
-    // } catch (error) {
-    //   console.log(error, 'error_')
-    //   return search
-    // }
+    
   }
 )
 export const asyncDetailsList = createAsyncThunk(
@@ -226,25 +206,84 @@ export const asyncGetTokenList = createAsyncThunk(
           tokens.page * tokens.pageSize + 1
         )
         .filter(item => {
+          console.log('Checking token update condition:', {
+            address: item.address,
+            name: item.name,
+            symbol: item.symbol,
+            hasPair: !!item.pair,
+            lastUpdateTime: item.pair?.timestamp || 0,
+            needsUpdate: !item.pair || isTimeExceededByOneMinute(item.pair.timestamp || 0)
+          });
           return (
             !item.pair || isTimeExceededByOneMinute(item.pair.timestamp || 0)
           )
         })
-        .map(item => getPairByTokens(item.address))
+        .map(item => {
+          console.log('Requesting pair data for token:', {
+            address: item.address,
+            name: item.name,
+            symbol: item.symbol
+          });
+          return getPairByTokens(item.address);
+        })
+
+      console.log('Making requests for tokens:', requestPairs.length);
 
       const pairs = (await Promise.all(requestPairs)).reduce(
         (acc: { [key: string]: Pair | undefined }, pairs: PairsResponse) => {
-          const tokenAddress = pairs.address
+          const tokenAddress = pairs.address;
+          console.log('Processing pairs for token:', {
+            address: tokenAddress,
+            pairsCount: pairs.pairs?.length || 0
+          });
+
           const maxPair =
             pairs &&
             pairs.pairs?.reduce((result: Pair, pair: Pair) => {
-              if (pair && pair.baseToken.address === tokenAddress) {
-                return (result.fdv || 0) > (pair.fdv || 0) ? result : pair
+              console.log('Comparing pair:', {
+                tokenAddress,
+                pairAddress: pair.pairAddress,
+                dexId: pair.dexId,
+                baseToken: pair.baseToken.address,
+                quoteToken: pair.quoteToken.address,
+                liquidity: pair.liquidity,
+                currentMaxLiquidity: result?.liquidity || 0,
+                isWsolPair: pair.quoteToken.address === 'So11111111111111111111111111111111111111112'
+              });
+
+              // 如果当前pair不是WSOL交易对，直接返回当前结果
+              if (!pair || 
+                  pair.baseToken.address !== tokenAddress || 
+                  pair.quoteToken.address !== 'So11111111111111111111111111111111111111112') {
+                return result;
               }
-              return result
-            }, basePair.pair)
-          maxPair && (acc[tokenAddress] = maxPair)
-          return acc
+
+              // 如果还没有结果（第一个WSOL交易对），或者当前pair的流动性更大
+              if (!result || (pair.liquidity || 0) > (result.liquidity || 0)) {
+                console.log('Found better WSOL pair:', {
+                  tokenAddress,
+                  pairAddress: pair.pairAddress,
+                  liquidity: pair.liquidity,
+                  currentMaxLiquidity: result?.liquidity || 0
+                });
+                return pair;
+              }
+
+              return result;
+            }, null as Pair | null);
+
+          if (maxPair) {
+            console.log('Selected max WSOL pair:', {
+              tokenAddress,
+              pairAddress: maxPair.pairAddress,
+              dexId: maxPair.dexId,
+              liquidity: maxPair.liquidity,
+              priceUsd: maxPair.priceUsd,
+              quoteToken: maxPair.quoteToken.address
+            });
+            acc[tokenAddress] = maxPair;
+          }
+          return acc;
         },
         {}
       )

@@ -97,7 +97,7 @@ export default function Invite() {
                 <span className="text-base font-bold text-[--secondary-text-color]">
                   {t("public.invite")}
                 </span>
-                <span className="ml-2 text-[17px] font-medium text-[--primary]">
+                <span className="ml-2 text-[17px] font-medium text-[--primary] text-[1.2em]">
                   {semicolon(invite.total)}
                 </span>
                 <div className="flex-1"></div>

@@ -1,7 +1,7 @@
 export default {
   asset: "资产",
   price: "价格",
-  vote: "Boost",
+  vote: "冲榜",
   newCreations: "新创作",
   completing: "进行中",
   completed: "已完成",

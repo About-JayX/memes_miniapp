@@ -168,9 +168,9 @@ export default function Signin() {
           <Grid.Item>
             <Card>
               <Grid columns={1} gap={20}>
-                <Grid.Item className="text-base font-bold">
+                <Grid.Item className="text-base font-bold flex items-center">
                   {t("public.signedIn")}&nbsp;
-                  <span className="text-sm font-medium text-[--primary]">
+                  <span className="text-sm font-medium text-[--primary] text-[1.2em]">
                     {signInInfo.rewards.filter((item) => item.signedIn).length}
                   </span>
                 </Grid.Item>

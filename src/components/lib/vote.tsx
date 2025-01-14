@@ -6,7 +6,6 @@ import api from "@/api";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { ItokenData } from "@/store/interface";
 import { asyncUpdateUser } from "@/store/telegram";
-import { semicolon } from "@/util";
 import { basePair } from "@/util/baseData";
 
 import Popup from "../popup";
@@ -47,70 +46,23 @@ export default function Vote({
         </Grid.Item>
         <Grid.Item>
           <Card animation={false}>
-            <div className="grid grid-flow-col grid-cols-[repeat(1fr,1fr,1fr)] !items-center !justify-between gap-3">
-              {/* 代币信息 */}
-              <Grid.Item>
-                <div className="grid grid-flow-col !grid-cols-[repeat(40px,1fr)] items-center gap-3">
-                  <Image
-                    src={voteData?.pair?.info?.imageUrl || ""}
-                    className="!w-[40px] !h-[40px] rounded-lg"
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <Image
+                  src={voteData?.pair?.info?.imageUrl || ""}
+                  className="!w-[40px] !h-[40px] rounded-full"
+                />
+                <div className="text-sm font-bold">
+                  <Ellipsis
+                    direction="end"
+                    content={voteData?.pair?.baseToken.symbol || ""}
+                    className="flex-1"
                   />
-                  <Grid columns={1} gap={2}>
-                    <Grid.Item className="text-sm font-bold">
-                      <Ellipsis
-                        direction="end"
-                        content={voteData?.pair?.baseToken.name || ""}
-                        className="flex-1"
-                      />
-                    </Grid.Item>
-                    <Grid.Item
-                      className={`text-xs font-medium ${
-                        uPstatus
-                          ? "text-[--success-color]"
-                          : "text-[--error-color]"
-                      } grid grid-flow-col !grid-cols-[repeat(10px,1fr)] items-center gap-1`}
-                    >
-                      {t("vote.votes")} {voteData?.votes || 0}
-                    </Grid.Item>
-                  </Grid>
                 </div>
-              </Grid.Item>
-              {/* 交易量 */}
-              <Grid.Item>
-                <Grid
-                  columns={1}
-                  gap={2}
-                  className="text-center justify-items-center"
-                >
-                  <Grid.Item className="text-sm font-bold">
-                    {semicolon(
-                      (voteData?.pair?.txns.h24.buys || 0) +
-                        (voteData?.pair?.txns.h24.sells || 0)
-                    )}
-                  </Grid.Item>
-                  <Grid.Item className="text-xs font-medium">
-                    <span className="text-[--success-color]">
-                      {semicolon(voteData?.pair?.txns.h24.buys || 0)}
-                    </span>
-                    &nbsp;&nbsp;
-                    <span className="text-white/50">/</span>&nbsp;&nbsp;
-                    <span className="text-[--error-color]">
-                      {semicolon(voteData?.pair?.txns.h24.sells || 0)}
-                    </span>
-                  </Grid.Item>
-                </Grid>
-              </Grid.Item>
-              {/*  代币价格 */}
-              <Grid.Item>
-                <Grid columns={1} gap={2} className="text-end">
-                  <Grid.Item className="text-sm font-bold">
-                    ${voteData?.pair?.priceUsd || 0}
-                  </Grid.Item>
-                  <Grid.Item className={`text-xs font-medium text-[#8C91A2]`}>
-                    MCap ${voteData?.pair?.volume.h24 || 0}
-                  </Grid.Item>
-                </Grid>
-              </Grid.Item>
+              </div>
+              <div className="text-sm font-bold">
+                ${voteData?.pair?.priceUsd || 0}
+              </div>
             </div>
           </Card>
         </Grid.Item>

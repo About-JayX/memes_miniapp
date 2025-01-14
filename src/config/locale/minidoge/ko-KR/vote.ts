@@ -1,5 +1,5 @@
 export default {
-  title: '투표하시겠습니까?',
-  text: '남은 투표 수',
-  votes: '투표 수'
+  title: '순위 올리기를 하시겠습니까?',
+  text: '오늘 남은 횟수',
+  votes: '순위 올리기'
 }

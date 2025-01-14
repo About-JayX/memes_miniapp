@@ -1,5 +1,5 @@
 export default {
-  title: 'Confirm Vote?',
-  text: 'Remaining votes',
-  votes: 'Votes'
+  title: 'Ready to Boost?',
+  text: 'Daily Remaining',
+  votes: 'Boosts'
 }

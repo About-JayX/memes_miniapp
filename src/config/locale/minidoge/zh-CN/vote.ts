@@ -1,5 +1,5 @@
 export default {
-  title: '确认投票？',
-  text: '剩余的投票数是',
-  votes: '投票数'
+  title: '确定冲榜？',
+  text: '每天剩余次数',
+  votes: '冲榜次数'
 }

@@ -1,8 +1,10 @@
+import { Loading } from 'antd-mobile'
 import NewUserRewards from '@/components/lib/newUserRewards'
 import PublishTasks from '@/components/lib/publishTasks'
 import Router from '@/router'
 import TabBarComponent from '@/components/tabBar'
 import { useBackButton } from '@/hooks/useBackButton'
+import { useAppSelector } from '@/store'
 
 interface MainContentProps {
   iconKey: string
@@ -18,9 +20,11 @@ export default function MainContent({
   setPublishTaskStatus,
 }: MainContentProps) {
   const { showTabBar } = useBackButton()
+  const { load } = useAppSelector((state) => state.telegram)
 
   return (
     <>
+      {load.globalLoading && <Loading />}
       <NewUserRewards />
       <PublishTasks
         open={publishTaskStatus}

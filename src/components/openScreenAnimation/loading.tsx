@@ -1,7 +1,7 @@
 import "./index.scss";
 
 import { Grid } from "antd-mobile";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { env } from "@/config";
@@ -21,6 +21,34 @@ export default function OpenScreenAnimation({
 } & React.HTMLAttributes<HTMLDivElement>) {
   const { t } = useTranslation();
   const { webApp } = useTelegram();
+  const [showArrow, setShowArrow] = useState(false);
+
+  // 添加按钮位置检测
+  useEffect(() => {
+    const checkButtonPosition = () => {
+      if (status) return;
+      const button = document.querySelector(".explore-button");
+      const arrow = document.querySelector(".explore-arrow");
+
+      if (button && arrow) {
+        const buttonRect = button.getBoundingClientRect();
+        const arrowRect = arrow.getBoundingClientRect();
+
+        if (buttonRect.bottom + 46 >= arrowRect.top) {
+          setShowArrow(false);
+        } else {
+          setShowArrow(true);
+        }
+      }
+    };
+
+    checkButtonPosition();
+    window.addEventListener("resize", checkButtonPosition);
+
+    return () => {
+      window.removeEventListener("resize", checkButtonPosition);
+    };
+  }, [status]);
 
   // 处理点击事件
   const handleClick = () => {
@@ -42,10 +70,14 @@ export default function OpenScreenAnimation({
         <div className="sparkles-extra-4"></div>
         <div className="sparkles-extra-5"></div>
         <div className="scattered-lights"></div>
-        
+
         <div className="grid justify-items-center w-auto h-full p-4">
           {webApp?.initDataUnsafe.user.username ? (
-            <Grid columns={1} gap={29} className="justify-items-center text-center h-fit mt-[4em]">
+            <Grid
+              columns={1}
+              gap={24}
+              className="justify-items-center text-center h-fit mt-[4em]"
+            >
               <Grid.Item className={`${status ? "opacity-100" : "opacity-0"}`}>
                 <div className="login">
                   <div className="ui-loader loader-blk">
@@ -62,7 +94,7 @@ export default function OpenScreenAnimation({
                   </div>
                 </div>
               </Grid.Item>
-              
+
               <Grid.Item className="flex flex-col items-center gap-6">
                 <div className="text-center space-y-6">
                   <div className="w-24 h-24 mb-8 mx-auto relative z-10 logo-bounce">
@@ -72,7 +104,11 @@ export default function OpenScreenAnimation({
                     />
                   </div>
                   <h1
-                    className={`${env === "minidoge" ? "text-[#ffbd09]" : "bg-clip-text text-transparent bg-gradient-to-b from-[--primary-text-color] to-[--primary]"} text-4xl font-bold tracking-wide`}
+                    className={`${
+                      env === "minidoge"
+                        ? "text-[#ffbd09]"
+                        : "bg-clip-text text-transparent bg-gradient-to-b from-[--primary-text-color] to-[--primary]"
+                    } text-4xl font-bold tracking-wide`}
                   >
                     {t("openScreenAnimation.title")}
                   </h1>
@@ -125,7 +161,9 @@ export default function OpenScreenAnimation({
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    const url = t("openScreenAnimation.officialWebsiteUrl").trim();
+                    const url = t(
+                      "openScreenAnimation.officialWebsiteUrl"
+                    ).trim();
                     if (url) {
                       window.open(url);
                     }
@@ -138,9 +176,9 @@ export default function OpenScreenAnimation({
                 </div>
               </Grid.Item>
 
-              <Grid.Item>
+              <Grid.Item className="z-10">
                 <Button
-                  className="px-8 py-2 font-bold rounded-lg bg-[#ffbd09] text-white"
+                  className="px-8 py-2 font-bold rounded-lg bg-[#ffbd09] text-white explore-button"
                   onClick={() => {}}
                 >
                   {t("openScreenAnimation.exploreButton")}
@@ -155,10 +193,16 @@ export default function OpenScreenAnimation({
         </div>
 
         {webApp?.initDataUnsafe.user.username && !status && (
-          <div className="openScreenAnimation absolute bottom-0 w-full pb-4 h-[50vh] flex justify-center">
-            <Grid columns={1} gap={29} className="justify-items-center absolute bottom-8">
-              <Grid.Item>
-                <div className="arrow">
+          <div className="openScreenAnimation absolute bottom-0 w-full pb-4 h-[50vh] flex justify-center pointer-events-none">
+            <Grid
+              columns={1}
+              gap={29}
+              className="justify-items-center absolute bottom-8"
+            >
+              <Grid.Item className="explore-arrow">
+                <div
+                  className={`arrow ${showArrow ? "opacity-100" : "opacity-0"}`}
+                >
                   <span></span>
                   <span></span>
                   <span></span>

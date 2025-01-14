@@ -35,7 +35,7 @@ export default function Card({
             : "") ||
           (envName === "minidoge"
             ? type === "primary"
-              ? `!bg-gradient-to-b !from-[#FFAF03] !to-[#FF5900]`
+              ? `!bg-gradient-to-b !from-[#FFC10B] !to-[#FFAC03] !text-black`
               : "!bg-[--primary-card-body-color]"
             : "")
         }`}

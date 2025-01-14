@@ -1,5 +1,5 @@
 #memes-button-icon {
-  @apply flex items-center justify-center min-h-10 h-full min-w-10 w-auto rounded-lg isolate p-2 overflow-hidden  border-[1px] border-transparent;
+  @apply flex items-center justify-center min-h-10 h-full min-w-10 w-auto rounded-lg isolate p-2  overflow-hidden  border-[1px] border-transparent;
   .filterBorder {
     @apply absolute -z-10 flex justify-center items-center w-full h-full;
   }

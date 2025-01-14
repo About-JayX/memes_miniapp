@@ -46,6 +46,8 @@ import { asyncPollingToken, updateItemRefs } from "@/store/polling";
 import { isTimeExceededByOneMinute, semicolon } from "@/util";
 import { basePair } from "@/util/baseData";
 
+const envName = import.meta.env.MODE.split("-")[1];
+
 // 投票组件
 export const Votes = ({
   data = basePair,
@@ -61,7 +63,7 @@ export const Votes = ({
   const { tokens } = useAppSelector((state) => state.list);
 
   return (
-    <Grid.Item {...props} >
+    <Grid.Item {...props}>
       <Card animation={false}>
         <div className="grid grid-flow-col grid-cols-[3fr] !items-center !justify-between gap-3">
           {/* 代币信息 */}
@@ -166,8 +168,8 @@ export default function List() {
   const [page, setPage] = useState(1);
   const pageSize = useRef(20);
   const [searchData, setSearchdata] = useState<any>([]);
-  const [searchStatus,setSearchStatus] = useState<boolean>(false)
-  const [searchLoadStatus,setSearchLoadStatus] = useState<boolean>(false)
+  const [searchStatus, setSearchStatus] = useState<boolean>(false);
+  const [searchLoadStatus, setSearchLoadStatus] = useState<boolean>(false);
   const [searchValue, setSearchValue] = useState("");
   const [hasMore, setHasMore] = useState(true);
   const { user } = useAppSelector((state) => state.telegram);
@@ -371,9 +373,18 @@ export default function List() {
                       content={`@${user.username}`}
                     />
                     <a
-                      className="text-[10px] font-bold bg-white/5 py-[3px] px-2 rounded-full text-[#4FFFC4]"
+                      className={`text-[10px] font-bold py-[3px] px-2 rounded-full  ${
+                        (envName === "memes"
+                          ? "bg-white/10 text-[#4FFFC4]"
+                          : "") ||
+                        (envName === "mego"
+                          ? "bg-white/10 text-[#4FFFC4]"
+                          : "") ||
+                        "bg-white text-black"
+                      }`}
                       onClick={() =>
-                        !searchLoadStatus && navigate("integral", {
+                        !searchLoadStatus &&
+                        navigate("integral", {
                           state: { path: "/" },
                         })
                       }
@@ -394,8 +405,10 @@ export default function List() {
                       // size="large"
                       // className="relative w-full !bg-white/1"
                       // color="default"
+                      className="!border !border-white/10"
                       onClick={() =>
-                        !searchLoadStatus && navigate("signin", {
+                        !searchLoadStatus &&
+                        navigate("signin", {
                           state: { path: "/" },
                         })
                       }
@@ -427,7 +440,9 @@ export default function List() {
                       // size="large"
                       // color="default"
                       // className="relative w-full !bg-white/1"
-                      onClick={() =>!searchLoadStatus &&
+                      className="!border !border-white/10"
+                      onClick={() =>
+                        !searchLoadStatus &&
                         navigate("invite", {
                           state: { path: "/" },
                         })
@@ -479,7 +494,6 @@ export default function List() {
                   }}
                   content={
                     <InfiniteScroll
-                      
                       height={
                         bodyHeight > 0
                           ? bodyHeight - 55 * 2
@@ -492,7 +506,6 @@ export default function List() {
                         await loadSearch(searchValue);
                       }}
                       count={searchData.length}
-                      
                       render={({ index, data }) => (
                         <Votes
                           data={data[index]}

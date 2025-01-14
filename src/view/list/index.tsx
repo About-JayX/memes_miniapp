@@ -20,6 +20,10 @@ export const PointsList = () => {
   const [loading, setLoading] = useState(true)
 
   const getPointsData = async () => {
+    if (ranks.data.data.length !== 0) {
+      setLoading(false)
+      return
+    }
     if (ranks.data.data.length >= ranks.total) return
     setLoading(true)
     try {
@@ -28,7 +32,7 @@ export const PointsList = () => {
       setLoading(false)
     }
   }
-
+  
   const [bodyHeight, setBodyHeight] = useState(0)
 
   const list = ranks.data.data.slice(3, ranks.data.data.length)
@@ -78,7 +82,7 @@ export const PointsList = () => {
                             .toLocaleUpperCase()}
                         </div>
                       )}
-                      <div className="absolute bottom-[-6px] rounded-full bg-[#919EAE] w-6 h-6 flex items-center justify-center text-[1.125rem] font-extrabold text-[#F6B734]">
+                      <div className="absolute bottom-[-6px] rounded-full bg-[#919EAE] w-6 h-6 flex items-center justify-center text-[1.125rem] font-extrabold text-white">
                         2
                       </div>
                     </Grid.Item>
@@ -128,7 +132,7 @@ export const PointsList = () => {
                             .toLocaleUpperCase()}
                         </div>
                       )}
-                      <div className="absolute bottom-[-6px] rounded-full bg-[#F6B734] w-6 h-6 flex items-center justify-center text-[1.125rem] font-extrabold text-black">
+                      <div className="z-10 absolute bottom-[-6px] rounded-full bg-[#F6B734] w-6 h-6 flex items-center justify-center text-[1.125rem] font-extrabold text-white">
                         1
                       </div>
                       <TgsAnimation
@@ -179,7 +183,7 @@ export const PointsList = () => {
                             .toLocaleUpperCase()}
                         </div>
                       )}
-                      <div className="absolute bottom-[-6px] rounded-full bg-[#D47F19] w-6 h-6 flex items-center justify-center text-[1.125rem] font-extrabold text-[#F6B734]">
+                      <div className="absolute bottom-[-6px] rounded-full bg-[#D47F19] w-6 h-6 flex items-center justify-center text-[1.125rem] font-extrabold text-white">
                         3
                       </div>
                     </Grid.Item>

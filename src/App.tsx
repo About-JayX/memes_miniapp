@@ -109,6 +109,7 @@ export default function App() {
           callBack: async () => {
             const reslut = await api.task.taskOptionsAPI("Twitter");
             await dispatch(asynUpdateTaskOptions(reslut));
+
           },
         })
       );
@@ -215,7 +216,7 @@ export default function App() {
                               ? "linear-gradient(56deg, rgb(0, 171, 94) 5.75%, rgb(35, 255, 156) 93.71%)"
                               : "") ||
                             (envName === "minidoge"
-                              ? "linear-gradient(56deg, rgb(255, 175, 3) 5.75%, rgb(255, 89, 0) 93.71%)"
+                              ? "linear-gradient(56deg, var(--primary) 50%, rgb(255, 89, 0) 93.71%)"
                               : "")
                           }`,
                         }}

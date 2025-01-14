@@ -10,18 +10,45 @@ import { createHtmlPlugin } from "vite-plugin-html";
 import viteImagemin from "vite-plugin-imagemin";
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 
-
 const env = process.argv[process.argv.indexOf('--mode') + 1].split('-')[1]
 export default defineConfig({
   base: '/',
-  assetsInclude: ['**/*.tgs', '**/*.json'],
+  assetsInclude: ['*.tgs', '*.json'],
+  json: {
+    stringify: true
+  },
   plugins: [
+    {
+      name: 'vite-plugin-tgs',
+      enforce: 'pre',
+      transform(code, id) {
+        if (!id.includes(`/tgs/${env}/`)) return null;
+        if (id.endsWith('.tgs') || id.endsWith('.json')) {
+          try {
+            JSON.parse(code);
+            return {
+              code: `export default ${code}`,
+              map: null
+            };
+          } catch (e) {
+            return {
+              code: 'export default {}',
+              map: null
+            };
+          }
+        }
+      }
+    },
     createSvgIconsPlugin({
       iconDirs: [path.resolve(process.cwd(), "./src/assets/icon")],
       symbolId: "icon-[name]",
     }),
     react(),
     viteImagemin({
+      filter: (file) => {
+        // 只处理当前项目的图片
+        return file.includes(`/image/${env}/`) || file.includes('/image/openScreenAnimation/');
+      },
       gifsicle: {
         optimizationLevel: 7,
         interlaced: false,
@@ -102,6 +129,9 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  optimizeDeps: {
+    exclude: ['*.tgs', '*.json'],
+  },
   build: {
     rollupOptions: {
       output: {
@@ -113,15 +143,28 @@ export default defineConfig({
         copy({
           targets: [
             {
-              src: "src/assets/**/*.tgs",
-              dest: "dist/assets",
-            }, // 忽略 .tgs 文件
-            { src: "src/assets/**/*.json", dest: "dist/assets" }, // 包含 .json 文件
+              src: `src/assets/tgs/${env}/*.tgs`,
+              dest: "dist/assets/tgs",
+              rename: (name, extension) => `${name}.${extension}`
+            },
+            {
+              src: `src/assets/tgs/${env}/*.json`,
+              dest: "dist/assets/tgs",
+              rename: (name, extension) => `${name}.${extension}`
+            },
+            {
+              src: [
+                `public/image/${env}/**/*`,
+                'public/image/openScreenAnimation/**/*'
+              ],
+              dest: "dist/image"
+            }
           ],
-          hook: "writeBundle", // 在写入包时执行
+          hook: "writeBundle",
         }),
       ],
     },
+    assetsInlineLimit: 0, // 不要内联任何资源
     terserOptions: {
       compress: {
         drop_console: true,

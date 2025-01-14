@@ -10,7 +10,7 @@ import {
 } from "antd-mobile";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router";
+import { useLocation } from "react-router-dom";
 
 import api from "@/api";
 import { Container } from "@/components/box";
@@ -24,6 +24,7 @@ import { asyncFavoritesList } from "@/store/list";
 import { asyncLoading } from "@/store/telegram";
 import { copy, semicolon, formatAddress } from "@/util";
 import { basePair } from "@/util/baseData";
+import { Social, Website } from "@/types/dex";
 // 项目信息
 export const ProjectInformation = ({
   topHeight = 0,
@@ -87,9 +88,9 @@ export const ProjectInformation = ({
               const search = new URLSearchParams(location.search);
               const id = search.get("id");
               if (!id) return;
-              await api.favorites.favorites({ address: id });
-              isFavorites();
-              dispatch(asyncUploadFavorites());
+              await api.favorites.addFavorites({ address: id });
+              await api.favorites.isFavorites({ address: id });
+              dispatch(asyncFavoritesList({}));
             }}
           />
         </div>
@@ -97,10 +98,10 @@ export const ProjectInformation = ({
 
       {/* 市值和其他信息 */}
       <Grid.Item className="grid grid-cols-2 gap-4">
-        {token.pair?.marketCap && (
+        {token.pair?.fdv !== undefined && (
           <div className="bg-[--primary-card-body-color] p-3 rounded-xl">
             <div className="text-xs text-[--secondary-text-color]">{t('public.mktCap')}</div>
-            <div className="text-base font-medium">${token.pair.marketCap.toLocaleString()}</div>
+            <div className="text-base font-medium">${(token.pair?.fdv || 0).toLocaleString()}</div>
           </div>
         )}
         {token.pair?.dexId && (
@@ -134,8 +135,8 @@ export const ProjectInformation = ({
               <tr>
                 <td className="py-2">{t("public.hour1")}</td>
                 <td className="text-right">
-                  <span className={token.pair?.priceChange?.h1 >= 0 ? 'text-[--success-color]' : 'text-[--error-color]'}>
-                    {token.pair?.priceChange?.h1 >= 0 ? '+' : ''}{token.pair?.priceChange?.h1 || 0}%
+                  <span className={token.pair?.priceChange?.h1 ? (token.pair.priceChange.h1 >= 0 ? 'text-[--success-color]' : 'text-[--error-color]') : ''}>
+                    {token.pair?.priceChange?.h1 ? (token.pair.priceChange.h1 >= 0 ? '+' : '') : ''}{token.pair?.priceChange?.h1 || 0}%
                   </span>
                 </td>
                 <td className="text-right">${token.pair?.volume?.h1 || 0}</td>
@@ -143,8 +144,8 @@ export const ProjectInformation = ({
               <tr>
                 <td className="py-2">{t("public.hour6")}</td>
                 <td className="text-right">
-                  <span className={token.pair?.priceChange?.h6 >= 0 ? 'text-[--success-color]' : 'text-[--error-color]'}>
-                    {token.pair?.priceChange?.h6 >= 0 ? '+' : ''}{token.pair?.priceChange?.h6 || 0}%
+                  <span className={token.pair?.priceChange?.h6 ? (token.pair.priceChange.h6 >= 0 ? 'text-[--success-color]' : 'text-[--error-color]') : ''}>
+                    {token.pair?.priceChange?.h6 ? (token.pair.priceChange.h6 >= 0 ? '+' : '') : ''}{token.pair?.priceChange?.h6 || 0}%
                   </span>
                 </td>
                 <td className="text-right">${token.pair?.volume?.h6 || 0}</td>
@@ -152,8 +153,8 @@ export const ProjectInformation = ({
               <tr>
                 <td className="py-2">{t("public.hour24")}</td>
                 <td className="text-right">
-                  <span className={token.pair?.priceChange?.h24 >= 0 ? 'text-[--success-color]' : 'text-[--error-color]'}>
-                    {token.pair?.priceChange?.h24 >= 0 ? '+' : ''}{token.pair?.priceChange?.h24 || 0}%
+                  <span className={token.pair?.priceChange?.h24 ? (token.pair.priceChange.h24 >= 0 ? 'text-[--success-color]' : 'text-[--error-color]') : ''}>
+                    {token.pair?.priceChange?.h24 ? (token.pair.priceChange.h24 >= 0 ? '+' : '') : ''}{token.pair?.priceChange?.h24 || 0}%
                   </span>
                 </td>
                 <td className="text-right">${token.pair?.volume?.h24 || 0}</td>
@@ -164,36 +165,39 @@ export const ProjectInformation = ({
       </Grid.Item>
 
       {/* 社交媒体和网站信息 */}
-      {(token.pair?.info?.socials?.length > 0 || token.pair?.info?.websites?.length > 0) && (
+      {token.pair?.info?.socials && token.pair.info.socials.length > 0 && (
         <Grid.Item className="flex flex-wrap gap-4">
-          {/* 社交媒体图标 */}
-          {[...(token.pair?.info?.socials || [])].sort((a, b) => {
-            if (a.type === 'telegram') return -1;
-            if (b.type === 'telegram') return 1;
-            if (a.type === 'twitter') return -1;
-            if (b.type === 'twitter') return 1;
+          {[...(token.pair?.info?.socials || [])].sort((a: Social, b: Social) => {
+            if (a.platform === 'telegram') return -1;
+            if (b.platform === 'telegram') return 1;
+            if (a.platform === 'twitter') return -1;
+            if (b.platform === 'twitter') return 1;
             return 0;
-          }).map((social, index) => (
-            <a
-              key={index}
-              href={social.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={social.type === 'twitter' || social.type === 'telegram' 
-                ? "w-8 h-8 rounded-full bg-[--primary-card-body-color] flex items-center justify-center"
-                : "text-sm text-[--primary-text-color] bg-[--primary-card-body-color] px-3 py-1 rounded-full"}
-            >
-              {social.type === 'twitter' || social.type === 'telegram' ? (
-                <Icon name={social.type === 'twitter' ? 'twitter' : 'telegram'} className="w-5 h-5" />
-              ) : (
-                social.type.charAt(0).toUpperCase() + social.type.slice(1)
-              )}
-            </a>
-          ))}
-          
+          }).map((social: Social, index: number) => {
+            const type = social.type || social.platform;
+            const url = social.url || `https://${social.platform}.com/${social.handle}`;
+            return (
+              <a
+                key={index}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={type === 'twitter' || type === 'telegram'
+                  ? "w-8 h-8 rounded-full bg-[--primary-card-body-color] flex items-center justify-center"
+                  : "text-sm text-[--primary-text-color] bg-[--primary-card-body-color] px-3 py-1 rounded-full"}
+              >
+                {type === 'twitter' || type === 'telegram' ? (
+                  <Icon name={type === 'twitter' ? 'twitter' : 'telegram'} className="w-5 h-5" />
+                ) : (
+                  type.charAt(0).toUpperCase() + type.slice(1)
+                )}
+              </a>
+            );
+          })}
           {/* 网站链接 */}
-          {token.pair?.info?.websites?.map((site, index) => {
-            const getIconName = (label: string) => {
+          {token.pair?.info?.websites?.map((site: Website, index: number) => {
+            const getIconName = (label?: string) => {
+              if (!label) return 'link';
               const labelLower = label.toLowerCase();
               switch (labelLower) {
                 case 'docs':

@@ -1,28 +1,45 @@
 /* eslint-disable no-async-promise-executor */
 import pako from 'pako'
 
+const tgsFiles = {
+  mego: [
+    { name: '$', type: 'tgs' },
+    { name: 'error', type: 'json' }
+  ],
+  memes: [
+    { name: '$', type: 'tgs' },
+    { name: 'error', type: 'json' }
+  ],
+  minidoge: [
+    { name: '$', type: 'tgs' },
+    { name: 'error', type: 'json' }
+  ]
+}
+
 export default async () => {
   const env = import.meta.env.MODE.split('-')[1]
-  let files = import.meta.glob('@/assets/tgs/**/*.{tgs,json}')
-  const regex = /\/src\/assets\/tgs\/([^/]+)\/(.*)\.(tgs|json)$/
-  const promiseParses = Object.entries(files).map(
-    ([key, _]) =>
+  const files = tgsFiles[env as keyof typeof tgsFiles] || []
+  const isDev = import.meta.env.MODE.includes('dev')
+  
+  const promiseParses = files.map(
+    ({ name, type }) =>
       new Promise(async re => {
-        const match = key.match(regex)
-        const symbol = match ? match[1] : null
-        const name = match ? match[2] : null
-        const type = match ? match[3] : null
-
-        if (symbol && symbol !== env) return re(null)
-
-        const response = await fetch(
-          import.meta.env.MODE.includes('dev') ? key : `/assets/${name}.${type}`
-        ) // 确保路径正确
-
-        const data = await response.arrayBuffer()
-        const uint8Array = new Uint8Array(data)
-        let unzippedData
         try {
+          const response = await fetch(
+            isDev
+              ? `/src/assets/tgs/${env}/${name}.${type}`
+              : `/assets/tgs/${name}.${type}`
+          )
+
+          if (!response.ok) {
+            console.error(`Failed to fetch ${name}.${type}: ${response.status} ${response.statusText}`)
+            return re(null)
+          }
+
+          const data = await response.arrayBuffer()
+          const uint8Array = new Uint8Array(data)
+          let unzippedData
+          
           if (type === 'json') {
             unzippedData = new TextDecoder('utf-8').decode(uint8Array)
           } else {
@@ -31,6 +48,7 @@ export default async () => {
           }
           re({ name: name, data: unzippedData })
         } catch (e) {
+          console.error('Failed to load TGS file:', name, type, e)
           re(null)
         }
       })

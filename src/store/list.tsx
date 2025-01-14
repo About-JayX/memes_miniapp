@@ -239,7 +239,7 @@ export const asyncGetTokenList = createAsyncThunk(
 
           const maxPair =
             pairs &&
-            pairs.pairs?.reduce((result: Pair, pair: Pair) => {
+            pairs.pairs?.reduce((result: Pair | null, pair: Pair) => {
               console.log('Comparing pair:', {
                 tokenAddress,
                 pairAddress: pair.pairAddress,
@@ -285,7 +285,7 @@ export const asyncGetTokenList = createAsyncThunk(
           }
           return acc;
         },
-        {}
+        {} as { [key: string]: Pair | undefined }
       )
       const updatePairs = Object.values(pairs)
       if (updatePairs.length) {

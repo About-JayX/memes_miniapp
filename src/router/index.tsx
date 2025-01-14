@@ -12,7 +12,8 @@ const param: Record<string, string[]> = RouterConfig.param
 const view = import.meta.glob<ImportMetaGlobType>([
   '@/view/*.tsx',
   '@/view/*/index.tsx',
-  '!@/view/**/components/**/*.tsx'
+  '@/view/list/details.tsx', // 显式包含 details 页面
+  '!@/view/**/components/**/*.tsx',
 ])
 
 const generateRoutes = (
@@ -29,13 +30,10 @@ const generateRoutes = (
     // 处理路由路径
     let routePath = ''
     if (dirPath === 'index' && componentName === 'index') {
-      // view/index/index.tsx 映射到根路径 "/"
       routePath = '/'
     } else if (componentName === 'index') {
-      // 其他 index.tsx 映射到目录路径
       routePath = `/${dirPath}`
     } else {
-      // 非 index 文件映射到完整路径
       routePath = `/${dirPath}/${componentName.toLowerCase()}`
     }
 

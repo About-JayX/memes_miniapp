@@ -3,6 +3,8 @@ import './index.scss'
 import { Card as AntdMobileCard } from 'antd-mobile'
 const isMemes = import.meta.env.MODE.split('-')[1] === 'memes'
 const envName = import.meta.env.MODE.split('-')[1]
+console.log(envName, '??')
+
 export default function Card({
   animation = true,
   className = '',
@@ -35,7 +37,7 @@ export default function Card({
             : '') ||
           (envName === 'minidoge'
             ? type === 'primary'
-              ? `!bg-gradient-to-b !from-[#FFC10B] !to-[#FFAC03] !text-black`
+              ? `!bg-gradient-to-b !from-[#ffaf03] !to-[#ff5900] !text-black`
               : '!bg-[--primary-card-body-color]'
             : '')
         }`}

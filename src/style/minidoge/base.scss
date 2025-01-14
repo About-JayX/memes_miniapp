@@ -1,0 +1,55 @@
+:root {
+  --primary: #ffbd09;
+  --success-color: #4CAF50;
+  --error-color: #dc2626;
+  --warning-color: #ff9800;
+  --info-color: #0284c7;
+  --radius: 16px;
+  --adm-color-primary: var(--primary) !important;
+  --adm-color-background: var(--primary-bg-color) !important;
+  --adm-card-border-radius: var(--radius) !important;
+  --adm-color-text: rgba(255, 255, 255, 0.5) !important;
+  --vote-button-bg: #1a1a1a;
+  --vote-button-border: #2d2d2d;
+  --vote-button-text: #ffffff;
+}
+
+@keyframes progress {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.light {
+  --primary-font-color: #f8f9fa;
+  --primary-text-color: #f8f9fa;
+  --secondary-text-color: #5c6064;
+  --tertiary-text-color: #d1d5db;
+  --primary-bg-color: #161616;
+  --primary-body-color: #161616;
+  --primary-card-body-color: #222222;
+  --primary-border-color: rgba(255, 255, 255, 0.05);
+  --vote-button-bg: #1a1a1a;
+  --vote-button-border: #2d2d2d;
+}
+
+.dark {
+  --primary-font-color: #f8f9fa;
+  --primary-text-color: #f8f9fa;
+  --secondary-text-color: #5c6064;
+  --tertiary-text-color: #d1d5db;
+  --primary-bg-color: #161616;
+  --primary-body-color: #161616;
+  --primary-card-body-color: #222222;
+  --primary-border-color: rgba(255, 255, 255, 0.05);
+  --vote-button-bg: #141414;
+  --vote-button-border: #262626;
+}
+
+html body {
+  background: var(--primary-bg-color);
+  color: var(--primary-font-color);
+}

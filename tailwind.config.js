@@ -9,6 +9,9 @@ export default {
   ],
   theme: {
     extend: {
+      screens: {
+        'small-screen': {'raw': '(max-height: 700px)'}
+      },
       keyframes: {
         pulseScale: {
           "0%, 100%": { transform: "scale(1)" },
@@ -26,7 +29,7 @@ export default {
     },
   },
   plugins: [],
-  safelist: [...generateSafelist()],
+  safelist: [...generateSafelist(), 'logo-bounce', 'openScreenAnimation', 'animated-bg', 'glow', 'sparkles', 'sparkles-extra-1', 'sparkles-extra-2', 'sparkles-extra-3', 'sparkles-extra-4', 'sparkles-extra-5', 'scattered-lights'],
 };
 
 // Function to generate safelist
@@ -35,7 +38,7 @@ function generateSafelist() {
   const maxGap = 99;
   const heightStep = 1; // Step size for height
   const maxHeight = 999; // Set an upper limit for height
-  const breakpoints = ["", "sm:", "md:", "lg:", "xl:", "2xl:"];
+  const breakpoints = ["", "sm:", "md:", "lg:", "xl:", "2xl:", "small-screen:"];
 
   // Generate span, gap, and height classes
   const spanClasses = generateClasses("col-span-", spanCount, breakpoints);

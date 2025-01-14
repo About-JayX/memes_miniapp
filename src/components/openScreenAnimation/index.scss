@@ -37,6 +37,13 @@
       transform: rotate(45deg) translate(20px, 20px);
     }
   }
+
+  &.pointer-events-none {
+    pointer-events: none;
+    * {
+      pointer-events: none;
+    }
+  }
 }
 
 .login {
@@ -121,6 +128,520 @@
     100% {
       color: #4285f4;
     }
+  }
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes glowingLight {
+  0% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  100% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+}
+
+@keyframes techGridMove {
+  0% {
+    background-position: 0 0;
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    background-position: 50px 50px;
+    opacity: 0.3;
+  }
+}
+
+@keyframes techLightPulse {
+  0% {
+    opacity: 0;
+    transform: translateY(10%) scale(0.95);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10%) scale(0.95);
+  }
+}
+
+@keyframes fluid {
+  0% {
+    transform: rotate(0deg) scale(1.5) translateY(10px);
+  }
+  25% {
+    transform: rotate(3deg) scale(1.4) translateY(-15px);
+  }
+  50% {
+    transform: rotate(-2deg) scale(1.6) translateY(5px);
+  }
+  75% {
+    transform: rotate(1deg) scale(1.5) translateY(-10px);
+  }
+  100% {
+    transform: rotate(0deg) scale(1.5) translateY(10px);
+  }
+}
+
+@keyframes fluidWave {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translate(-45%, -45%) scale(1.1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.4;
+  }
+}
+
+.animated-bg {
+  position: relative;
+  background: #0a0a0a;
+  overflow: hidden;
+
+  // 主要流体效果
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 200%;
+    background: 
+      radial-gradient(ellipse at center, rgba(255, 184, 0, 0.2) 0%, transparent 50%),
+      radial-gradient(circle at 30% 50%, rgba(255, 138, 0, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 70% 50%, rgba(255, 107, 0, 0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 40% 60%, rgba(255, 165, 0, 0.1) 0%, transparent 50%);
+    animation: fluidWave 15s ease-in-out infinite;
+    mix-blend-mode: screen;
+    transform-origin: center;
+  }
+
+  // 次要流体效果
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200%;
+    height: 200%;
+    background: 
+      radial-gradient(circle at 50% 50%, rgba(255, 184, 0, 0.15) 0%, transparent 45%),
+      radial-gradient(ellipse at 60% 40%, rgba(255, 138, 0, 0.12) 0%, transparent 45%),
+      radial-gradient(circle at 40% 60%, rgba(255, 107, 0, 0.1) 0%, transparent 45%);
+    animation: fluid 20s ease-in-out infinite;
+    mix-blend-mode: screen;
+    transform-origin: center;
+  }
+
+  // 光晕效果
+  .glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255, 184, 0, 0.2) 0%, rgba(255, 138, 0, 0.1) 30%, transparent 70%);
+    transform: translate(-50%, -50%);
+    animation: glowingLight 8s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  // 添加更多金色闪烁
+  .sparkles-extra-1 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    
+    &::before {
+      content: "";
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #FFD700;
+      box-shadow: 
+        0 0 15px #FFD700,
+        0 0 25px #FFD700,
+        0 0 35px #FFA500;
+      animation: sparkle-medium 2.5s ease-in-out infinite;
+      top: 30%;
+      left: 40%;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: #FFD700;
+      box-shadow: 
+        0 0 10px #FFD700,
+        0 0 20px #FFD700,
+        0 0 30px #FFA500;
+      animation: sparkle-small 2s ease-in-out infinite;
+      top: 70%;
+      left: 60%;
+    }
+  }
+
+  .sparkles-extra-2 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    
+    &::before {
+      content: "";
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #FFD700;
+      box-shadow: 
+        0 0 20px #FFD700,
+        0 0 30px #FFD700,
+        0 0 40px #FFA500;
+      animation: sparkle-large 3s ease-in-out infinite;
+      top: 20%;
+      left: 80%;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: #FFD700;
+      box-shadow: 
+        0 0 10px #FFD700,
+        0 0 20px #FFD700,
+        0 0 30px #FFA500;
+      animation: sparkle-small 2.2s ease-in-out infinite;
+      top: 60%;
+      left: 25%;
+    }
+  }
+
+  .sparkles-extra-3 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    
+    &::before {
+      content: "";
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      border-radius: 50%;
+      background: #FFD700;
+      box-shadow: 
+        0 0 8px #FFD700,
+        0 0 15px #FFD700,
+        0 0 25px #FFA500;
+      animation: sparkle-small 1.8s ease-in-out infinite;
+      top: 45%;
+      left: 15%;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      border-radius: 50%;
+      background: #FFD700;
+      box-shadow: 
+        0 0 8px #FFD700,
+        0 0 15px #FFD700,
+        0 0 25px #FFA500;
+      animation: sparkle-small 2.1s ease-in-out infinite;
+      top: 85%;
+      left: 85%;
+    }
+  }
+
+  .sparkles-extra-4 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    
+    &::before {
+      content: "";
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: #FFD700;
+      box-shadow: 
+        0 0 12px #FFD700,
+        0 0 20px #FFD700,
+        0 0 30px #FFA500;
+      animation: sparkle-medium 2.3s ease-in-out infinite;
+      top: 25%;
+      left: 35%;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      border-radius: 50%;
+      background: #FFD700;
+      box-shadow: 
+        0 0 10px #FFD700,
+        0 0 18px #FFD700,
+        0 0 28px #FFA500;
+      animation: sparkle-small 1.9s ease-in-out infinite;
+      top: 75%;
+      left: 45%;
+    }
+  }
+
+  .sparkles-extra-5 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    
+    &::before {
+      content: "";
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #FFD700;
+      box-shadow: 
+        0 0 15px #FFD700,
+        0 0 25px #FFD700,
+        0 0 35px #FFA500;
+      animation: sparkle-large 2.7s ease-in-out infinite;
+      top: 35%;
+      left: 75%;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: #FFD700;
+      box-shadow: 
+        0 0 12px #FFD700,
+        0 0 22px #FFD700,
+        0 0 32px #FFA500;
+      animation: sparkle-medium 2.4s ease-in-out infinite;
+      top: 65%;
+      left: 20%;
+    }
+  }
+
+  .sparkles-extra-6 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    
+    &::before {
+      content: "";
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      border-radius: 50%;
+      background: #FFD700;
+      box-shadow: 
+        0 0 10px #FFD700,
+        0 0 20px #FFD700,
+        0 0 30px #FFA500;
+      animation: sparkle-small 2.1s ease-in-out infinite;
+      top: 15%;
+      left: 55%;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: #FFD700;
+      box-shadow: 
+        0 0 12px #FFD700,
+        0 0 22px #FFD700,
+        0 0 32px #FFA500;
+      animation: sparkle-medium 2.6s ease-in-out infinite;
+      top: 80%;
+      left: 70%;
+    }
+  }
+
+  .sparkles-extra-7 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    
+    &::before {
+      content: "";
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #FFD700;
+      box-shadow: 
+        0 0 15px #FFD700,
+        0 0 25px #FFD700,
+        0 0 35px #FFA500;
+      animation: sparkle-large 3.2s ease-in-out infinite;
+      top: 40%;
+      left: 90%;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      border-radius: 50%;
+      background: #FFD700;
+      box-shadow: 
+        0 0 10px #FFD700,
+        0 0 20px #FFD700,
+        0 0 30px #FFA500;
+      animation: sparkle-small 1.7s ease-in-out infinite;
+      top: 90%;
+      left: 30%;
+    }
+  }
+
+  .sparkles-extra-8 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    
+    &::before {
+      content: "";
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: #FFD700;
+      box-shadow: 
+        0 0 12px #FFD700,
+        0 0 22px #FFD700,
+        0 0 32px #FFA500;
+      animation: sparkle-medium 2.8s ease-in-out infinite;
+      top: 55%;
+      left: 10%;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      border-radius: 50%;
+      background: #FFD700;
+      box-shadow: 
+        0 0 10px #FFD700,
+        0 0 20px #FFD700,
+        0 0 30px #FFA500;
+      animation: sparkle-small 2.2s ease-in-out infinite;
+      top: 10%;
+      left: 65%;
+    }
+  }
+}
+
+@keyframes gentle-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes logo-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 189, 9, 0.3),
+                0 0 40px rgba(255, 189, 9, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 189, 9, 0.4),
+                0 0 60px rgba(255, 189, 9, 0.3);
+  }
+}
+
+.logo-bounce {
+  animation: gentle-bounce 3s ease-in-out infinite, logo-glow 4s ease-in-out infinite;
+  border-radius: 50%;
+}
+
+@keyframes sparkle-small {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+}
+
+@keyframes sparkle-medium {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0.5) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2) rotate(180deg);
+  }
+}
+
+@keyframes sparkle-large {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0.8) rotate(0deg);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.5) rotate(-180deg);
   }
 }
 

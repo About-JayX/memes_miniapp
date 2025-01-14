@@ -83,7 +83,7 @@ export default function Invite() {
           </Grid.Item>
           <Grid.Item className="text-center">
             <Grid columns={1} gap={4}>
-              <Grid.Item className="text-2xl font-bold">
+              <Grid.Item className="text-2xl font-bold text-[--secondary-text-color]">
                 {t("invite.title")}
               </Grid.Item>
               <Grid.Item className="text-base font-normal text-white/50">
@@ -93,13 +93,14 @@ export default function Invite() {
           </Grid.Item>
           <Grid.Item className="w-full">
             <Grid columns={1} gap={16}>
-              <Grid.Item className="flex items-center gap-2 justify-between">
-                <span className="text-base font-bold">
+              <Grid.Item className="flex items-center">
+                <span className="text-base font-bold text-[--secondary-text-color]">
                   {t("public.invite")}
                 </span>
-                <span className="text-sm font-medium text-[--primary]">
+                <span className="ml-2 text-[17px] font-medium text-[--primary] text-[1.2em]">
                   {semicolon(invite.total)}
                 </span>
+                <div className="flex-1"></div>
               </Grid.Item>
               <Grid columns={1} gap={8}>
                 <InfiniteScroll
@@ -126,7 +127,7 @@ export default function Invite() {
               <Button
                 size="large"
                 color="primary"
-                className="w-full animate-pulseScale"
+                className="w-full animate-pulseScale [&>span]:!text-black"
                 onClick={() => setInviteFriendsStatus(true)}
               >
                 {t("public.inviteFriends")}

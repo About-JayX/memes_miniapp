@@ -7,6 +7,8 @@ import zhHk from 'antd-mobile/es/locales/zh-HK'
 // 本地模块导入
 import mego from './mego'
 import memes from './memes'
+import minidoge from './minidoge'
+
 // 类型定义
 export enum LocaleCode {
   EN_US = 'en-US',
@@ -14,10 +16,13 @@ export enum LocaleCode {
   ZH_CN = 'zh-CN',
   ZH_HK = 'zh-HK',
 }
-type EnvType = 'mego' | 'memes'
+
+type EnvType = 'mego' | 'memes' | 'minidoge'
+
 // 常量定义
-const locale = { memes, mego }
+const locale = { memes, mego, minidoge }
 const env = import.meta.env.MODE.split('-')[1] as EnvType
+
 // 导出配置
 export const antdLocale: Record<LocaleCode, typeof enUS> = {
   [LocaleCode.EN_US]: enUS,

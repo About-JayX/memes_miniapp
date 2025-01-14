@@ -1,5 +1,6 @@
-import { InfiniteScroll as InfiniteScrolls } from 'antd-mobile'
-import { Fragment, useEffect, useState } from 'react'
+import { InfiniteScroll as InfiniteScrolls } from "antd-mobile";
+import { Fragment, useEffect, useState } from "react";
+import Loading from './loading'
 
 export default function InfiniteScroll({
   children,
@@ -60,7 +61,10 @@ export default function InfiniteScroll({
         <>
           {topElement}
           <div className={`${className}`}>
-            <InfiniteScrolls hasMore={hasMore} loadMore={handleLoadMore} />
+            <Loading loading={loading} type="inline" />
+            <div className="opacity-0">
+              <InfiniteScrolls hasMore={hasMore} loadMore={handleLoadMore} />
+            </div>
           </div>
         </>
       ) : (
@@ -76,10 +80,13 @@ export default function InfiniteScroll({
                   {render && render({ index, data })}
                   {index + 1 >= data.length && (
                     <Fragment>
-                      <InfiniteScrolls
-                        loadMore={handleLoadMore}
-                        hasMore={hasMore}
-                      />
+                      <Loading loading={loading} type="inline" />
+                      <div className="opacity-0">
+                        <InfiniteScrolls
+                          loadMore={handleLoadMore}
+                          hasMore={hasMore}
+                        />
+                      </div>
                       <div className="h-[53px]" />
                     </Fragment>
                   )}

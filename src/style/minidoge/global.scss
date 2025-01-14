@@ -1,0 +1,61 @@
+@tailwind base;
+
+* {
+  ::-webkit-scrollbar {
+    @apply w-1 h-1 hidden;
+  }
+  ::-webkit-scrollbar-track {
+    @apply m-8;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-[--primary-border-color] rounded-2xl;
+  }
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+:root {
+  /* 定义自定义变量来保存安全区底部填充 */
+  --safe-area-inset-bottom: env(safe-area-inset-bottom);
+}
+
+body {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+html body {
+  @apply touch-manipulation overflow-hidden;
+}
+
+#root {
+  @apply h-full;
+}
+
+a {
+  @apply cursor-pointer;
+}
+
+svg {
+  @apply inline;
+}
+
+.disabled {
+  @apply opacity-50 cursor-not-allowed select-none;
+}
+
+@import url(./base.scss);
+@import url(./components.scss);
+@import url(./utilities.scss);
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

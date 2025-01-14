@@ -15,7 +15,7 @@ export default function Button({
   return (
     <a
       id="memes-button-icon"
-      className={`relative text-current font-bold ${isMemes?"":"!bg-white/5"} ${className} `}
+      className={`relative text-current font-bold ${isMemes?"":"!bg-white/10 !shadow-sm"} ${className} `}
       {...props}
     >
       {isMemes ? (

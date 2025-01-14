@@ -10,7 +10,7 @@ import {
 } from "antd-mobile";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router";
+import { useLocation } from "react-router-dom";
 
 import api from "@/api";
 import { Container } from "@/components/box";
@@ -22,8 +22,9 @@ import { useAppDispatch, useAppSelector } from "@/store";
 import { ItokenData } from "@/store/interface";
 import { asyncFavoritesList } from "@/store/list";
 import { asyncLoading } from "@/store/telegram";
-import { copy, semicolon } from "@/util";
+import { copy, semicolon, formatAddress } from "@/util";
 import { basePair } from "@/util/baseData";
+import { Social, Website } from "@/types/dex";
 // 项目信息
 export const ProjectInformation = ({
   topHeight = 0,
@@ -56,7 +57,7 @@ export const ProjectInformation = ({
   return (
     <Grid
       columns={1}
-      gap={26}
+      gap={16}
       className={`overflow-y-auto max-h-[calc(100vh-${
         topHeight + 112 + 16 * 4 + 6 * 2
       }px)]`}
@@ -64,31 +65,19 @@ export const ProjectInformation = ({
       <Grid.Item className="grid grid-cols-[60px,1fr,auto] items-center gap-3">
         <Image
           src={token.pair?.info?.imageUrl || ""}
-          className="!h-[60px] !w-[60px] rounded-xl"
+          className="!h-[60px] !w-[60px] rounded-full"
         />
         <Grid columns={1} gap={2}>
-          <Grid.Item className="text-xs font-bold">
-            {token.pair?.baseToken.name || ""}{" "}
-            {token.pair?.baseToken.symbol || ""}
+          <Grid.Item className="text-sm font-bold">
+            {token.pair?.baseToken.symbol || ""}<span className="opacity-75 text-[75%]"> - SOL</span>
           </Grid.Item>
-          <Grid.Item className="text-2xl font-bold text-[#F8F9FD]">
+          <Grid.Item className="text-xl font-bold text-[#F8F9FD] flex items-center gap-2">
             ${token.pair?.priceUsd || 0}
-          </Grid.Item>
-          <Grid.Item className="text-xs font-medium flex gap-2 text-[#CED0D8]">
-            <span
-              className={`text-[--${
-                (token.pair?.priceChange.h24 || 0) > 0 ? "success" : "error"
-              }-color] flex items-center gap-1`}
-            >
-              <Icon
-                name={`quotes/${
-                  (token.pair?.priceChange.h24 || 0) > 0 ? "up" : "down"
-                }`}
-                className="w-[12px] h-[12px]"
-              />
-              {token.pair?.priceChange.h24 || 0} %
-            </span>
-            {t("public.past24hours")}
+            {token.pair?.priceChange?.h24 !== undefined && (
+              <span className={`text-sm ${token.pair.priceChange.h24 >= 0 ? 'text-[--success-color]' : 'text-[--error-color]'}`}>
+                {token.pair.priceChange.h24 >= 0 ? '+' : ''}{token.pair.priceChange.h24}%
+              </span>
+            )}
           </Grid.Item>
         </Grid>
         <div className="w-[40px] h-[40px] bg-[--primary-card-body-color] p-2 rounded-xl flex justify-center items-center">
@@ -96,179 +85,211 @@ export const ProjectInformation = ({
             count={1}
             value={collect ? 1 : 0}
             onChange={async () => {
-              try {
-                await dispatch(
-                  asyncLoading({
-                    globalText: t("public.loading"),
-                    callBack: async () => {
-                      collect
-                        ? await api.favorites.delFavorites({
-                            address: token.address,
-                          })
-                        : await api.favorites.addFavorites({
-                            address: token.address,
-                          });
-                      await dispatch(
-                        asyncFavoritesList({
-                          page: 1,
-                          pageSize:
-                            (favorites.page - 1 ? favorites.page - 1 : 1) *
-                            favorites.pageSize,
-                        })
-                      );
-                    },
-                  })
-                );
-
-                Toast({
-                  tgs,
-                  type: "success",
-                  content: collect
-                    ? t("message.del.success")
-                    : t("message.add.success"),
-                });
-
-                setCollect(!collect);
-              } catch (error) {
-                Toast({
-                  tgs,
-                  type: "error",
-                  content: collect
-                    ? t("message.del.fail")
-                    : t("message.add.fail"),
-                });
-              }
+              const search = new URLSearchParams(location.search);
+              const id = search.get("id");
+              if (!id) return;
+              await api.favorites.addFavorites({ address: id });
+              await api.favorites.isFavorites({ address: id });
+              dispatch(asyncFavoritesList({}));
             }}
-            style={{ "--star-size": "20px" }}
           />
         </div>
       </Grid.Item>
-      <Grid.Item>
-        <Grid columns={1} gap={16}>
-          {/* <Grid.Item className="grid grid-cols-[1fr,auto] gap-2 items-center">
-            <span className="text-base font-bold">About Bitcoin</span>
-            <span className="text-sm font-medium text-[--primary]">
-              {t('public.seeAll')}
-            </span>
-          </Grid.Item>
-          <Grid.Item>
-            <Divider />
-          </Grid.Item> */}
-          {/* <Grid.Item>
-            <Grid columns={1} gap={8}>
-              <Grid.Item className="text-xs font-bold">
-                What is Bitcoin(BTC)?
-              </Grid.Item>
-              <Grid.Item className="text-xs font-normal">
-                Bitcoin is a decentralized cryptocurrency originally described
-                in a 2008 whitepaper by a person or group of people, using the
-                alias Satoshi Nakamoto. It was launched soon after, in January
-                2009.
-              </Grid.Item>
-              <Grid.Item className="mt-2">
-                <div className="flex flex-wrap gap-3">
-                  <a className="w-[40px] h-[40px] bg-[--primary-card-body-color] rounded-xl flex justify-center items-center">
-                    <Icon name="twitter" />
-                  </a>
-                  <a className="w-[40px] h-[40px] bg-[--primary-card-body-color] rounded-xl flex justify-center items-center">
-                    <Icon name="telegram" />
-                  </a>
-                  <a className="w-[40px] h-[40px] bg-[--primary-card-body-color] rounded-xl flex justify-center items-center">
-                    <Icon name="officialWebsite" />
-                  </a>
-                </div>
-              </Grid.Item>
-            </Grid>
-          </Grid.Item> */}
-        </Grid>
+
+      {/* 市值和其他信息 */}
+      <Grid.Item className="grid grid-cols-2 gap-4">
+        {token.pair?.fdv !== undefined && (
+          <div className="bg-[--primary-card-body-color] p-3 rounded-xl">
+            <div className="text-xs text-[--secondary-text-color]">{t('public.mktCap')}</div>
+            <div className="text-base font-medium">${(token.pair?.fdv || 0).toLocaleString()}</div>
+          </div>
+        )}
+        {token.pair?.dexId && (
+          <div className="bg-[--primary-card-body-color] p-3 rounded-xl">
+            <div className="text-xs text-[--secondary-text-color]">DEX</div>
+            <a
+              href={`https://raydium.io/swap/?inputMint=sol&outputMint=${token.address}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-base font-medium capitalize hover:text-[--primary-color] flex items-center gap-1"
+            >
+              {token.pair.dexId}
+              <Icon name="link" className="w-4 h-4" />
+            </a>
+          </div>
+        )}
       </Grid.Item>
+
+      {/* 价格变动和交易量表格 */}
+      <Grid.Item>
+        <div className="bg-[--primary-card-body-color] p-4 rounded-xl">
+          <table className="w-full">
+            <thead>
+              <tr className="text-xs text-[--secondary-text-color]">
+                <th className="font-normal text-left pb-2">{t("public.time")}</th>
+                <th className="font-normal text-right pb-2">{t("public.priceChange")}</th>
+                <th className="font-normal text-right pb-2">{t("public.volume")}</th>
+              </tr>
+            </thead>
+            <tbody className="text-sm">
+              <tr>
+                <td className="py-2">{t("public.hour1")}</td>
+                <td className="text-right">
+                  <span className={token.pair?.priceChange?.h1 ? (token.pair.priceChange.h1 >= 0 ? 'text-[--success-color]' : 'text-[--error-color]') : ''}>
+                    {token.pair?.priceChange?.h1 ? (token.pair.priceChange.h1 >= 0 ? '+' : '') : ''}{token.pair?.priceChange?.h1 || 0}%
+                  </span>
+                </td>
+                <td className="text-right">${token.pair?.volume?.h1 || 0}</td>
+              </tr>
+              <tr>
+                <td className="py-2">{t("public.hour6")}</td>
+                <td className="text-right">
+                  <span className={token.pair?.priceChange?.h6 ? (token.pair.priceChange.h6 >= 0 ? 'text-[--success-color]' : 'text-[--error-color]') : ''}>
+                    {token.pair?.priceChange?.h6 ? (token.pair.priceChange.h6 >= 0 ? '+' : '') : ''}{token.pair?.priceChange?.h6 || 0}%
+                  </span>
+                </td>
+                <td className="text-right">${token.pair?.volume?.h6 || 0}</td>
+              </tr>
+              <tr>
+                <td className="py-2">{t("public.hour24")}</td>
+                <td className="text-right">
+                  <span className={token.pair?.priceChange?.h24 ? (token.pair.priceChange.h24 >= 0 ? 'text-[--success-color]' : 'text-[--error-color]') : ''}>
+                    {token.pair?.priceChange?.h24 ? (token.pair.priceChange.h24 >= 0 ? '+' : '') : ''}{token.pair?.priceChange?.h24 || 0}%
+                  </span>
+                </td>
+                <td className="text-right">${token.pair?.volume?.h24 || 0}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </Grid.Item>
+
+      {/* 社交媒体和网站信息 */}
+      {token.pair?.info?.socials && token.pair.info.socials.length > 0 && (
+        <Grid.Item className="flex flex-wrap gap-4">
+          {[...(token.pair?.info?.socials || [])].sort((a: Social, b: Social) => {
+            if (a.platform === 'telegram') return -1;
+            if (b.platform === 'telegram') return 1;
+            if (a.platform === 'twitter') return -1;
+            if (b.platform === 'twitter') return 1;
+            return 0;
+          }).map((social: Social, index: number) => {
+            const type = social.type || social.platform;
+            const url = social.url || `https://${social.platform}.com/${social.handle}`;
+            return (
+              <a
+                key={index}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={type === 'twitter' || type === 'telegram'
+                  ? "w-8 h-8 rounded-full bg-[--primary-card-body-color] flex items-center justify-center"
+                  : "text-sm text-[--primary-text-color] bg-[--primary-card-body-color] px-3 py-1 rounded-full"}
+              >
+                {type === 'twitter' || type === 'telegram' ? (
+                  <Icon name={type === 'twitter' ? 'twitter' : 'telegram'} className="w-5 h-5" />
+                ) : (
+                  type.charAt(0).toUpperCase() + type.slice(1)
+                )}
+              </a>
+            );
+          })}
+          {/* 网站链接 */}
+          {token.pair?.info?.websites?.map((site: Website, index: number) => {
+            const getIconName = (label?: string) => {
+              if (!label) return 'link';
+              const labelLower = label.toLowerCase();
+              switch (labelLower) {
+                case 'docs':
+                  return 'docs';
+                case 'tiktok':
+                  return 'tiktok';
+                case 'website':
+                default:
+                  return 'officialWebsite';
+              }
+            };
+            
+            return (
+              <a
+                key={index}
+                href={site.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-full bg-[#2b313b] flex items-center justify-center"
+              >
+                <Icon name={getIconName(site.label)} className="w-5 h-5" />
+              </a>
+            );
+          })}
+        </Grid.Item>
+      )}
+
+      {/* 合约信息 */}
       <Grid.Item>
         <Collapse defaultActiveKey={["details"]}>
           <Collapses.Panel key="details" title={t("public.details")}>
-            <Grid columns={1} gap={14}>
-              <Grid.Item className="flex items-center gap-2 justify-between text-sm text-white">
-                <span className="font-normal text-nowrap flex-1">
+            <Grid columns={1} gap={3}>
+              <Grid.Item className="flex items-center gap-2 justify-between text-sm">
+                <span className="font-normal text-nowrap flex-1 text-[#FFB800]">
                   {t("public.contractAddress")}
                 </span>
                 <div
-                  className="flex gap-2"
+                  className="flex items-center gap-2 bg-[--primary-card-body-color] px-3 py-1.5 rounded-xl cursor-pointer hover:bg-[--primary-card-body-hover-color] transition-colors border border-[#FFB800]"
                   onClick={() => {
                     copy(tgs, token.address);
                   }}
                 >
                   <Ellipsis
-                    className="font-bold break-all text-end"
+                    className="font-medium text-[#FFB800]"
                     direction="middle"
-                    content={token.address}
+                    content={formatAddress(token.address)}
                   />
-                  <Icon name="copy" />
+                  <Icon name="copy" className="w-4 h-4 text-[#FFB800]" />
                 </div>
               </Grid.Item>
               <Grid.Item>
-                <Divider />
-              </Grid.Item>
-              <Grid.Item className="grid grid-cols-[1fr,auto] text-sm text-white">
-                <span className="font-normal">{t("public.fdv")}</span>
-                <span className="font-bold">
-                  ${semicolon(token.pair?.fdv || 0)}
-                </span>
-              </Grid.Item>
-              <Grid.Item>
-                <Divider />
-              </Grid.Item>
-              <Grid.Item className="grid grid-cols-[1fr,auto] text-sm text-white">
-                <span className="font-normal">{t("public.mktCap")}</span>
-                <span className="font-bold">
-                  ${semicolon(token.pair?.fdv || 0)}
-                </span>
-              </Grid.Item>
-              <Grid.Item>
-                <Divider />
+                <Divider className="my-1" />
               </Grid.Item>
               <Grid.Item className="grid grid-cols-[1fr,auto] text-sm text-white">
                 <span className="font-normal">
-                  {t("public.twentyFourHVol")}
+                  {t("public.pair")}
                 </span>
-                <span className="font-bold">
-                  ${token.pair?.volume.h24 || 0}
-                </span>
-              </Grid.Item>
-              <Grid.Item>
-                <Divider />
-              </Grid.Item>
-              {/* <Grid.Item className="grid grid-cols-[1fr,auto] text-sm text-white">
-                <span className="font-normal">{t('public.holders')}</span>
-                <span className="font-bold">{semicolon(10)}</span>
-              </Grid.Item>
-              <Grid.Item>
-                <Divider />
-              </Grid.Item> */}
-              <Grid.Item className="grid grid-cols-[1fr,auto] text-sm text-white">
-                <span className="font-normal">{t("public.pair")}</span>
-                <span className="font-bold">
-                  {token.pair?.quoteToken.name || ""}
-                </span>
+                <a
+                  href={`https://dexscreener.com/solana/${token.pair?.pairAddress || ''}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex gap-2 hover:text-[--primary-color]"
+                >
+                  <Ellipsis
+                    className="font-bold break-all text-end"
+                    direction="middle"
+                    content={formatAddress(token.pair?.pairAddress || '')}
+                  />
+                  <Icon name="link" className="w-4 h-4" />
+                </a>
               </Grid.Item>
             </Grid>
           </Collapses.Panel>
         </Collapse>
       </Grid.Item>
+
+      {/* 免责声明 */}
+      <Grid.Item className="text-xs text-[--secondary-text-color] px-2 text-center">
+        {t("public.disclaimer")}
+      </Grid.Item>
+
       <Grid.Item className="fixed left-0 bottom-0 w-full bg-[--primary-bg-color] h-28">
         <Container>
           <Button
             size="large"
             onClick={() => onChange && onChange(1)}
-            color="default"
-            className="!bg-[#2b313b] !border-[2px] !border-[#2b313b] relative overflow-hidden w-full"
+            color="primary"
+            className="w-full !text-black"
           >
-            <span className="opacity-0">{t("public.vote")}</span>
-            <span className="absolute left-0 top-0 w-full h-full flex items-center justify-center z-10">
-              {`${t("public.vote")} (${token.votes})`}
-            </span>
-            <div
-              className="absolute left-0 top-0 h-full bg-[--primary]"
-              style={{ width: `${(token.votes / tokens.data.votes) * 100}%` }}
-            />
+            <div className="flex items-center justify-center gap-1">
+              {`${t("public.vote")} (${token.votes} 🚀)`}
+            </div>
           </Button>
         </Container>
       </Grid.Item>
@@ -308,6 +329,13 @@ export default function Details() {
 
     const arr = [...tokens.data.bases, ...searchs];
     const data = arr.find((item) => item.address === id) || token;
+
+    console.log('Token Details Data:', {
+      tokenData: data,
+      pair: data.pair,
+      baseToken: data.pair?.baseToken,
+      info: data.pair?.info
+    });
 
     setToken(data);
   };

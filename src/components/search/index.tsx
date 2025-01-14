@@ -25,68 +25,50 @@ export default function Search({
   onSearchLoadStatus?: (e: boolean) => void;
 }) {
   const inputRef = useRef<HTMLDivElement>(null);
-  const popupRef = useRef<HTMLDivElement>(null); // Ref for detecting outside clicks
+  const popupRef = useRef<HTMLDivElement>(null);
   const [popupTop, setPopupTop] = useState(0);
-  const [loading, setLoading] = useState<boolean>(false);
   const [input, setInput] = useState<string>(value || "");
-  const [status, setStatus] = useState<boolean>(input !== "" || false);
+  const [status, setStatus] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // Update popup position based on inputRef position
   const updatePopupTop = useCallback(() => {
     if (inputRef.current) {
-      setPopupTop(
-        inputRef.current.getBoundingClientRect().top + window.scrollY
-      );
-
-      onBodyHeight &&
-        onBodyHeight(
-          inputRef.current.getBoundingClientRect().top + window.scrollY
-        );
+      const top = inputRef.current.getBoundingClientRect().top + window.scrollY;
+      setPopupTop(top);
+      onBodyHeight && onBodyHeight(top);
     }
   }, []);
 
   useEffect(() => {
-    updatePopupTop(); // Initial calculation for popupTop position
+    updatePopupTop();
   }, [input, viewStatus]);
 
   const { run } = useRequest(
     async (searchValue: string) => {
-      onChange && (await onChange(searchValue));
+      if (!searchValue.trim()) return;
+      setIsLoading(true);
+      onSearchLoadStatus && onSearchLoadStatus(true);
+      try {
+        await onChange?.(searchValue);
+      } finally {
+        // 移除搜索完成时的状态重置
+        // setIsLoading(false);
+      }
     },
     {
-      debounceWait: 1500,
+      debounceWait: 500,
       manual: true,
-      onSuccess: () => {
-        setLoading(false);
-        onSearchLoadStatus && onSearchLoadStatus(false)
-      }, // Stop loading on success
     }
   );
 
   useEffect(() => {
-    input ? setStatus(true) : setStatus(false);
-    onStatus && onStatus(input ? true : false);
+    const hasInput = Boolean(input.trim());
+    setStatus(hasInput);
+    onStatus && onStatus(hasInput);
+    if (!hasInput) {
+      onSearchLoadStatus && onSearchLoadStatus(false);
+    }
   }, [input]);
-
-  // Close popup when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        popupRef.current &&
-        !popupRef.current.contains(event.target as Node) &&
-        inputRef.current &&
-        !inputRef.current.contains(event.target as Node)
-      ) {
-        // setStatus(false); // Close the popup
-        // onStatus && onStatus(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   return (
     <Fragment>
@@ -96,15 +78,9 @@ export default function Search({
           value={input}
           prefix={<Icon name="search" />}
           onChange={(search: string) => {
-            onStatus && onStatus(true);
-            setStatus(true);
-            setLoading(true);
-            onSearchLoadStatus && onSearchLoadStatus(true);
             setInput(search);
-            run(search);
-            if (!search) {
-              setStatus(false);
-              onStatus && onStatus(false);
+            if (search.trim()) {
+              run(search);
             }
           }}
           className="z-50"
@@ -115,34 +91,24 @@ export default function Search({
                 onClick={() => {
                   setInput("");
                   onStatus && onStatus(false);
+                  onSearchLoadStatus && onSearchLoadStatus(false);
                 }}
               >
                 <Icon name="close" />
               </a>
             )
           }
-          onClick={() => {
-            if (status) return;
-            setStatus(input !== "");
-          }}
         />
-        {status && (
-          <Fragment>
-            <div className="w-[calc(100%-30px)] h-screen absolute  left-[15px] top-[54px] rounded-lg" />
-            <div
-              ref={popupRef} // Set ref for the popup
-              className={`w-full h-full rounded-xl  overflow-hidden pointer-events-auto absolute top-[54px] left-4 ${
-                loading ? "flex justify-center" : ""
-              }`}
-              style={{
-                height: `calc(100vh - ${popupTop + 72 * 1}px)`,
-                width: `calc(100% - 32px)`,
-              }}
-            >
-              {loading ? <DotLoading className="text-2xl" /> : content}
-            </div>
-          </Fragment>
-        )}
+        <div
+          ref={popupRef}
+          className={`w-full h-full rounded-xl overflow-hidden pointer-events-auto absolute top-[54px] left-4`}
+          style={{
+            height: `calc(100vh - ${popupTop + 72 * 1}px)`,
+            width: `calc(100% - 32px)`,
+          }}
+        >
+          {content}
+        </div>
       </div>
     </Fragment>
   );

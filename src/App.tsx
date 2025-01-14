@@ -33,11 +33,29 @@ export default function App() {
 
   // 处理 Telegram 启动参数
   useEffect(() => {
+    if (!webApp || !Object.keys(webApp).length) return
     const startParam = webApp?.initDataUnsafe?.start_param
     if (startParam?.includes('task')) {
       navigate('/task')
     }
   }, [webApp, navigate])
+
+  // 处理页面焦点和刷新
+  useEffect(() => {
+    window.addEventListener('focusout', () => {
+      setTimeout(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
+      }, 101)
+    })
+
+    // 检查页面是否已经刷新过一次
+    const hasRefreshed = sessionStorage.getItem('refreshed')
+    if (!hasRefreshed) {
+      // 如果没有刷新过，刷新页面并记录标志
+      sessionStorage.setItem('refreshed', 'true')
+      window.location.reload()
+    }
+  }, [])
 
   return (
     <ConfigProvider locale={locale}>

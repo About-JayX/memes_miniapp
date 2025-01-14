@@ -1,25 +1,107 @@
-import react from '@vitejs/plugin-react-swc'
-import autoprefixer from 'autoprefixer'
-import cssnano from 'cssnano'
-import path from 'path'
-import postcssPxtoRem from 'postcss-pxtorem'
-import tailwindcss from 'tailwindcss'
-import { defineConfig } from 'vite'
-import { createHtmlPlugin } from 'vite-plugin-html'
-import viteImagemin from 'vite-plugin-imagemin'
-import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+import autoprefixer from "autoprefixer";
+import cssnano from "cssnano";
+import path from "path";
+import postcssPxtoRem from "postcss-pxtorem";
+import copy from "rollup-plugin-copy";
+import tailwindcss from "tailwindcss";
+import { defineConfig } from "vite";
+import { createHtmlPlugin } from "vite-plugin-html";
+import viteImagemin from "vite-plugin-imagemin";
+import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
+import fs from 'fs';
+import react from "@vitejs/plugin-react-swc";
 
 const env = process.argv[process.argv.indexOf('--mode') + 1].split('-')[1]
 
 export default defineConfig({
   base: '/', // 确保资源的相对路径正确
   plugins: [
+    {
+      name: 'vite-plugin-mime-type',
+      configureServer(server) {
+        server.middlewares.use((req, res, next) => {
+          if (req.url?.endsWith('.js')) {
+            res.setHeader('Content-Type', 'application/javascript');
+          }
+          next();
+        });
+      }
+    },
+    {
+      name: 'vite-plugin-tgs',
+      enforce: 'pre',
+      configureServer(server) {
+        server.middlewares.use((req, res, next) => {
+          // 记录所有请求，帮助调试
+          console.log('Request URL:', req.url)
+          
+          // 处理 TGS 文件请求
+          if (req.url && req.url.includes('/src/assets/tgs/')) {
+            console.log('[Vite] Handling TGS request:', req.url)
+            // 确保请求路径正确
+            const filePath = path.join(process.cwd(), req.url)
+            try {
+              if (fs.existsSync(filePath)) {
+                console.log('[Vite] Found TGS file:', filePath)
+                const content = fs.readFileSync(filePath)
+                // 根据文件类型设置正确的 Content-Type
+                const isJson = filePath.endsWith('.json')
+                res.setHeader('Content-Type', isJson ? 'application/json' : 'application/octet-stream')
+                res.end(content)
+                return
+              } else {
+                console.error('[Vite] TGS file not found:', filePath)
+              }
+            } catch (error) {
+              console.error('[Vite] Error serving TGS file:', error)
+            }
+          }
+          next()
+        })
+      },
+      transform(code, id) {
+        if (!id.includes(`/tgs/${env}/`)) return null;
+        if (id.endsWith('.tgs') || id.endsWith('.json')) {
+          console.log('[Vite] Processing TGS file:', id)
+          try {
+            JSON.parse(code);
+            return {
+              code: `export default ${code}`,
+              map: null
+            };
+          } catch (e) {
+            console.error('[Vite] Error processing TGS file:', id, e)
+            return {
+              code: 'export default {}',
+              map: null
+            };
+          }
+        }
+      }
+    },
+    {
+      name: 'serve-tgs-files',
+      configureServer(server) {
+        server.middlewares.use((req, res, next) => {
+          if (req.url?.startsWith('/assets/tgs/')) {
+            // 重写路径到源文件目录
+            const newPath = req.url.replace('/assets/tgs/', `/src/assets/tgs/${env}/`);
+            req.url = newPath;
+          }
+          next();
+        });
+      }
+    },
     createSvgIconsPlugin({
       iconDirs: [path.resolve(process.cwd(), 'src/assets/icon')], // 修复路径
       symbolId: 'icon-[name]',
     }),
     react(),
     viteImagemin({
+      filter: (file) => {
+        // 只处理当前项目的图片
+        return file.includes(`/image/${env}/`) || file.includes('/image/openScreenAnimation/');
+      },
       gifsicle: {
         optimizationLevel: 7,
         interlaced: false,
@@ -91,6 +173,7 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         quietDeps: true,
+        additionalData: `$env: "${env}";`,
       },
     },
     postcss: {
@@ -106,6 +189,9 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
+  },
+  optimizeDeps: {
+    exclude: ['*.tgs', '*.json'],
   },
   build: {
     rollupOptions: {
@@ -126,8 +212,32 @@ export default defineConfig({
           return 'assets/[name]-[hash].[ext]'
         },
       },
-      plugins: [],
+      plugins: [
+        copy({
+          targets: [
+            {
+              src: `src/assets/tgs/${env}/*.tgs`,
+              dest: "dist/assets/tgs",
+              rename: (name, extension) => `${name}.${extension}`
+            },
+            {
+              src: `src/assets/tgs/${env}/*.json`,
+              dest: "dist/assets/tgs",
+              rename: (name, extension) => `${name}.${extension}`
+            },
+            {
+              src: [
+                `public/image/${env}/**/*`,
+                'public/image/openScreenAnimation/**/*'
+              ],
+              dest: "dist/image"
+            }
+          ],
+          hook: "writeBundle",
+        }),
+      ],
     },
+    assetsInlineLimit: 0, // 不要内联任何资源
     terserOptions: {
       compress: {
         drop_console: true,

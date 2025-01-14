@@ -49,7 +49,7 @@ export default function Share({
               <Button
                 size="large"
                 color="primary"
-                className="w-full"
+                className="w-full [&>span]:!text-black"
                 onClick={() => {
                   copy(tgs, `${url}\n${t("invite.inviteFriendsTexts")}`);
                   onClose && onClose();

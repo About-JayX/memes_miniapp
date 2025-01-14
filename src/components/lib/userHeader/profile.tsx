@@ -6,7 +6,6 @@ import { useNavigate } from "react-router";
 import Button from "@/components/button";
 import Card from "@/components/card";
 import Icon from "@/components/icon";
-import LinkTwitter from "@/components/lib/linkTwitter";
 import Lang from "@/components/lib/userHeader/lang";
 import Popup from "@/components/popup";
 import TgsAnimation from "@/components/tgsAnimation";
@@ -15,11 +14,9 @@ import { useAppSelector } from "@/store";
 import { semicolon } from "@/util";
 
 export const ProfileList = ({
-  setOpenLinkTwitter,
   setLangStatus,
   onClose,
 }: {
-  setOpenLinkTwitter?: (e: boolean) => void;
   setLangStatus?: (e: boolean) => void;
   onClose?: () => void;
 }) => {
@@ -43,25 +40,6 @@ export const ProfileList = ({
           clickable
         >
           <Ellipsis direction="end" content={`@${user.username}`} />
-        </List.Item>
-        <List.Item
-          onClick={() =>
-            !user.twitterUserName &&
-            setOpenLinkTwitter &&
-            setOpenLinkTwitter(true)
-          }
-          prefix={
-            <Button className="!p-1">
-              <Icon name="user/twitter" className="!w-7 !h-7" />
-            </Button>
-          }
-          title={t("public.bindTwitter")}
-          clickable
-        >
-          <Ellipsis
-            direction="middle"
-            content={user.twitterUserName ? `@${user.twitterUserName}` : "--"}
-          />
         </List.Item>
         <List.Item
           onClick={() => onClick({ path: "/integral" })}
@@ -90,7 +68,7 @@ export const ProfileList = ({
           <Divider />
         </List.Item>
         <List.Item
-          onClick={() => onClick({ path: "/task/list" })}
+          onClick={() => window.open('https://x.com/Minidoge_Ai', '_blank')}
           prefix={<TgsAnimation icon="task" className="!w-10 !h-10" />}
           clickable
         >
@@ -108,6 +86,7 @@ export const ProfileList = ({
     </Card>
   );
 };
+
 export default function Profile({
   open = false,
   onClose,
@@ -117,15 +96,10 @@ export default function Profile({
 }) {
   const { t } = useTranslation();
   const [langStatus, setLangStatus] = useState<boolean>(false);
-  const [openLinkTwitter, setOpenLinkTwitter] = useState<boolean>(false);
 
   return (
     <>
       <Lang open={langStatus} onClose={() => setLangStatus(false)} />
-      <LinkTwitter
-        open={openLinkTwitter}
-        onClose={() => setOpenLinkTwitter(false)}
-      />
       <Popup
         title={t("public.profile")}
         visible={open}
@@ -134,7 +108,6 @@ export default function Profile({
         }}
       >
         <ProfileList
-          setOpenLinkTwitter={() => setOpenLinkTwitter(true)}
           setLangStatus={() => setLangStatus(true)}
           onClose={() => onClose && onClose()}
         />

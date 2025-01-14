@@ -1,45 +1,45 @@
 export default {
   signin: {
-    success: 'Check In Success',
+    success: 'Check-in Success',
   },
   vote: {
-    success: 'Vote successful',
-    fail: 'Vote failed',
+    success: 'Boost Success',
+    fail: 'Boost Fail',
   },
   collect: {
-    success: 'Collect Success',
-    cancel: 'Cancel Collect',
+    success: 'Collection Success',
+    cancel: 'Collection Cancel',
   },
   copy: {
     success: 'Copy Success',
   },
   auth: {
-    success: 'Successfully retrieved {{name}} authorization information',
-    error: 'Failed to retrieve {{name}} authorization information',
+    success: '{{name}} Auth Success',
+    error: '{{name}} Auth Fail',
   },
   operate: {
-    success: 'Operation successful',
-    error: 'Operation failed',
+    success: 'Success',
+    error: 'Fail',
   },
   del: {
-    success: 'Delete successful',
-    fail: 'Delete failed',
+    success: 'Delete Success',
+    fail: 'Delete Fail',
   },
   add: {
-    success: 'Add successful',
-    fail: 'Add failed',
+    success: 'Add Success',
+    fail: 'Add Fail',
   },
   publishTask: {
-    success: 'Published successfully',
-    error: 'Failed to publish',
+    success: 'Publish Success',
+    error: 'Publish Fail',
   },
+  claimSuccess: 'Claim Success',
   remove: {
-    success: 'Removed successfully',
-    error: 'Failed to remove',
+    success: 'Remove Success',
+    error: 'Remove Fail',
   },
-  claimSuccess: 'Claim Successful',
   edit: {
-    success: 'Edited successfully',
-    error: 'Failed to edit',
+    success: 'Edit Success',
+    error: 'Edit Fail',
   },
-}
+};

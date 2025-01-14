@@ -30,11 +30,11 @@ export const TAB_ITEMS: readonly TabItem[] = [
     },
   },
   {
-    key: '/list',
-    title: 'public.tabRank',
+    key: '/task',
+    title: 'public.task',
     icon: {
-      active: 'tab/active/list',
-      default: 'tab/list',
+      active: 'tab/active/task',
+      default: 'tab/task',
     },
   },
   {
@@ -55,13 +55,14 @@ export const TAB_ITEMS: readonly TabItem[] = [
       '!absolute left-0 top-[-20px] !w-full pointer-events-none transition duration-300 ease-in-out active:scale-90 active:opacity-80',
   },
   {
-    key: '/task',
-    title: 'public.task',
+    key: '/list',
+    title: 'public.tabRank',
     icon: {
-      active: 'tab/active/task',
-      default: 'tab/task',
+      active: 'tab/active/list',
+      default: 'tab/list',
     },
   },
+
   {
     key: '/profile',
     title: 'public.profile',
@@ -75,7 +76,6 @@ export const TAB_ITEMS: readonly TabItem[] = [
 export const PUBLISH_BUTTON_STYLE = {
   memes: {
     iconBg: 'linear-gradient(15deg, #A440FD 15.65%, #0DC8EC 74.83%)',
-    buttonBg: 'linear-gradient(15deg, #A440FD 15.65%, #0DC8EC 74.83%)',
     rounded: 'rounded-2xl',
   },
   mego: {
@@ -85,9 +85,7 @@ export const PUBLISH_BUTTON_STYLE = {
   },
   minidoge: {
     iconBg:
-      'linear-gradient(56deg, rgb(255, 171, 94) 5.75%, rgb(255, 255, 156) 93.71%)',
-    buttonBg:
-      'linear-gradient(56deg, rgb(255, 171, 94) 5.75%, rgb(255, 255, 156) 93.71%)',
+      'linear-gradient(56deg, rgb(255, 175, 3) 5.75%, rgb(255, 89, 0) 93.71%)',
     rounded: '!rounded-full',
   },
 } as any

@@ -34,6 +34,7 @@ export default function TabBarComponent({
         setTimeout(() => setPublishTaskStatus(true), 100)
         return
       } else {
+        window.open('https://x.com/MINIDOGE_X')
         return
       }
     }
@@ -69,7 +70,7 @@ export default function TabBarComponent({
                     <div
                       className={`!h-[52px] !w-[52px] ${PUBLISH_BUTTON_STYLE[APP_NAME].rounded} flex justify-center items-center pointer-events-auto`}
                       style={{
-                        background: PUBLISH_BUTTON_STYLE[APP_NAME].buttonBg,
+                        background: PUBLISH_BUTTON_STYLE[APP_NAME].iconBg,
                       }}
                     >
                       <TgsAnimation

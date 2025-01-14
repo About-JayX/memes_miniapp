@@ -25,6 +25,8 @@ export const SigninItem = ({
   status?: boolean;
   text?: string;
 }) => {
+  const { t } = useTranslation();
+  const week:any = t("public.week", { returnObjects: true });
   return (
     <Grid columns={1} gap={8} className="justify-items-center">
       <Grid.Item>
@@ -58,7 +60,9 @@ export const SigninItem = ({
           </span>
         </div>
       </Grid.Item>
-      <Grid.Item className="text-xs font-normal">DAY {day}</Grid.Item>
+      <Grid.Item className="text-xs font-normal">
+        {week[day - 1]}
+      </Grid.Item>
     </Grid>
   );
 };

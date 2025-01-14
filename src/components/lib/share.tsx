@@ -8,6 +8,8 @@ import { copy } from "@/util";
 
 import Popup from "../popup";
 import TgsAnimation from "../tgsAnimation";
+import { UserIcon } from "./userHeader";
+import Icon from "../icon";
 
 export default function Share({
   url = "",
@@ -27,6 +29,15 @@ export default function Share({
   const { t } = useTranslation();
   const utils = useUtilsRaw(true)?.result;
   const { tgs } = useAppSelector((state) => state.tgs);
+
+  const handleTwitterShare = () => {
+    const text = `${title}\n\n${t("invite.inviteFriendsTexts")}\n\n`;
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+      text
+    )}&url=${encodeURIComponent(url)}`;
+    window.open(twitterUrl, "_blank");
+    onClose && onClose();
+  };
   return (
     <Popup visible={open} onClose={onClose} height={null} className="!z-[1001]">
       <Grid
@@ -42,6 +53,30 @@ export default function Share({
             <span className="text-2xl font-bold">{title}</span>
             <span className="text-base font-normal">{text}</span>
           </Grid>
+        </Grid.Item>
+        <Grid.Item className="flex gap-2">
+          {/* 电报 */}
+          <UserIcon
+            onClick={() => {
+              utils && utils.shareURL(url, t("invite.inviteFriendsTexts"));
+              onClose && onClose();
+            }}
+          >
+            <Icon name="telegram" />
+          </UserIcon>
+          {/* 推特 */}
+          <UserIcon onClick={() => handleTwitterShare()}>
+            <Icon name="twitter" />
+          </UserIcon>
+          {/* 复制 */}
+          <UserIcon
+            onClick={() => {
+              copy(tgs, `${url}\n${t("invite.inviteFriendsTexts")}`);
+              onClose && onClose();
+            }}
+          >
+            <Icon name="copy" />
+          </UserIcon>
         </Grid.Item>
         <Grid.Item className="w-full">
           <Grid columns={1} gap={12}>

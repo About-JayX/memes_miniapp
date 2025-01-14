@@ -13,8 +13,20 @@ import react from "@vitejs/plugin-react-swc";
 
 const env = process.argv[process.argv.indexOf('--mode') + 1].split('-')[1]
 
+// 日志控制
+const logger = {
+  tgs: (message: string, type: 'info' | 'error' = 'info') => {
+    if (process.env.DEBUG) {
+      type === 'error' 
+        ? console.error(`[TGS] ${message}`)
+        : console.log(`[TGS] ${message}`);
+    }
+  }
+};
+
 export default defineConfig({
-  base: '/', // 确保资源的相对路径正确
+  base: '/',
+  envDir: "_env",
   plugins: [
     {
       name: 'vite-plugin-mime-type',
@@ -32,28 +44,20 @@ export default defineConfig({
       enforce: 'pre',
       configureServer(server) {
         server.middlewares.use((req, res, next) => {
-          // 记录所有请求，帮助调试
-          console.log('Request URL:', req.url)
-          
-          // 处理 TGS 文件请求
           if (req.url && req.url.includes('/src/assets/tgs/')) {
-            console.log('[Vite] Handling TGS request:', req.url)
-            // 确保请求路径正确
             const filePath = path.join(process.cwd(), req.url)
             try {
               if (fs.existsSync(filePath)) {
-                console.log('[Vite] Found TGS file:', filePath)
+                logger.tgs(`Processing: ${path.basename(filePath)}`);
                 const content = fs.readFileSync(filePath)
-                // 根据文件类型设置正确的 Content-Type
                 const isJson = filePath.endsWith('.json')
                 res.setHeader('Content-Type', isJson ? 'application/json' : 'application/octet-stream')
                 res.end(content)
                 return
-              } else {
-                console.error('[Vite] TGS file not found:', filePath)
               }
+              logger.tgs(`File not found: ${path.basename(filePath)}`, 'error');
             } catch (error) {
-              console.error('[Vite] Error serving TGS file:', error)
+              logger.tgs(`Error processing file: ${path.basename(filePath)}`, 'error');
             }
           }
           next()
@@ -62,7 +66,6 @@ export default defineConfig({
       transform(code, id) {
         if (!id.includes(`/tgs/${env}/`)) return null;
         if (id.endsWith('.tgs') || id.endsWith('.json')) {
-          console.log('[Vite] Processing TGS file:', id)
           try {
             JSON.parse(code);
             return {
@@ -70,7 +73,7 @@ export default defineConfig({
               map: null
             };
           } catch (e) {
-            console.error('[Vite] Error processing TGS file:', id, e)
+            logger.tgs(`Parse error: ${path.basename(id)}`, 'error');
             return {
               code: 'export default {}',
               map: null
@@ -166,13 +169,15 @@ export default defineConfig({
       },
     }),
   ],
+  logLevel: 'warn', // 设置 Vite 日志级别
+  clearScreen: false, // 防止清除控制台
   esbuild: {
     target: 'esnext',
   },
   css: {
     preprocessorOptions: {
       scss: {
-        quietDeps: true,
+        quietDeps: true, // 抑制依赖警告
         additionalData: `$env: "${env}";`,
       },
     },

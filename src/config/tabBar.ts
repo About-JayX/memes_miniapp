@@ -8,6 +8,7 @@ export const HIDE_TAB_BAR_PATHS: Array<string> = [
 ]
 
 interface TabItem {
+  click?: () => void
   key: string
   title?: string
   icon?: {
@@ -47,6 +48,9 @@ export const TAB_ITEMS: readonly TabItem[] = [
   {
     key: '/publish',
     isPublish: true,
+    click: () => {
+      console.log(import.meta.env.APP_NAME)
+    },
     className:
       '!absolute left-0 top-[-20px] !w-full pointer-events-none transition duration-300 ease-in-out active:scale-90 active:opacity-80',
   },
@@ -69,6 +73,21 @@ export const TAB_ITEMS: readonly TabItem[] = [
 ] as const
 
 export const PUBLISH_BUTTON_STYLE = {
-  memes: 'linear-gradient(15deg, #A440FD 15.65%, #0DC8EC 74.83%)',
-  mego: 'linear-gradient(56deg, rgb(0, 171, 94) 5.75%, rgb(35, 255, 156) 93.71%)',
-} as const
+  memes: {
+    iconBg: 'linear-gradient(15deg, #A440FD 15.65%, #0DC8EC 74.83%)',
+    buttonBg: 'linear-gradient(15deg, #A440FD 15.65%, #0DC8EC 74.83%)',
+    rounded: 'rounded-2xl',
+  },
+  mego: {
+    iconBg:
+      'linear-gradient(56deg, rgb(0, 171, 94) 5.75%, rgb(35, 255, 156) 93.71%)',
+    rounded: '!rounded-full',
+  },
+  minidoge: {
+    iconBg:
+      'linear-gradient(56deg, rgb(255, 171, 94) 5.75%, rgb(255, 255, 156) 93.71%)',
+    buttonBg:
+      'linear-gradient(56deg, rgb(255, 171, 94) 5.75%, rgb(255, 255, 156) 93.71%)',
+    rounded: '!rounded-full',
+  },
+} as any

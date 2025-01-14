@@ -7,7 +7,7 @@ import { PUBLISH_BUTTON_STYLE, TAB_ITEMS } from '@/config/tabBar'
 import { useAppSelector } from '@/store'
 import { useTask } from '@/hooks/useTask'
 
-const isMemes = import.meta.env.MODE.split('-')[1] === 'memes'
+const APP_NAME = import.meta.env.MODE.split('-')[1]
 
 interface TabBarComponentProps {
   iconKey: string
@@ -27,11 +27,17 @@ export default function TabBarComponent({
   const { submitTask } = useTask()
 
   const handleTabChange = async (key: string) => {
+    const whitelist = ['memes', 'mego']
     if (key === '/publish' || key === '/publish1') {
-      await submitTask()
-      setTimeout(() => setPublishTaskStatus(true), 100)
-      return
+      if (whitelist.includes(APP_NAME)) {
+        await submitTask()
+        setTimeout(() => setPublishTaskStatus(true), 100)
+        return
+      } else {
+        return
+      }
     }
+
     navigate(key)
     setIconKey(key)
   }
@@ -61,13 +67,9 @@ export default function TabBarComponent({
               item.isPublish
                 ? () => (
                     <div
-                      className={`!h-[52px] !w-[52px] ${
-                        isMemes ? 'rounded-2xl' : '!rounded-full'
-                      } flex justify-center items-center pointer-events-auto`}
+                      className={`!h-[52px] !w-[52px] ${PUBLISH_BUTTON_STYLE[APP_NAME].rounded} flex justify-center items-center pointer-events-auto`}
                       style={{
-                        background: isMemes
-                          ? PUBLISH_BUTTON_STYLE.memes
-                          : PUBLISH_BUTTON_STYLE.mego,
+                        background: PUBLISH_BUTTON_STYLE[APP_NAME].buttonBg,
                       }}
                     >
                       <TgsAnimation
@@ -95,4 +97,4 @@ export default function TabBarComponent({
       </TabBar>
     </div>
   )
-} 
+}

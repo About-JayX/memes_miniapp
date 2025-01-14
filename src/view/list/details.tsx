@@ -67,27 +67,16 @@ export const ProjectInformation = ({
           className="!h-[60px] !w-[60px] rounded-full"
         />
         <Grid columns={1} gap={2}>
-          <Grid.Item className="text-xs font-bold">
-            {token.pair?.baseToken.symbol || ""}
+          <Grid.Item className="text-sm font-bold">
+            {token.pair?.baseToken.symbol || ""}<span className="opacity-75 text-[75%]"> - SOL</span>
           </Grid.Item>
-          <Grid.Item className="text-2xl font-bold text-[#F8F9FD]">
+          <Grid.Item className="text-xl font-bold text-[#F8F9FD] flex items-center gap-2">
             ${token.pair?.priceUsd || 0}
-          </Grid.Item>
-          <Grid.Item className="text-xs font-medium flex gap-2 text-[#CED0D8]">
-            <span
-              className={`text-[--${
-                (token.pair?.priceChange.h24 || 0) > 0 ? "success" : "error"
-              }-color] flex items-center gap-1`}
-            >
-              <Icon
-                name={`quotes/${
-                  (token.pair?.priceChange.h24 || 0) > 0 ? "up" : "down"
-                }`}
-                className="w-[12px] h-[12px]"
-              />
-              {token.pair?.priceChange.h24 || 0} %
-            </span>
-            {t("public.past24hours")}
+            {token.pair?.priceChange?.h24 !== undefined && (
+              <span className={`text-sm ${token.pair.priceChange.h24 >= 0 ? 'text-[--success-color]' : 'text-[--error-color]'}`}>
+                {token.pair.priceChange.h24 >= 0 ? '+' : ''}{token.pair.priceChange.h24}%
+              </span>
+            )}
           </Grid.Item>
         </Grid>
         <div className="w-[40px] h-[40px] bg-[--primary-card-body-color] p-2 rounded-xl flex justify-center items-center">
@@ -103,6 +92,74 @@ export const ProjectInformation = ({
               dispatch(asyncUploadFavorites());
             }}
           />
+        </div>
+      </Grid.Item>
+
+      {/* 市值和其他信息 */}
+      <Grid.Item className="grid grid-cols-2 gap-4">
+        {token.pair?.marketCap && (
+          <div className="bg-[--primary-card-body-color] p-3 rounded-xl">
+            <div className="text-xs text-[--secondary-text-color]">{t('public.mktCap')}</div>
+            <div className="text-base font-medium">${token.pair.marketCap.toLocaleString()}</div>
+          </div>
+        )}
+        {token.pair?.dexId && (
+          <div className="bg-[--primary-card-body-color] p-3 rounded-xl">
+            <div className="text-xs text-[--secondary-text-color]">DEX</div>
+            <a
+              href={`https://raydium.io/swap/?inputMint=sol&outputMint=${token.address}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-base font-medium capitalize hover:text-[--primary-color] flex items-center gap-1"
+            >
+              {token.pair.dexId}
+              <Icon name="link" className="w-4 h-4" />
+            </a>
+          </div>
+        )}
+      </Grid.Item>
+
+      {/* 价格变动和交易量表格 */}
+      <Grid.Item>
+        <div className="bg-[--primary-card-body-color] p-4 rounded-xl">
+          <table className="w-full">
+            <thead>
+              <tr className="text-xs text-[--secondary-text-color]">
+                <th className="font-normal text-left pb-2">时间</th>
+                <th className="font-normal text-right pb-2">价格变动</th>
+                <th className="font-normal text-right pb-2">交易量</th>
+              </tr>
+            </thead>
+            <tbody className="text-sm">
+              <tr>
+                <td className="py-2">1小时</td>
+                <td className="text-right">
+                  <span className={token.pair?.priceChange?.h1 >= 0 ? 'text-[--success-color]' : 'text-[--error-color]'}>
+                    {token.pair?.priceChange?.h1 >= 0 ? '+' : ''}{token.pair?.priceChange?.h1 || 0}%
+                  </span>
+                </td>
+                <td className="text-right">${token.pair?.volume?.h1 || 0}</td>
+              </tr>
+              <tr>
+                <td className="py-2">6小时</td>
+                <td className="text-right">
+                  <span className={token.pair?.priceChange?.h6 >= 0 ? 'text-[--success-color]' : 'text-[--error-color]'}>
+                    {token.pair?.priceChange?.h6 >= 0 ? '+' : ''}{token.pair?.priceChange?.h6 || 0}%
+                  </span>
+                </td>
+                <td className="text-right">${token.pair?.volume?.h6 || 0}</td>
+              </tr>
+              <tr>
+                <td className="py-2">24小时</td>
+                <td className="text-right">
+                  <span className={token.pair?.priceChange?.h24 >= 0 ? 'text-[--success-color]' : 'text-[--error-color]'}>
+                    {token.pair?.priceChange?.h24 >= 0 ? '+' : ''}{token.pair?.priceChange?.h24 || 0}%
+                  </span>
+                </td>
+                <td className="text-right">${token.pair?.volume?.h24 || 0}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </Grid.Item>
 
@@ -158,30 +215,6 @@ export const ProjectInformation = ({
         </Grid.Item>
       )}
 
-      {/* 市值和其他信息 */}
-      <Grid.Item className="grid grid-cols-2 gap-4">
-        {token.pair?.marketCap && (
-          <div className="bg-[--primary-card-body-color] p-3 rounded-xl">
-            <div className="text-xs text-[--secondary-text-color]">{t('public.mktCap')}</div>
-            <div className="text-base font-medium">${token.pair.marketCap.toLocaleString()}</div>
-          </div>
-        )}
-        {token.pair?.dexId && (
-          <div className="bg-[--primary-card-body-color] p-3 rounded-xl">
-            <div className="text-xs text-[--secondary-text-color]">DEX</div>
-            <a
-              href={`https://raydium.io/swap/?inputMint=sol&outputMint=${token.address}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-base font-medium capitalize hover:text-[--primary-color] flex items-center gap-1"
-            >
-              {token.pair.dexId}
-              <Icon name="link" className="w-4 h-4" />
-            </a>
-          </div>
-        )}
-      </Grid.Item>
-
       <Grid.Item>
         <Grid columns={1} gap={16}>
         </Grid>
@@ -213,11 +246,21 @@ export const ProjectInformation = ({
               </Grid.Item>
               <Grid.Item className="grid grid-cols-[1fr,auto] text-sm text-white">
                 <span className="font-normal">
-                  {t("public.twentyFourHVol")}
+                  {t("public.pair")}
                 </span>
-                <span className="font-bold">
-                  ${token.pair?.volume.h24 || 0}
-                </span>
+                <div
+                  className="flex gap-2"
+                  onClick={() => {
+                    copy(tgs, token.pair?.pairAddress || '');
+                  }}
+                >
+                  <Ellipsis
+                    className="font-bold break-all text-end"
+                    direction="middle"
+                    content={token.pair?.pairAddress || ''}
+                  />
+                  <Icon name="copy" />
+                </div>
               </Grid.Item>
               <Grid.Item>
                 <Divider />

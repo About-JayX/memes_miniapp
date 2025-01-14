@@ -3,8 +3,8 @@ export default {
     success: '签到成功',
   },
   vote: {
-    success: '投票成功',
-    fail: '投票失败',
+    success: '冲榜成功',
+    fail: '冲榜失败',
   },
   collect: {
     success: '收藏成功',

@@ -22,7 +22,7 @@ import { useAppDispatch, useAppSelector } from "@/store";
 import { ItokenData } from "@/store/interface";
 import { asyncFavoritesList } from "@/store/list";
 import { asyncLoading } from "@/store/telegram";
-import { copy, semicolon } from "@/util";
+import { copy, semicolon, formatAddress } from "@/util";
 import { basePair } from "@/util/baseData";
 // 项目信息
 export const ProjectInformation = ({
@@ -56,7 +56,7 @@ export const ProjectInformation = ({
   return (
     <Grid
       columns={1}
-      gap={26}
+      gap={16}
       className={`overflow-y-auto max-h-[calc(100vh-${
         topHeight + 112 + 16 * 4 + 6 * 2
       }px)]`}
@@ -125,14 +125,14 @@ export const ProjectInformation = ({
           <table className="w-full">
             <thead>
               <tr className="text-xs text-[--secondary-text-color]">
-                <th className="font-normal text-left pb-2">时间</th>
-                <th className="font-normal text-right pb-2">价格变动</th>
-                <th className="font-normal text-right pb-2">交易量</th>
+                <th className="font-normal text-left pb-2">{t("public.time")}</th>
+                <th className="font-normal text-right pb-2">{t("public.priceChange")}</th>
+                <th className="font-normal text-right pb-2">{t("public.volume")}</th>
               </tr>
             </thead>
             <tbody className="text-sm">
               <tr>
-                <td className="py-2">1小时</td>
+                <td className="py-2">{t("public.hour1")}</td>
                 <td className="text-right">
                   <span className={token.pair?.priceChange?.h1 >= 0 ? 'text-[--success-color]' : 'text-[--error-color]'}>
                     {token.pair?.priceChange?.h1 >= 0 ? '+' : ''}{token.pair?.priceChange?.h1 || 0}%
@@ -141,7 +141,7 @@ export const ProjectInformation = ({
                 <td className="text-right">${token.pair?.volume?.h1 || 0}</td>
               </tr>
               <tr>
-                <td className="py-2">6小时</td>
+                <td className="py-2">{t("public.hour6")}</td>
                 <td className="text-right">
                   <span className={token.pair?.priceChange?.h6 >= 0 ? 'text-[--success-color]' : 'text-[--error-color]'}>
                     {token.pair?.priceChange?.h6 >= 0 ? '+' : ''}{token.pair?.priceChange?.h6 || 0}%
@@ -150,7 +150,7 @@ export const ProjectInformation = ({
                 <td className="text-right">${token.pair?.volume?.h6 || 0}</td>
               </tr>
               <tr>
-                <td className="py-2">24小时</td>
+                <td className="py-2">{t("public.hour24")}</td>
                 <td className="text-right">
                   <span className={token.pair?.priceChange?.h24 >= 0 ? 'text-[--success-color]' : 'text-[--error-color]'}>
                     {token.pair?.priceChange?.h24 >= 0 ? '+' : ''}{token.pair?.priceChange?.h24 || 0}%
@@ -167,7 +167,13 @@ export const ProjectInformation = ({
       {(token.pair?.info?.socials?.length > 0 || token.pair?.info?.websites?.length > 0) && (
         <Grid.Item className="flex flex-wrap gap-4">
           {/* 社交媒体图标 */}
-          {token.pair?.info?.socials?.map((social, index) => (
+          {[...(token.pair?.info?.socials || [])].sort((a, b) => {
+            if (a.type === 'telegram') return -1;
+            if (b.type === 'telegram') return 1;
+            if (a.type === 'twitter') return -1;
+            if (b.type === 'twitter') return 1;
+            return 0;
+          }).map((social, index) => (
             <a
               key={index}
               href={social.url}
@@ -215,77 +221,71 @@ export const ProjectInformation = ({
         </Grid.Item>
       )}
 
-      <Grid.Item>
-        <Grid columns={1} gap={16}>
-        </Grid>
-      </Grid.Item>
+      {/* 合约信息 */}
       <Grid.Item>
         <Collapse defaultActiveKey={["details"]}>
           <Collapses.Panel key="details" title={t("public.details")}>
-            <Grid columns={1} gap={14}>
-              <Grid.Item className="flex items-center gap-2 justify-between text-sm text-white">
-                <span className="font-normal text-nowrap flex-1">
+            <Grid columns={1} gap={3}>
+              <Grid.Item className="flex items-center gap-2 justify-between text-sm">
+                <span className="font-normal text-nowrap flex-1 text-[#FFB800]">
                   {t("public.contractAddress")}
                 </span>
                 <div
-                  className="flex gap-2"
+                  className="flex items-center gap-2 bg-[--primary-card-body-color] px-3 py-1.5 rounded-xl cursor-pointer hover:bg-[--primary-card-body-hover-color] transition-colors border border-[#FFB800]"
                   onClick={() => {
                     copy(tgs, token.address);
                   }}
                 >
                   <Ellipsis
-                    className="font-bold break-all text-end"
+                    className="font-medium text-[#FFB800]"
                     direction="middle"
-                    content={token.address}
+                    content={formatAddress(token.address)}
                   />
-                  <Icon name="copy" />
+                  <Icon name="copy" className="w-4 h-4 text-[#FFB800]" />
                 </div>
               </Grid.Item>
               <Grid.Item>
-                <Divider />
+                <Divider className="my-1" />
               </Grid.Item>
               <Grid.Item className="grid grid-cols-[1fr,auto] text-sm text-white">
                 <span className="font-normal">
                   {t("public.pair")}
                 </span>
-                <div
-                  className="flex gap-2"
-                  onClick={() => {
-                    copy(tgs, token.pair?.pairAddress || '');
-                  }}
+                <a
+                  href={`https://dexscreener.com/solana/${token.pair?.pairAddress || ''}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex gap-2 hover:text-[--primary-color]"
                 >
                   <Ellipsis
                     className="font-bold break-all text-end"
                     direction="middle"
-                    content={token.pair?.pairAddress || ''}
+                    content={formatAddress(token.pair?.pairAddress || '')}
                   />
-                  <Icon name="copy" />
-                </div>
+                  <Icon name="link" className="w-4 h-4" />
+                </a>
               </Grid.Item>
-              <Grid.Item>
-                <Divider />
-              </Grid.Item>
-
             </Grid>
           </Collapses.Panel>
         </Collapse>
       </Grid.Item>
+
+      {/* 免责声明 */}
+      <Grid.Item className="text-xs text-[--secondary-text-color] px-2 text-center">
+        {t("public.disclaimer")}
+      </Grid.Item>
+
       <Grid.Item className="fixed left-0 bottom-0 w-full bg-[--primary-bg-color] h-28">
         <Container>
           <Button
             size="large"
             onClick={() => onChange && onChange(1)}
-            color="default"
-            className="!bg-[#2b313b] !border-[2px] !border-[#2b313b] relative overflow-hidden w-full"
+            color="primary"
+            className="w-full !text-black"
           >
-            <span className="opacity-0">{t("public.vote")}</span>
-            <span className="absolute left-0 top-0 w-full h-full flex items-center justify-center z-10">
-              {`${t("public.vote")} (${token.votes})`}
-            </span>
-            <div
-              className="absolute left-0 top-0 h-full bg-[--primary]"
-              style={{ width: `${(token.votes / tokens.data.votes) * 100}%` }}
-            />
+            <div className="flex items-center justify-center gap-1">
+              {`${t("public.vote")} (${token.votes} 🚀)`}
+            </div>
           </Button>
         </Container>
       </Grid.Item>

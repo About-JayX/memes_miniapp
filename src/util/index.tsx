@@ -129,3 +129,8 @@ export const isTimeExceededByOneMinute = (targetTimestamp: number) => {
   // 检查是否超过一分钟（60000 毫秒）
   return timeDifference > 60000
 }
+
+export const formatAddress = (address: string) => {
+  if (!address) return '';
+  return `${address.slice(0, 10)}...${address.slice(-10)}`;
+};

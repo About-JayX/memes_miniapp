@@ -70,7 +70,7 @@ export default function Vote({
           <Button
             size="large"
             loading={voteStatus}
-            className="w-full"
+            className="w-full !text-black"
             color="primary"
             onClick={async () => {
               setVoteStatus(true);

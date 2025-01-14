@@ -183,13 +183,6 @@ export default defineConfig({
         entryFileNames: "assets/[name].js",
         chunkFileNames: "assets/[name].js",
         assetFileNames: "assets/[name].[ext]",
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'antd-vendor': ['antd-mobile'],
-          'utils': ['lodash', 'axios', 'dayjs'],
-          'telegram': ['@telegram-apps/sdk-react'],
-          'animation': ['lottie-web', 'pako']
-        },
       },
       plugins: [
         copy({

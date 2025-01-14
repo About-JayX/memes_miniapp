@@ -65,11 +65,16 @@
 }
 
 .adm-button {
-  @apply w-auto !rounded-lg !text-sm !text-[--primary-text-color] font-bold;
+  @apply w-auto !rounded-lg !text-sm font-bold;
+  color: var(--primary-text-color) !important;
 }
 
 .adm-button-default {
-  @apply inline-block  !border-transparent !bg-white/5 !text-[--primary-text-color];
+  @apply inline-block;
+  border-color: transparent !important;
+  background-color: var(--vote-button-bg) !important;
+  border: 2px solid var(--vote-button-border) !important;
+  color: var(--vote-button-text) !important;
 }
 
 .adm-space {

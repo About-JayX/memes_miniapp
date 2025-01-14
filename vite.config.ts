@@ -1,4 +1,3 @@
-import react from "@vitejs/plugin-react-swc";
 import autoprefixer from "autoprefixer";
 import cssnano from "cssnano";
 import path from "path";
@@ -10,6 +9,7 @@ import { createHtmlPlugin } from "vite-plugin-html";
 import viteImagemin from "vite-plugin-imagemin";
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import fs from 'fs';
+import react from "@vitejs/plugin-react-swc";
 
 const env = process.argv[process.argv.indexOf('--mode') + 1].split('-')[1]
 export default defineConfig({
@@ -18,7 +18,35 @@ export default defineConfig({
   json: {
     stringify: true
   },
+  server: {
+    host: true,
+    hmr: true,
+    proxy: {
+      "/api": {
+        changeOrigin: true,
+        target: "https://memes2.slerf.yachts:8443",
+      },
+    },
+    watch: {
+      usePolling: true,
+    },
+    fs: {
+      strict: false,  // 允许访问工作区以外的文件
+      allow: ['..']   // 允许访问上级目录
+    }
+  },
   plugins: [
+    {
+      name: 'vite-plugin-mime-type',
+      configureServer(server) {
+        server.middlewares.use((req, res, next) => {
+          if (req.url?.endsWith('.js')) {
+            res.setHeader('Content-Type', 'application/javascript');
+          }
+          next();
+        });
+      }
+    },
     {
       name: 'vite-plugin-tgs',
       enforce: 'pre',
@@ -223,22 +251,5 @@ export default defineConfig({
       },
     },
     cssCodeSplit: true,
-  },
-  server: {
-    host: true,
-    hmr: true,
-    proxy: {
-      "/api": {
-        changeOrigin: true,
-        target: "https://memes2.slerf.yachts:8443",
-      },
-    },
-    watch: {
-      usePolling: true,
-    },
-    fs: {
-      strict: false,  // 允许访问工作区以外的文件
-      allow: ['..']   // 允许访问上级目录
-    },
   },
 });

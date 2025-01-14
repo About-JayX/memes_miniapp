@@ -9,6 +9,7 @@ import { defineConfig } from "vite";
 import { createHtmlPlugin } from "vite-plugin-html";
 import viteImagemin from "vite-plugin-imagemin";
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
+import fs from 'fs';
 
 const env = process.argv[process.argv.indexOf('--mode') + 1].split('-')[1]
 export default defineConfig({
@@ -21,9 +22,39 @@ export default defineConfig({
     {
       name: 'vite-plugin-tgs',
       enforce: 'pre',
+      configureServer(server) {
+        server.middlewares.use((req, res, next) => {
+          // 记录所有请求，帮助调试
+          console.log('Request URL:', req.url)
+          
+          // 处理 TGS 文件请求
+          if (req.url && req.url.includes('/src/assets/tgs/')) {
+            console.log('[Vite] Handling TGS request:', req.url)
+            // 确保请求路径正确
+            const filePath = path.join(process.cwd(), req.url)
+            try {
+              if (fs.existsSync(filePath)) {
+                console.log('[Vite] Found TGS file:', filePath)
+                const content = fs.readFileSync(filePath)
+                // 根据文件类型设置正确的 Content-Type
+                const isJson = filePath.endsWith('.json')
+                res.setHeader('Content-Type', isJson ? 'application/json' : 'application/octet-stream')
+                res.end(content)
+                return
+              } else {
+                console.error('[Vite] TGS file not found:', filePath)
+              }
+            } catch (error) {
+              console.error('[Vite] Error serving TGS file:', error)
+            }
+          }
+          next()
+        })
+      },
       transform(code, id) {
         if (!id.includes(`/tgs/${env}/`)) return null;
         if (id.endsWith('.tgs') || id.endsWith('.json')) {
+          console.log('[Vite] Processing TGS file:', id)
           try {
             JSON.parse(code);
             return {
@@ -31,12 +62,26 @@ export default defineConfig({
               map: null
             };
           } catch (e) {
+            console.error('[Vite] Error processing TGS file:', id, e)
             return {
               code: 'export default {}',
               map: null
             };
           }
         }
+      }
+    },
+    {
+      name: 'serve-tgs-files',
+      configureServer(server) {
+        server.middlewares.use((req, res, next) => {
+          if (req.url?.startsWith('/assets/tgs/')) {
+            // 重写路径到源文件目录
+            const newPath = req.url.replace('/assets/tgs/', `/src/assets/tgs/${env}/`);
+            req.url = newPath;
+          }
+          next();
+        });
       }
     },
     createSvgIconsPlugin({
@@ -138,6 +183,13 @@ export default defineConfig({
         entryFileNames: "assets/[name].js",
         chunkFileNames: "assets/[name].js",
         assetFileNames: "assets/[name].[ext]",
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'antd-vendor': ['antd-mobile'],
+          'utils': ['lodash', 'axios', 'dayjs'],
+          'telegram': ['@telegram-apps/sdk-react'],
+          'animation': ['lottie-web', 'pako']
+        },
       },
       plugins: [
         copy({
@@ -186,14 +238,14 @@ export default defineConfig({
       "/api": {
         changeOrigin: true,
         target: "https://memes2.slerf.yachts:8443",
-        // rewrite: path => path.replace('/api', ''),
       },
     },
     watch: {
       usePolling: true,
     },
     fs: {
-      strict: true,
+      strict: false,  // 允许访问工作区以外的文件
+      allow: ['..']   // 允许访问上级目录
     },
   },
 });

@@ -1,18 +1,18 @@
-import { TabBar } from 'antd-mobile'
-import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate } from 'react-router-dom'
-import Icon from '@/components/icon'
-import TgsAnimation from '@/components/tgsAnimation'
-import { PUBLISH_BUTTON_STYLE, TAB_ITEMS } from '@/config/tabBar'
-import { useAppSelector } from '@/store'
-import { useTask } from '@/hooks/useTask'
+import { TabBar } from "antd-mobile";
+import { useTranslation } from "react-i18next";
+import { useLocation, useNavigate } from "react-router-dom";
+import Icon from "@/components/icon";
+import TgsAnimation from "@/components/tgsAnimation";
+import { PUBLISH_BUTTON_STYLE, TAB_ITEMS } from "@/config/tabBar";
+import { useAppSelector } from "@/store";
+import { useTask } from "@/hooks/useTask";
 
-const APP_NAME = import.meta.env.MODE.split('-')[1]
+const APP_NAME = import.meta.env.MODE.split("-")[1];
 
 interface TabBarComponentProps {
-  iconKey: string
-  setIconKey: (key: string) => void
-  setPublishTaskStatus: (status: boolean) => void
+  iconKey: string;
+  setIconKey: (key: string) => void;
+  setPublishTaskStatus: (status: boolean) => void;
 }
 
 export default function TabBarComponent({
@@ -20,28 +20,28 @@ export default function TabBarComponent({
   setIconKey,
   setPublishTaskStatus,
 }: TabBarComponentProps) {
-  const { t } = useTranslation()
-  const navigate = useNavigate()
-  const { pathname } = useLocation()
-  const { task } = useAppSelector(state => state.list)
-  const { submitTask } = useTask()
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const { task } = useAppSelector((state) => state.list);
+  const { submitTask } = useTask();
 
   const handleTabChange = async (key: string) => {
-    const whitelist = ['memes', 'mego']
-    if (key === '/publish' || key === '/publish1') {
+    const whitelist = ["memes", "mego"];
+    if (key === "/publish" || key === "/publish1") {
       if (whitelist.includes(APP_NAME)) {
-        await submitTask()
-        setTimeout(() => setPublishTaskStatus(true), 100)
-        return
+        await submitTask();
+        setTimeout(() => setPublishTaskStatus(true), 100);
+        return;
       } else {
-        window.open('https://x.com/MINIDOGE_X')
-        return
+        window.open("https://x.com/MINIDOGE_X");
+        return;
       }
     }
 
-    navigate(key)
-    setIconKey(key)
-  }
+    navigate(key);
+    setIconKey(key);
+  };
 
   return (
     <div className="flex-[0] z-[999] h-[460px] relative bg-[--primary-body-color]">
@@ -52,18 +52,18 @@ export default function TabBarComponent({
         activeKey={iconKey || pathname}
         defaultActiveKey="/"
       >
-        {TAB_ITEMS.map(item => (
+        {TAB_ITEMS.map((item) => (
           <TabBar.Item
             key={item.key}
             className={
               item.isPublish
                 ? item.className
                 : `transition duration-300 ease-in-out ${
-                    pathname === item.key ? 'scale-100' : 'scale-90'
+                    pathname === item.key ? "scale-100" : "scale-90"
                   }`
             }
             title={item.title && t(item.title)}
-            badge={item.key === '/task' ? task.total : undefined}
+            badge={item.key === "/task" ? task.total : undefined}
             icon={
               item.isPublish
                 ? () => (
@@ -75,7 +75,7 @@ export default function TabBarComponent({
                     >
                       <TgsAnimation
                         className="h-12 w-12"
-                        style={{ position: 'absolute', top: '0' }}
+                        style={{ position: "absolute", top: PUBLISH_BUTTON_STYLE[APP_NAME].top }}
                         icon="tabsAdd"
                       />
                     </div>
@@ -97,5 +97,5 @@ export default function TabBarComponent({
         ))}
       </TabBar>
     </div>
-  )
+  );
 }

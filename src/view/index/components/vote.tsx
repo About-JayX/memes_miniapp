@@ -13,6 +13,8 @@ interface VoteProps {
   className?: string
 }
 
+const ENV_NAME = import.meta.env.MODE.split("-")[1];
+
 export default function Vote({
   data = basePair,
   onChange,
@@ -22,6 +24,18 @@ export default function Vote({
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { tokens } = useAppSelector(state => state.list)
+
+  const style:any = {
+    memes: {
+      background: '!bg-[#313549] !border-[#313549]',
+    },
+    mego: {
+      background: '!bg-[#313549] !border-[#313549]',
+    },
+    minidoge: {
+      background: '',
+    },
+  }
 
   return (
     <Grid.Item className={className}>
@@ -96,7 +110,7 @@ export default function Vote({
               onClick={() => onChange && onChange(1)}
               disabled={!data?.pair}
               color="default"
-              className="!font-medium !border-[2px] !bg-[#313549] !border-[#313549] relative overflow-hidden min-w-[70px]"
+              className={`!font-medium !border-[2px]  relative overflow-hidden min-w-[70px] ${style[ENV_NAME].background}`}
             >
               <div
                 className="absolute z-0 top-0 left-0 h-full bg-[--primary]"

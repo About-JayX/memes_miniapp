@@ -12,10 +12,23 @@ interface UserInfoProps {
   searchLoadStatus: boolean
 }
 
+const ENV_NAME = import.meta.env.MODE.split("-")[1];
+
 export default function UserInfo({ searchLoadStatus }: UserInfoProps) {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { user } = useAppSelector(state => state.telegram)
+  const style:any = {
+    memes: {
+      background: '!bg-white/5 !text-[#4FFFC4]',
+    },
+    mego: {
+      background: '!bg-white/5 !text-[#4FFFC4]',
+    },
+    minidoge: {
+      background: '!bg-white !text-black',
+    },
+  }
 
   return (
     <Card type="primary">
@@ -29,7 +42,7 @@ export default function UserInfo({ searchLoadStatus }: UserInfoProps) {
                 content={`@${user.username}`}
               />
               <a
-                className="text-[10px] font-bold bg-white/5 py-[3px] px-2 rounded-full text-[#4FFFC4]"
+                className={`text-[10px] font-bold  py-[3px] px-2 rounded-full ${style[ENV_NAME].background}`}
                 onClick={() =>
                   !searchLoadStatus &&
                   navigate('integral', {

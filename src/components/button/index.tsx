@@ -1,7 +1,7 @@
 import './index.scss'
 
 import { Fragment } from 'react'
-const isMemes = import.meta.env.MODE.split('-')[1] === 'memes'
+const ENV_NAME = import.meta.env.MODE.split('-')[1] 
 export default function Button({
   animation = true,
   className = '',
@@ -12,15 +12,27 @@ export default function Button({
   className?: string
   animation?: boolean
 }) {
+  const styles:any = {
+    memes: {
+      button: '!bg-white/10 !shadow-sm',
+    },
+    minidoge: {
+      button: '!bg-white/10 !shadow-sm !border !border-white/10',
+    },
+    mego: {
+      button: '!bg-white/10 !shadow-sm',
+    },  
+  }
+  
   return (
     <a
       id="memes-button-icon"
       className={`relative text-current font-bold ${
-        isMemes ? '' : '!bg-white/10 !shadow-sm'
+        styles[ENV_NAME].button
       } ${className} `}
       {...props}
     >
-      {isMemes ? (
+      {ENV_NAME === "memes" ? (
         <Fragment>
           {animation && <div className="filterBorder" />}
           {animation && <div className="filterBg" />}

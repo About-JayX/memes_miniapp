@@ -91,6 +91,7 @@ export default function Input({
           }
         }}
         onChange={(val: string) => {
+          console.log('[search][Input] onChange:', val)
           onChange && onChange(val)
         }}
         onClick={() => {

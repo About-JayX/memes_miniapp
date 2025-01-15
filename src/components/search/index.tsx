@@ -1,6 +1,7 @@
 import { useRequest } from "ahooks";
 import { DotLoading, Popup } from "antd-mobile";
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import Icon from "../icon";
 import Input from "../input";
@@ -24,6 +25,7 @@ export default function Search({
   onStatus?: (e: boolean) => void;
   onSearchLoadStatus?: (e: boolean) => void;
 }) {
+  const { t } = useTranslation();
   const inputRef = useRef<HTMLDivElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
   const [popupTop, setPopupTop] = useState(0);
@@ -45,14 +47,22 @@ export default function Search({
 
   const { run } = useRequest(
     async (searchValue: string) => {
-      if (!searchValue.trim()) return;
-      setIsLoading(true);
-      onSearchLoadStatus && onSearchLoadStatus(true);
+      console.log('[search][Search] useRequest run:', searchValue)
+      if (!searchValue.trim()) {
+        setIsLoading(false);
+        onSearchLoadStatus && onSearchLoadStatus(false);
+        return;
+      }
+      
       try {
+        setIsLoading(true);
+        onSearchLoadStatus && onSearchLoadStatus(true);
+        console.log('[search][Search] before onChange call')
         await onChange?.(searchValue);
+        console.log('[search][Search] after onChange call')
       } finally {
-        // 移除搜索完成时的状态重置
-        // setIsLoading(false);
+        setIsLoading(false);
+        onSearchLoadStatus && onSearchLoadStatus(false);
       }
     },
     {
@@ -62,10 +72,12 @@ export default function Search({
   );
 
   useEffect(() => {
+    console.log('[search][Search] useEffect input:', input, 'isLoading:', isLoading)
     const hasInput = Boolean(input.trim());
     setStatus(hasInput);
     onStatus && onStatus(hasInput);
     if (!hasInput) {
+      setIsLoading(false);
       onSearchLoadStatus && onSearchLoadStatus(false);
     }
   }, [input]);
@@ -74,12 +86,14 @@ export default function Search({
     <Fragment>
       <div ref={inputRef} className="mt-[-1px]">
         <Input
-          placeholder={placeholder}
+          placeholder={t(placeholder)}
           value={input}
           prefix={<Icon name="search" />}
           onChange={(search: string) => {
+            console.log('[search][Search] Input onChange:', search)
             setInput(search);
             if (search.trim()) {
+              console.log('[search][Search] triggering run with:', search)
               run(search);
             }
           }}
@@ -99,16 +113,18 @@ export default function Search({
             )
           }
         />
-        <div
-          ref={popupRef}
-          className={`w-full h-full rounded-xl overflow-hidden pointer-events-auto absolute top-[54px] left-4`}
-          style={{
-            height: `calc(100% - 54px)`,
-            width: `calc(100% - 32px)`,
-          }}
-        >
-          {content}
-        </div>
+        {status && (
+          <div
+            ref={popupRef}
+            className="w-full h-full rounded-xl overflow-hidden pointer-events-auto absolute top-[54px] left-0 px-4"
+            style={{
+              height: `calc(100vh - 110px)`,
+              width: `100%`,
+            }}
+          >
+            {content}
+          </div>
+        )}
       </div>
     </Fragment>
   );

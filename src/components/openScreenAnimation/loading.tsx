@@ -60,8 +60,8 @@ export default function OpenScreenAnimation({
   }, [webApp]);
 
   return (
-    <div {...props} onClick={handleClick}>
-      <div className="fixed top-0 left-0 w-full  h-screen animated-bg -z-10">
+    <div {...props} onClick={handleClick} className="h-screen">
+      <div className="fixed top-0 left-0 w-full h-full   animated-bg">
         <div className="glow"></div>
         <div className="sparkles"></div>
         <div className="sparkles-extra-1"></div>
@@ -71,7 +71,7 @@ export default function OpenScreenAnimation({
         <div className="sparkles-extra-5"></div>
         <div className="scattered-lights"></div>
 
-        <div className="grid justify-items-center w-auto h-full p-4">
+        <div className="grid justify-items-center w-auto h-full p-4 z-10">
           {webApp?.initDataUnsafe.user &&
           webApp?.initDataUnsafe.user.username ? (
             <Grid
@@ -148,6 +148,7 @@ export default function OpenScreenAnimation({
                     const url = t("openScreenAnimation.twitterUrl").trim();
                     if (url) {
                       window.location.href = url;
+                      // window.open(url, '_blank', 'noopener,noreferrer');
                     }
                   }}
                 >
@@ -193,7 +194,7 @@ export default function OpenScreenAnimation({
         </div>
 
         {webApp?.initDataUnsafe.user.username && !status && (
-          <div className="openScreenAnimation absolute bottom-0 w-full pb-4 h-[50vh] flex justify-center pointer-events-none">
+          <div className="openScreenAnimation absolute bottom-0 w-full pb-4 flex justify-center pointer-events-none">
             <Grid
               columns={1}
               gap={29}

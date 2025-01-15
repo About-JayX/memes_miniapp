@@ -68,7 +68,10 @@ export const ProfileList = ({
           <Divider />
         </List.Item>
         <List.Item
-          onClick={() => window.open('https://x.com/Minidoge_Ai', '_blank')}
+          onClick={() => {
+            const url = 'https://x.com/Minidoge_Ai';
+            window.location.href = url;
+          }}
           prefix={<TgsAnimation icon="task" className="!w-10 !h-10" />}
           clickable
         >

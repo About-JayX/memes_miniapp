@@ -34,7 +34,7 @@ export default function TabBarComponent({
         setTimeout(() => setPublishTaskStatus(true), 100);
         return;
       } else {
-        window.open("https://x.com/MINIDOGE_X");
+        window.location.href = "https://x.com/MINIDOGE_X";
         return;
       }
     }

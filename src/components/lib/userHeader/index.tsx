@@ -47,7 +47,7 @@ export default function UserHeader() {
         {/* 电报 */}
         <UserIcon
           onClick={() => {
-            window.open(t("openScreenAnimation.telegramUrl"));
+            window.open(t("openScreenAnimation.telegramUrl"), '_blank', 'noopener,noreferrer');
           }}
         >
           <Icon name="telegram" />
@@ -55,7 +55,10 @@ export default function UserHeader() {
         {/* 推特 */}
         <UserIcon
           onClick={() => {
-            window.open(t("openScreenAnimation.twitterUrl"));
+            const url = t("openScreenAnimation.twitterUrl");
+            if (url) {
+              window.location.href = url;
+            }
           }}
         >
           <Icon name="twitter" />

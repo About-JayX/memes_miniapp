@@ -131,9 +131,8 @@ export default function OpenScreenAnimation({
                     e.preventDefault();
                     e.stopPropagation();
                     const url = t("openScreenAnimation.telegramUrl").trim();
-                    if (url) {
-                      window.location.href = url;
-                    }
+                    if (!url) return;
+                    window.open(url, '_blank', 'noopener,noreferrer');
                   }}
                 >
                   <Icon

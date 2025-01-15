@@ -35,7 +35,7 @@ export default function Share({
     const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
       text
     )}&url=${encodeURIComponent(url)}`;
-    window.open(twitterUrl, "_blank");
+    window.location.href = twitterUrl;
     onClose && onClose();
   };
   return (

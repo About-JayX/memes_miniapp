@@ -52,6 +52,7 @@ export default function OpenScreenAnimation({
 
   // 处理点击事件
   const handleClick = () => {
+    if (status) return;
     onChange?.(true);
   };
 

@@ -8,7 +8,7 @@ fi
 
 # 根据参数选择远程地址
 if [ $option = "private" ]; then
-  remote_url="git@github.com:About-JayX/memes_plan.git"
+  remote_url="git@github.com:About-JayX/memes_miniapp.git"
    git config user.name "jay"
   git config user.email "3334354196@qq.com"
 elif [ $option = "company" ]; then

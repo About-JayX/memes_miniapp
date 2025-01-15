@@ -29,7 +29,7 @@ export default function UserInfo({ searchLoadStatus }: UserInfoProps) {
                 content={`@${user.username}`}
               />
               <a
-                className="text-[10px] font-bold bg-white/5 py-[3px] px-2 rounded-full text-[#4FFFC4]"
+                className="text-[10px] font-bold py-[3px] px-2 rounded-full !bg-[var(--user-info-tag-bg)] !text-[var(--user-info-tag-text)]"
                 onClick={() =>
                   !searchLoadStatus &&
                   navigate('integral', {

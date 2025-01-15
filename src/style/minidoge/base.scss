@@ -1,6 +1,6 @@
 :root {
   --primary: #ffbd09;
-  --success-color: #4CAF50;
+  --success-color: #ffbd09;
   --error-color: #dc2626;
   --warning-color: #ff9800;
   --info-color: #0284c7;
@@ -12,6 +12,26 @@
   --vote-button-bg: #1a1a1a;
   --vote-button-border: #2d2d2d;
   --vote-button-text: #ffffff;
+  
+  // User info variables
+  --user-info-tag-bg: white;
+  --user-info-tag-text: black;
+
+  // Button variables
+  --button-bg: rgba(255, 255, 255, 0.1);
+  --button-border: rgba(255, 255, 255, 0.1);
+  --button-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  // Card variables
+  --card-gradient-end: #ffae00;
+  --card-text: black;
+  --card-padding: 16px;
+  --card-border-radius: 10px;
+
+  // List variables
+  --list-score-color: #F6B734;
+  --list-text-color: #DADADA;
+  --list-rank-bg: #F6B734;
 }
 
 @keyframes progress {

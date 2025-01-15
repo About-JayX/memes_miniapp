@@ -18,7 +18,11 @@ class classRequest {
       }
     )
     this.service.interceptors.response.use((response: AxiosResponse) => {
-      if (response.config.url?.includes('/ranking/pair')) {
+      console.log('[search][Request] Response:', response.config.url, response.data)
+      
+      // 特殊处理 ranking/pair 和 ranking/search
+      if (response.config.url?.includes('/ranking/pair') || 
+          response.config.url?.includes('/ranking/search')) {
         return response.data
       }
 

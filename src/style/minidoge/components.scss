@@ -1,60 +1,71 @@
+/* 引入Tailwind组件样式 */
 @tailwind components;
 
+/* Card卡片组件样式 */
 .adm-card {
   transition: var(--primary-card-body-color) !important;
   background: var(--primary-bg-color) !important;
-  @apply p-4 !px-4 !py-3;
+  padding: var(--card-padding) !important;
 }
 
+/* Card内容区域样式 */
 .adm-card-body {
   padding: 0 !important;
   width: -webkit-fill-available;
 }
 
+/* 导航栏标题样式 */
 .adm-nav-bar-title {
   padding: 0 !important;
 }
 
+/* 导航栏左右按钮样式 */
 .adm-nav-bar-left,
 .adm-nav-bar-right {
   flex: 0 !important;
 }
 
+/* 导航栏样式 */
 .adm-nav-bar {
   border-bottom: none !important;
 }
 
+/* 浮动面板样式 */
 .adm-floating-panel {
-  background:var(--primary-body-color) !important;
+  background: linear-gradient(
+    180deg,
+    #110f1a 0%,
+    var(--primary-body-color) 100%
+  ) !important;
   border-radius: 1rem;
+  
   .adm-floating-panel-header {
     --border-radius: var(--radius) !important;
     width: calc(100% + 1px);
     margin-bottom: -1px;
-    // background:var(--primary-body-color) !important;
     background: transparent !important;
-    // background: linear-gradient(180deg, #08070E 0%, #151226 100%) !important;
-    border-top: 4px solid var(--primary-border-color);
+    border-top: 4px solid #201e3a;
+    
     .adm-floating-panel-bar {
       width: 80px !important;
       height: 6px !important;
       background: var(--primary-border-color) !important;
-      // background: linear-gradient(180deg, #08070E 0%, #151226 100%) !important;
     }
   }
+  
   .adm-floating-panel-content {
     width: calc(100% + 1px);
     overflow: hidden !important;
-    // background: var(--primary-body-color) !important;
-    // background: linear-gradient(180deg, #08070E 0%, #151226 100%) !important;
     background: transparent !important;
   }
+
   &::after {
     margin-bottom: 1px;
     width: calc(100% + 1px) !important;
   }
 }
 
+/* 弹出层样式 */
 .adm-popup {
   .adm-popup-body {
     @apply grid gap-4 justify-items-center w-screen absolute rounded-ss-[--radius] rounded-se-[--radius] !bg-transparent;
@@ -64,11 +75,13 @@
   }
 }
 
+/* 按钮基础样式 */
 .adm-button {
   @apply w-auto !rounded-lg !text-sm font-bold;
   color: var(--primary-text-color) !important;
 }
 
+/* 默认按钮样式 */
 .adm-button-default {
   @apply inline-block;
   border-color: transparent !important;
@@ -77,6 +90,7 @@
   color: var(--vote-button-text) !important;
 }
 
+/* Space组件样式 */
 .adm-space {
   @apply w-full;
   .adm-space-item {
@@ -87,14 +101,17 @@
   }
 }
 
+/* 选择器间距样式 */
 .adm-selector .adm-space.adm-space {
   --gap: 4px !important;
 }
 
+/* 分割线样式 */
 .adm-divider {
   @apply flex !m-0 !border-[--primary-border-color];
 }
 
+/* 胶囊标签页样式 */
 .adm-capsule-tabs {
   .adm-capsule-tabs-header {
     @apply p-0 border-none bg-transparent rounded-xl;
@@ -112,6 +129,8 @@
     }
   }
 }
+
+/* 评分组件样式 */
 .adm-rate-box {
   .adm-rate-star {
     color: var(--primary-text-color) !important;
@@ -121,6 +140,7 @@
   }
 }
 
+/* 列表组件样式 */
 .adm-list {
   .adm-list-body {
     @apply rounded-xl !bg-transparent border border-[--primary-border-color];
@@ -141,6 +161,7 @@
   }
 }
 
+/* 浮动面板中的列表样式 */
 .adm-floating-panel-content {
   .adm-list {
     .adm-list-body {
@@ -149,17 +170,20 @@
   }
 }
 
+/* 输入框组件样式 */
 .adm-input {
   .adm-input-element {
     @apply w-full text-sm font-normal text-white;
   }
 }
 
+/* 图片上传单元格样式 */
 .adm-image-uploader-cell {
   // background: var(--primary-card-body-color) !important;
   @apply bg-[--primary-card-body-color] !rounded-xl border border-dashed border-white/10;
 }
 
+/* 列表体样式 */
 .adm-list-body {
   @apply border !border-none;
   .adm-list-item {
@@ -182,11 +206,13 @@
   }
 }
 
+/* 开关组件样式 */
 .adm-switch {
   --height: 1.6rem !important;
   --width: 2.6rem !important;
 }
 
+/* 开关复选框样式 */
 .adm-switch-checkbox::before {
   @apply border-none !bg-transparent;
 }
@@ -195,10 +221,12 @@
   @apply border-none !bg-[--primary-card-body-color];
 }
 
+/* 开关选中状态样式 */
 .adm-switch.adm-switch-checked .adm-switch-checkbox {
   background: var(--primary) !important;
 }
 
+/* 复选框组件样式 */
 .adm-checkbox {
   .adm-checkbox-icon {
     @apply flex-[none] !w-5 !h-5 !rounded bg-[] !border-[--primary-border-color];
@@ -211,6 +239,7 @@
   }
 }
 
+/* 下拉菜单组件样式 */
 .adm-dropdown {
   @apply w-full !bg-[--primary-card-body-color] rounded-xl;
   .adm-dropdown-nav {
@@ -226,6 +255,7 @@
   }
 }
 
+/* 单选按钮组件样式 */
 .adm-radio {
   .adm-radio-icon {
     @apply bg-[--primary-card-body-color] !w-5 !h-5;
@@ -235,6 +265,7 @@
   }
 }
 
+/* 文本区域组件样式 */
 .adm-text-area {
   @apply bg-[--primary-card-body-color] rounded-xl px-4 py-[14px];
   .adm-text-area-element {
@@ -245,6 +276,7 @@
   }
 }
 
+/* Toast提示图标样式 */
 .adm-toast-icon {
   @apply flex justify-center;
   div {
@@ -256,6 +288,7 @@
 //   // @apply text-[] !w-auto
 // }
 
+/* 滑块组件样式 */
 .adm-slider {
   .adm-slider-track-container {
     .adm-slider-track {
@@ -276,6 +309,7 @@
   }
 }
 
+/* 标签栏包装样式 */
 .adm-tab-bar-wrap {
   @apply flex !min-h-8;
   .adm-tab-bar-item {
@@ -290,10 +324,12 @@
   }
 }
 
+/* 标签栏激活项样式 */
 .adm-tab-bar-item-active {
   color: #fff !important;
 }
 
+/* Select选择器组件样式 */
 .ant-select {
   height: 48px !important;
   border-radius: 12px !important;
@@ -317,10 +353,12 @@
   }
 }
 
+/* 选择器箭头样式 */
 .ant-select-arrow {
   color: var(--primary-text-color) !important;
 }
 
+/* 选择器下拉菜单样式 */
 .ant-select-dropdown {
   width: calc(100% - 32px) !important;
   color: var(--primary-text-color) !important;
@@ -337,15 +375,18 @@
 
 // ant-select-item ant-select-item-option ant-select-item-option-active ant-select-item-option-selected
 
+/* 标签栏组件样式 */
 .adm-tab-bar {
   background: var(--primary-body-color) !important;
   border-top: 1px solid var(--primary-card-body-color);
 }
 
+/* 浮动气泡按钮样式 */
 .adm-floating-bubble-button {
   z-index: 9999 !important;
 }
 
+/* 复选框图标颜色 */
 .adm-checkbox .adm-checkbox-icon svg{
   color:var(--primary-font-color) !important
 }

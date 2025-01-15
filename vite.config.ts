@@ -62,24 +62,6 @@ export default defineConfig({
           }
           next()
         })
-      },
-      transform(code, id) {
-        if (!id.includes(`/tgs/${env}/`)) return null;
-        if (id.endsWith('.tgs') || id.endsWith('.json')) {
-          try {
-            JSON.parse(code);
-            return {
-              code: `export default ${code}`,
-              map: null
-            };
-          } catch (e) {
-            logger.tgs(`Parse error: ${path.basename(id)}`, 'error');
-            return {
-              code: 'export default {}',
-              map: null
-            };
-          }
-        }
       }
     },
     {
@@ -93,6 +75,32 @@ export default defineConfig({
           }
           next();
         });
+      }
+    },
+    {
+      name: 'copy-tgs-files',
+      closeBundle() {
+        // 在构建完成后复制文件
+        const srcDir = path.resolve(process.cwd(), 'src/assets/tgs', env);
+        const destDir = path.resolve(process.cwd(), 'dist/assets/tgs');
+        
+        if (!fs.existsSync(destDir)) {
+          fs.mkdirSync(destDir, { recursive: true });
+        }
+
+        try {
+          const files = fs.readdirSync(srcDir);
+          files.forEach(file => {
+            if (file.endsWith('.tgs') || file.endsWith('.json')) {
+              fs.copyFileSync(
+                path.join(srcDir, file),
+                path.join(destDir, file)
+              );
+            }
+          });
+        } catch (error) {
+          console.error('Error copying files:', error);
+        }
       }
     },
     createSvgIconsPlugin({
@@ -138,11 +146,11 @@ export default defineConfig({
       inject: {
         data: {
           title: `${
-            env === 'memes' ? 'MEMES' : 'MEGO'
-          } - A Web3-Powered Telegram Game.`,
+            env === 'memes' ? 'MEMES' : env === 'minidoge' ? 'MINIDOGE' : 'MEGO'
+          } - Earn Tokens/NFT Airdrops`,
           description: `${
-            env === 'memes' ? 'MEMES' : 'MEGO'
-          } - A Web3-Powered Telegram Game.`,
+            env === 'memes' ? 'MEMES' : env === 'minidoge' ? 'MINIDOGE' : 'MEGO'
+          } - Earn Tokens/NFT Airdrops`,
         },
         tags: [
           {
@@ -153,6 +161,8 @@ export default defineConfig({
               href: `/${
                 env === 'memes'
                   ? 'src/style/memes/global.scss'
+                  : env === 'minidoge'
+                  ? 'src/style/minidoge/global.scss'
                   : 'src/style/mego/global.scss'
               }`,
               as: 'style',
@@ -200,6 +210,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
+      external: [/\.tgs$/, /\.json$/],
       output: {
         entryFileNames: 'assets/[name].js',
         chunkFileNames: file => {

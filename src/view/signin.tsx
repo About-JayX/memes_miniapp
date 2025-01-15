@@ -14,8 +14,7 @@ import { asyncDetailsList } from "@/store/list";
 import { asyncGetSginin, asyncUpdateUser } from "@/store/telegram";
 import { semicolon } from "@/util";
 
-const envName = import.meta.env.MODE.split("-")[1];
-
+const ENV_NAME = import.meta.env.MODE.split("-")[1];
 export const SigninItem = ({
   day = 1,
   status = false,
@@ -26,7 +25,20 @@ export const SigninItem = ({
   text?: string;
 }) => {
   const { t } = useTranslation();
-  const week:any = t("public.week", { returnObjects: true });
+  const week: any = t("public.week", { returnObjects: true });
+
+  const styles: any = {
+    memes: {
+      background: "rgba(91, 68, 232, 0.2)",
+    },
+    minidoge: {
+      background: "rgba(255, 175, 3, 0.2)",
+    },
+    mego: {
+      background: "rgba(255, 255, 255, 0.2)",
+    },
+  };
+
   return (
     <Grid columns={1} gap={8} className="justify-items-center">
       <Grid.Item>
@@ -35,9 +47,7 @@ export const SigninItem = ({
           style={{
             background:
               status === null || status
-                ? (envName === "memes" ? "rgba(91, 68, 232, 0.2)" : "") ||
-                  (envName === "mego" ? "rgba(255, 255, 255, 0.2)" : "") ||
-                  (envName === "minidoge" ? "rgba(255, 175, 3, 0.2)" : "")
+                ? styles[ENV_NAME].background
                 : "rgba(255, 255, 255, 0.05)",
           }}
         >
@@ -46,9 +56,7 @@ export const SigninItem = ({
             style={{
               background: status
                 ? "var(--primary)"
-                : (envName === "memes" ? "rgba(91, 68, 232, 0.2)" : "") ||
-                  (envName === "mego" ? "rgba(255, 255, 255, 0.2)" : "") ||
-                  (envName === "minidoge" ? "rgba(255, 175, 3, 0.2)" : ""),
+                : styles[ENV_NAME].background,
               color: status ? "#fff" : "var(--primary)",
             }}
           >
@@ -60,9 +68,7 @@ export const SigninItem = ({
           </span>
         </div>
       </Grid.Item>
-      <Grid.Item className="text-xs font-normal">
-        {week[day - 1]}
-      </Grid.Item>
+      <Grid.Item className="text-xs font-normal">{week[day - 1]}</Grid.Item>
     </Grid>
   );
 };

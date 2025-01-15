@@ -7,13 +7,20 @@ import locale from "@/config/locale";
 export default function Lang({
   open = false,
   onClose,
+  loading = false
 }: {
   open?: boolean;
+  loading?: boolean;
   onClose?: () => void;
 }) {
   const { t, i18n } = useTranslation();
   return (
-    <Popup visible={open} onClose={onClose} title={t("lang")}>
+    <Popup
+      visible={open}
+      onClose={onClose}
+      title={t("lang")}
+      className={`${loading ? "!h-screen !z-[9999]" : ""}`}
+    >
       <Grid columns={1} gap={12}>
         {Object.entries(locale).map(([key, value]: any) => (
           <Grid.Item

@@ -10,6 +10,7 @@ import { ProjectImage } from "@/util/imageLoader.ts";
 import Button from "@/components/button";
 
 import Icon from "../icon";
+import { UserHeaderLangBox } from "../lib/userHeader";
 
 export default function OpenScreenAnimation({
   status,
@@ -61,7 +62,15 @@ export default function OpenScreenAnimation({
   }, [webApp]);
 
   return (
-    <div {...props} onClick={handleClick} className="h-screen">
+    <div {...props} onClick={handleClick} className="h-screen relative">
+      <div
+        className="fixed right-4 top-4 z-10 w-auto h-auto"
+        onClick={(e) => {
+          e.stopPropagation(); // 阻止事件冒泡
+        }}
+      >
+        <UserHeaderLangBox loading={true} />
+      </div>
       <div className="fixed top-0 left-0 w-full h-full   animated-bg">
         <div className="glow"></div>
         <div className="sparkles"></div>
@@ -133,7 +142,7 @@ export default function OpenScreenAnimation({
                     e.stopPropagation();
                     const url = t("openScreenAnimation.telegramUrl").trim();
                     if (!url) return;
-                    window.open(url, '_blank', 'noopener,noreferrer');
+                    window.open(url, "_blank", "noopener,noreferrer");
                   }}
                 >
                   <Icon

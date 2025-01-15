@@ -35,6 +35,26 @@ export const UserIcon = ({
   );
 };
 
+export const UserHeaderLangBox = ({ loading }: { loading?: boolean }) => {
+  const { t } = useTranslation();
+  const [langStatus, setLangStatus] = useState<boolean>(false);
+  return (
+    <>
+      <Lang open={langStatus} onClose={() => setLangStatus(false)} loading={loading}/>
+      <UserIcon
+        onClick={() => setLangStatus(true)}
+        className="!p-1 !pr-2  w-auto text-sm z-10"
+      >
+        <Icon
+          name="lang"
+          className="bg-[--primary] rounded-full w-[30px] h-[30px] p-[6px]"
+        />
+        &nbsp;&nbsp;{t("lang")}
+      </UserIcon>
+    </>
+  );
+};
+
 export default function UserHeader({
   viewStatus,
   bodyHeight,
@@ -43,16 +63,15 @@ export default function UserHeader({
   onVoteSelect,
 }: SearchContainerProps) {
   const { user } = useAppSelector((state) => state.telegram);
-  const [langStatus, setLangStatus] = useState<boolean>(false);
+
   const [profileStatus, setProfileStatus] = useState<boolean>(false);
   const { t } = useTranslation();
   const { backgroundColor, textColor } = getTextColorForBackground(
     user.username
   );
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <>
-      <Lang open={langStatus} onClose={() => setLangStatus(false)} />
       <Profile open={profileStatus} onClose={() => setProfileStatus(false)} />
       <div className="flex h-[40px] mt-4 items-center gap-2 justify-between">
         {/* <SearchContainer
@@ -62,10 +81,10 @@ export default function UserHeader({
           onSearchLoadStatus={onSearchLoadStatus}
           onVoteSelect={onVoteSelect}
         /> */}
-        <div className="flex-1" onClick={()=>navigate("/search")}>
+        <div className="flex-1" onClick={() => navigate("/search")}>
           <Search
             // viewStatus={viewStatus}
-             placeholder="public.search"
+            placeholder="public.search"
             // bodyHeight={bodyHeight}
             // onSearchStatus={()=>{}}
             // onSearchLoadStatus={onSearchLoadStatus}
@@ -99,16 +118,7 @@ export default function UserHeader({
         </UserIcon>
 
         {/* 语言 */}
-        <UserIcon
-          onClick={() => setLangStatus(true)}
-          className="!p-1 !pr-2  w-auto text-sm"
-        >
-          <Icon
-            name="lang"
-            className="bg-[--primary] rounded-full w-[30px] h-[30px] p-[6px]"
-          />
-          &nbsp;&nbsp;{t("lang")}
-        </UserIcon>
+        <UserHeaderLangBox />
         <a onClick={() => setProfileStatus(true)}>
           {user.avatar_url ? (
             <Image

@@ -31,7 +31,31 @@ export default function Search({
   const [popupTop, setPopupTop] = useState(0);
   const [input, setInput] = useState<string>(value || "");
   const [status, setStatus] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isInputting, setIsInputting] = useState(false);
+  const { run } = useRequest(
+    async (searchValue: string) => {
+      console.log('[search][Search] useRequest run:', searchValue)
+      if (!searchValue.trim()) {
+        onSearchLoadStatus && onSearchLoadStatus(false);
+        setIsInputting(false);
+        return;
+      }
+      
+      try {
+        console.log('[search][Search] before onChange call')
+        await onChange?.(searchValue);
+        console.log('[search][Search] after onChange call')
+      } finally {
+        onSearchLoadStatus && onSearchLoadStatus(false);
+        setIsInputting(false);
+      }
+    },
+    {
+      debounceWait: 1000,
+      throttleWait: 2000,
+      manual: true,
+    }
+  );
 
   const updatePopupTop = useCallback(() => {
     if (inputRef.current) {
@@ -45,41 +69,16 @@ export default function Search({
     updatePopupTop();
   }, [input, viewStatus]);
 
-  const { run } = useRequest(
-    async (searchValue: string) => {
-      console.log('[search][Search] useRequest run:', searchValue)
-      if (!searchValue.trim()) {
-        setIsLoading(false);
-        onSearchLoadStatus && onSearchLoadStatus(false);
-        return;
-      }
-      
-      try {
-        setIsLoading(true);
-        onSearchLoadStatus && onSearchLoadStatus(true);
-        console.log('[search][Search] before onChange call')
-        await onChange?.(searchValue);
-        console.log('[search][Search] after onChange call')
-      } finally {
-        setIsLoading(false);
-        onSearchLoadStatus && onSearchLoadStatus(false);
-      }
-    },
-    {
-      debounceWait: 500,
-      manual: true,
-    }
-  );
-
   useEffect(() => {
-    console.log('[search][Search] useEffect input:', input, 'isLoading:', isLoading)
+    console.log('[search][Search] useEffect input:', input)
     const hasInput = Boolean(input.trim());
     setStatus(hasInput);
     onStatus && onStatus(hasInput);
-    if (!hasInput) {
-      setIsLoading(false);
-      onSearchLoadStatus && onSearchLoadStatus(false);
-    }
+    setIsInputting(hasInput);
+    
+    if (hasInput) {
+      run(input);
+    } 
   }, [input]);
 
   return (
@@ -92,25 +91,33 @@ export default function Search({
           onChange={(search: string) => {
             console.log('[search][Search] Input onChange:', search)
             setInput(search);
+            // 立即设置加载状态
             if (search.trim()) {
-              console.log('[search][Search] triggering run with:', search)
-              run(search);
+              onSearchLoadStatus && onSearchLoadStatus(true);
+              setIsInputting(true);
+            } else {
+              onSearchLoadStatus && onSearchLoadStatus(false);
+              setIsInputting(false);
             }
           }}
           className="z-50"
           suffix={
-            input && (
-              <a
-                className="text-white"
-                onClick={() => {
-                  setInput("");
-                  onStatus && onStatus(false);
-                  onSearchLoadStatus && onSearchLoadStatus(false);
-                }}
-              >
-                <Icon name="close" />
-              </a>
-            )
+            <div className="flex items-center">
+              {isInputting && <DotLoading color="primary" />}
+              {input && (
+                <a
+                  className="text-white ml-2"
+                  onClick={() => {
+                    setInput("");
+                    onStatus && onStatus(false);
+                    onSearchLoadStatus && onSearchLoadStatus(false);
+                    setIsInputting(false);
+                  }}
+                >
+                  <Icon name="close" />
+                </a>
+              )}
+            </div>
           }
         />
         {status && (

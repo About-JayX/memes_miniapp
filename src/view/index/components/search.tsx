@@ -32,13 +32,46 @@ export default function SearchContainer({
   const [searchData, setSearchData] = useState<ItokenData[]>([])
   const [searchValue, setSearchValue] = useState('')
   const [hasMore, setHasMore] = useState(true)
+  const [isSearching, setIsSearching] = useState(false)
   const loadlock = useRef(true)
+  const currentSearchCount = useRef(0)
+  const lastSearchTime = useRef(0)
+  const lastSearchReset = useRef(0)
+  const lastSearchValue = useRef('')
   const dispatch = useAppDispatch()
+
+  const resetSearchCount = useCallback(() => {
+    const now = Date.now()
+    if (now - lastSearchReset.current > 5 * 60 * 1000) {
+      currentSearchCount.current = 0
+      lastSearchReset.current = now
+      console.log('[search][SearchContainer] Reset search count')
+    }
+  }, [])
 
   const loadSearch = useCallback(async (search?: string, pageParams?: number) => {
     console.log('[search][SearchContainer] loadSearch called:', { search, pageParams })
     if (!search) return
+
+    const now = Date.now()
+    if (now - lastSearchTime.current < 2000) {
+      console.log('[search][SearchContainer] Search too frequent')
+      return
+    }
+    lastSearchTime.current = now
+
+    if (search !== lastSearchValue.current) {
+      resetSearchCount()
+      if (currentSearchCount.current >= 10) {
+        console.log('[search][SearchContainer] Search count exceeded for current session')
+        return
+      }
+      currentSearchCount.current++
+      lastSearchValue.current = search
+    }
+
     try {
+      setIsSearching(true)
       setSearchValue(search)
       console.log('[search][SearchContainer] calling API')
       const result = await searchTokensAPI({
@@ -48,7 +81,6 @@ export default function SearchContainer({
       })
       console.log('[search][SearchContainer] API raw result:', result)
 
-      // 确保 result 是一个数组
       if (!Array.isArray(result)) {
         console.error('[search][SearchContainer] API result is not an array:', result)
         return
@@ -58,8 +90,7 @@ export default function SearchContainer({
         setHasMore(false)
       }
       pageParams ? setPage(pageParams + 1) : setPage(page + 1)
-      
-      // 处理每个搜索结果
+
       let parsePairs = result.map((item: any) => {
         console.log('[search][SearchContainer] Processing item:', item)
         return {
@@ -72,7 +103,6 @@ export default function SearchContainer({
 
       console.log('[search][SearchContainer] parsePairs:', parsePairs)
 
-      // 构建需要请求pair的列表
       const requestPairs: Array<Promise<PairsResponse>> = parsePairs
         .filter((item: any) => (
           item.address && (!item.pair || isTimeExceededByOneMinute(item.pair?.timestamp || 0))
@@ -80,8 +110,7 @@ export default function SearchContainer({
         .map((item: any) => getPairByTokens(item.address))
 
       console.log('[search][SearchContainer] requesting pairs:', requestPairs.length)
-      
-      // 如果有需要更新的 pairs
+
       if (requestPairs.length > 0) {
         const pairs = (await Promise.all(requestPairs)).reduce(
           (acc: { [key: string]: Pair | undefined }, pairs: PairsResponse) => {
@@ -109,7 +138,6 @@ export default function SearchContainer({
         const updatePairs = Object.values(pairs)
         if (updatePairs.length) {
           const timestamp = new Date().getTime()
-          // 更新列表数据
           parsePairs = parsePairs.map((item: any) => {
             const pair = pairs[item.address]
             return pair ? { ...item, pair } : item
@@ -119,16 +147,18 @@ export default function SearchContainer({
         }
       }
 
-      // 只保留有 pair 的结果
       const searchs = parsePairs.filter(item => item.pair)
       const newSearchData = pageParams === 1 ? searchs : [...searchData, ...searchs]
-      
+
       console.log('[search][SearchContainer] final search data:', newSearchData)
       setSearchData(newSearchData)
       dispatch(updateSearchs(newSearchData))
     } catch (error) {
       console.error('[search][SearchContainer] Error in loadSearch:', error)
       setHasMore(false)
+    } finally {
+      setIsSearching(false)
+      loadlock.current = true
     }
   }, [dispatch, page, searchData])
 
@@ -143,11 +173,12 @@ export default function SearchContainer({
               onBodyHeight={() => {}}
               onStatus={onSearchStatus}
               onSearchLoadStatus={onSearchLoadStatus}
+              isLoading={isSearching}
               onChange={async (search: string) => {
                 console.log('[search][SearchContainer] Search onChange:', search)
                 loadlock.current = true
                 setHasMore(true)
-                setSearchData([]) // 清空之前的搜索结果
+                setSearchData([]) 
                 if (!search) {
                   loadlock.current = false
                   return
@@ -161,7 +192,7 @@ export default function SearchContainer({
               }}
               content={searchData.length > 0 ? (
                 <InfiniteScroll
-                  height={window.innerHeight - 110}
+                  height={window.innerHeight - 310}
                   itemSize={70}
                   data={searchData}
                   loadMore={async () => {
@@ -185,4 +216,4 @@ export default function SearchContainer({
       </Container>
     </div>
   )
-} 
+}

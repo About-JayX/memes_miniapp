@@ -13,7 +13,13 @@ export default i18next
   .use(initReactI18next)
   .init({
     resources: locales,
-    fallbackLng: "en",
+    supportedLngs: [
+      ...Object.keys(locales).map((item) => item.split("-")[0]),
+      ...Object.keys(locales),
+    ],
+    preload: Object.keys(locales),
+    fallbackLng: "en-US",
+    lng: "en-US",
     react: {
       useSuspense: true,
     },

@@ -18,7 +18,7 @@ export default function LoadingScreen({
     if (!status) {
       return load.globalLoading ? (
         <div className="fixed inset-0 bg-[--primary-body-color] z-[9999]">
-          <Loading loading={load.globalLoading} text={load.globalText} />
+          <Loading loading={load.globalLoading} />
         </div>
       ) : null
     }

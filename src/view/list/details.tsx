@@ -69,13 +69,21 @@ export const ProjectInformation = ({
         />
         <Grid columns={1} gap={2}>
           <Grid.Item className="text-sm font-bold">
-            {token.pair?.baseToken.symbol || ""}<span className="opacity-75 text-[75%]"> - SOL</span>
+            {token.pair?.baseToken.symbol || ""}
+            <span className="opacity-75 text-[75%]"> - SOL</span>
           </Grid.Item>
           <Grid.Item className="text-xl font-bold text-[#F8F9FD] flex items-center gap-2">
             ${token.pair?.priceUsd || 0}
             {token.pair?.priceChange?.h24 !== undefined && (
-              <span className={`text-sm ${token.pair.priceChange.h24 >= 0 ? 'text-[--success-color]' : 'text-[--error-color]'}`}>
-                {token.pair.priceChange.h24 >= 0 ? '+' : ''}{token.pair.priceChange.h24}%
+              <span
+                className={`text-sm ${
+                  token.pair.priceChange.h24 >= 0
+                    ? "text-[--success-color]"
+                    : "text-[--error-color]"
+                }`}
+              >
+                {token.pair.priceChange.h24 >= 0 ? "+" : ""}
+                {token.pair.priceChange.h24}%
               </span>
             )}
           </Grid.Item>
@@ -100,8 +108,12 @@ export const ProjectInformation = ({
       <Grid.Item className="grid grid-cols-2 gap-4">
         {token.pair?.fdv !== undefined && (
           <div className="bg-[--primary-card-body-color] p-3 rounded-xl">
-            <div className="text-xs text-[--secondary-text-color]">{t('public.mktCap')}</div>
-            <div className="text-base font-medium">${(token.pair?.fdv || 0).toLocaleString()}</div>
+            <div className="text-xs text-[--secondary-text-color]">
+              {t("public.mktCap")}
+            </div>
+            <div className="text-base font-medium">
+              ${(token.pair?.fdv || 0).toLocaleString()}
+            </div>
           </div>
         )}
         {token.pair?.dexId && (
@@ -126,17 +138,36 @@ export const ProjectInformation = ({
           <table className="w-full">
             <thead>
               <tr className="text-xs text-[--secondary-text-color]">
-                <th className="font-normal text-left pb-2">{t("public.time")}</th>
-                <th className="font-normal text-right pb-2">{t("public.priceChange")}</th>
-                <th className="font-normal text-right pb-2">{t("public.volume")}</th>
+                <th className="font-normal text-left pb-2">
+                  {t("public.time")}
+                </th>
+                <th className="font-normal text-right pb-2">
+                  {t("public.priceChange")}
+                </th>
+                <th className="font-normal text-right pb-2">
+                  {t("public.volume")}
+                </th>
               </tr>
             </thead>
             <tbody className="text-sm">
               <tr>
                 <td className="py-2">{t("public.hour1")}</td>
                 <td className="text-right">
-                  <span className={token.pair?.priceChange?.h1 ? (token.pair.priceChange.h1 >= 0 ? 'text-[--success-color]' : 'text-[--error-color]') : ''}>
-                    {token.pair?.priceChange?.h1 ? (token.pair.priceChange.h1 >= 0 ? '+' : '') : ''}{token.pair?.priceChange?.h1 || 0}%
+                  <span
+                    className={
+                      token.pair?.priceChange?.h1
+                        ? token.pair.priceChange.h1 >= 0
+                          ? "text-[--success-color]"
+                          : "text-[--error-color]"
+                        : ""
+                    }
+                  >
+                    {token.pair?.priceChange?.h1
+                      ? token.pair.priceChange.h1 >= 0
+                        ? "+"
+                        : ""
+                      : ""}
+                    {token.pair?.priceChange?.h1 || 0}%
                   </span>
                 </td>
                 <td className="text-right">${token.pair?.volume?.h1 || 0}</td>
@@ -144,8 +175,21 @@ export const ProjectInformation = ({
               <tr>
                 <td className="py-2">{t("public.hour6")}</td>
                 <td className="text-right">
-                  <span className={token.pair?.priceChange?.h6 ? (token.pair.priceChange.h6 >= 0 ? 'text-[--success-color]' : 'text-[--error-color]') : ''}>
-                    {token.pair?.priceChange?.h6 ? (token.pair.priceChange.h6 >= 0 ? '+' : '') : ''}{token.pair?.priceChange?.h6 || 0}%
+                  <span
+                    className={
+                      token.pair?.priceChange?.h6
+                        ? token.pair.priceChange.h6 >= 0
+                          ? "text-[--success-color]"
+                          : "text-[--error-color]"
+                        : ""
+                    }
+                  >
+                    {token.pair?.priceChange?.h6
+                      ? token.pair.priceChange.h6 >= 0
+                        ? "+"
+                        : ""
+                      : ""}
+                    {token.pair?.priceChange?.h6 || 0}%
                   </span>
                 </td>
                 <td className="text-right">${token.pair?.volume?.h6 || 0}</td>
@@ -153,8 +197,21 @@ export const ProjectInformation = ({
               <tr>
                 <td className="py-2">{t("public.hour24")}</td>
                 <td className="text-right">
-                  <span className={token.pair?.priceChange?.h24 ? (token.pair.priceChange.h24 >= 0 ? 'text-[--success-color]' : 'text-[--error-color]') : ''}>
-                    {token.pair?.priceChange?.h24 ? (token.pair.priceChange.h24 >= 0 ? '+' : '') : ''}{token.pair?.priceChange?.h24 || 0}%
+                  <span
+                    className={
+                      token.pair?.priceChange?.h24
+                        ? token.pair.priceChange.h24 >= 0
+                          ? "text-[--success-color]"
+                          : "text-[--error-color]"
+                        : ""
+                    }
+                  >
+                    {token.pair?.priceChange?.h24
+                      ? token.pair.priceChange.h24 >= 0
+                        ? "+"
+                        : ""
+                      : ""}
+                    {token.pair?.priceChange?.h24 || 0}%
                   </span>
                 </td>
                 <td className="text-right">${token.pair?.volume?.h24 || 0}</td>
@@ -167,49 +224,60 @@ export const ProjectInformation = ({
       {/* 社交媒体和网站信息 */}
       {token.pair?.info?.socials && token.pair.info.socials.length > 0 && (
         <Grid.Item className="flex flex-wrap gap-4">
-          {[...(token.pair?.info?.socials || [])].sort((a: Social, b: Social) => {
-            if (a.platform === 'telegram') return -1;
-            if (b.platform === 'telegram') return 1;
-            if (a.platform === 'twitter') return -1;
-            if (b.platform === 'twitter') return 1;
-            return 0;
-          }).map((social: Social, index: number) => {
-            const type = social.type || social.platform;
-            const url = social.url || `https://${social.platform}.com/${social.handle}`;
-            return (
-              <a
-                key={index}
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={type === 'twitter' || type === 'telegram'
-                  ? "w-8 h-8 rounded-full bg-[--primary-card-body-color] flex items-center justify-center"
-                  : "text-sm text-[--primary-text-color] bg-[--primary-card-body-color] px-3 py-1 rounded-full"}
-              >
-                {type === 'twitter' || type === 'telegram' ? (
-                  <Icon name={type === 'twitter' ? 'twitter' : 'telegram'} className="w-5 h-5" />
-                ) : (
-                  type.charAt(0).toUpperCase() + type.slice(1)
-                )}
-              </a>
-            );
-          })}
+          {[...(token.pair?.info?.socials || [])]
+            .sort((a: Social, b: Social) => {
+              if (a.platform === "telegram") return -1;
+              if (b.platform === "telegram") return 1;
+              if (a.platform === "twitter") return -1;
+              if (b.platform === "twitter") return 1;
+              if (a.platform === "discord") return -1;
+              if (b.platform === "discord") return 1;
+
+              return 0;
+            })
+            .map((social: Social, index: number) => {
+              const type = social.type || social.platform;
+              const url =
+                social.url || `https://${social.platform}.com/${social.handle}`;
+              return (
+                <a
+                  key={index}
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={
+                    type === "twitter" || type === "telegram" || type === "discord"
+                      ? "w-8 h-8 rounded-full bg-[--primary-card-body-color] flex items-center justify-center"
+                      : "text-sm text-[--primary-text-color] bg-[--primary-card-body-color] px-3 py-1 rounded-full"
+                  }
+                >
+                  {type === "twitter" || type === "telegram" || type === "discord" ? (
+                    <Icon
+                      name={type}
+                      className="!w-5 !h-5"
+                    />
+                  ) : (
+                    type.charAt(0).toUpperCase() + type.slice(1)
+                  )}
+                </a>
+              );
+            })}
           {/* 网站链接 */}
           {token.pair?.info?.websites?.map((site: Website, index: number) => {
             const getIconName = (label?: string) => {
-              if (!label) return 'link';
+              if (!label) return "link";
               const labelLower = label.toLowerCase();
               switch (labelLower) {
-                case 'docs':
-                  return 'docs';
-                case 'tiktok':
-                  return 'tiktok';
-                case 'website':
+                case "docs":
+                  return "docs";
+                case "tiktok":
+                  return "tiktok";
+                case "website":
                 default:
-                  return 'officialWebsite';
+                  return "officialWebsite";
               }
             };
-            
+
             return (
               <a
                 key={index}
@@ -252,11 +320,11 @@ export const ProjectInformation = ({
                 <Divider className="my-1" />
               </Grid.Item>
               <Grid.Item className="grid grid-cols-[1fr,auto] text-sm text-white">
-                <span className="font-normal">
-                  {t("public.pair")}
-                </span>
+                <span className="font-normal">{t("public.pair")}</span>
                 <a
-                  href={`https://dexscreener.com/solana/${token.pair?.pairAddress || ''}`}
+                  href={`https://dexscreener.com/solana/${
+                    token.pair?.pairAddress || ""
+                  }`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex gap-2 hover:text-[--primary-color]"
@@ -264,7 +332,7 @@ export const ProjectInformation = ({
                   <Ellipsis
                     className="font-bold break-all text-end"
                     direction="middle"
-                    content={formatAddress(token.pair?.pairAddress || '')}
+                    content={formatAddress(token.pair?.pairAddress || "")}
                   />
                   <Icon name="link" className="w-4 h-4" />
                 </a>
@@ -330,11 +398,11 @@ export default function Details() {
     const arr = [...tokens.data.bases, ...searchs];
     const data = arr.find((item) => item.address === id) || token;
 
-    console.log('Token Details Data:', {
+    console.log("Token Details Data:", {
       tokenData: data,
       pair: data.pair,
       baseToken: data.pair?.baseToken,
-      info: data.pair?.info
+      info: data.pair?.info,
     });
 
     setToken(data);

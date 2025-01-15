@@ -104,7 +104,7 @@ export default function Search({
           suffix={
             <div className="flex items-center">
               {isInputting && <DotLoading color="primary" />}
-              {input && (
+              {/* {input && (
                 <a
                   className="text-white ml-2"
                   onClick={() => {
@@ -116,14 +116,14 @@ export default function Search({
                 >
                   <Icon name="close" />
                 </a>
-              )}
+              )} */}
             </div>
           }
         />
-        {status && (
+        {status && !isInputting && (
           <div
             ref={popupRef}
-            className="w-full h-full rounded-xl overflow-hidden pointer-events-auto absolute top-[54px] left-0 px-4"
+            className="w-full h-full rounded-xl overflow-hidden pointer-events-auto absolute top-[66px] left-0 px-4"
             style={{
               height: `calc(100vh - 110px)`,
               width: `100%`,

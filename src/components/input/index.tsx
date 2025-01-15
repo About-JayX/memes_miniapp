@@ -43,8 +43,8 @@ export default function Input({
 
   return (
     <div
-      className={`flex items-center gap-[10px]
-         bg-[--primary-card-body-color] px-5 py-3 rounded-xl text-nowrap text-xs font-bold ${className}`}
+      className={`grid grid-cols-[auto_1fr_auto] items-center gap-[6px]
+         bg-[--primary-card-body-color] p-2.5 rounded-xl text-nowrap text-xs font-bold ${className}`}
     >
       {prefix}
       <Inputs

@@ -23,9 +23,9 @@ export const ProfileList = ({
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { user } = useAppSelector((state) => state.telegram);
-  const onClick = ({ path = "", to }: { path?: string; to?: string }) => {
+  const onClick = ({ path = "" }: { path?: string}) => {
     onClose && onClose();
-    setTimeout(() => navigate(path, { state: { path: to } }), 300);
+    setTimeout(() => navigate(path, { state: { path: -1 } }), 300);
   };
   return (
     <Card>

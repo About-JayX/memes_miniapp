@@ -9,6 +9,11 @@ import { getTextColorForBackground } from "@/util";
 
 import Lang from "./lang";
 import Profile from "./profile";
+import SearchContainer, {
+  SearchContainerProps,
+} from "@/view/index/components/search";
+import Search from "@/components/search";
+import { useNavigate } from "react-router";
 const isMemes = import.meta.env.MODE.split("-")[1] === "memes";
 
 export const UserIcon = ({
@@ -30,7 +35,13 @@ export const UserIcon = ({
   );
 };
 
-export default function UserHeader() {
+export default function UserHeader({
+  viewStatus,
+  bodyHeight,
+  // onSearchStatus,
+  onSearchLoadStatus,
+  onVoteSelect,
+}: SearchContainerProps) {
   const { user } = useAppSelector((state) => state.telegram);
   const [langStatus, setLangStatus] = useState<boolean>(false);
   const [profileStatus, setProfileStatus] = useState<boolean>(false);
@@ -38,16 +49,39 @@ export default function UserHeader() {
   const { backgroundColor, textColor } = getTextColorForBackground(
     user.username
   );
+  const navigate = useNavigate()
   return (
     <>
       <Lang open={langStatus} onClose={() => setLangStatus(false)} />
       <Profile open={profileStatus} onClose={() => setProfileStatus(false)} />
       <div className="flex h-[40px] mt-4 items-center gap-2 justify-between">
-        <div className="flex-1" />
+        {/* <SearchContainer
+          viewStatus={viewStatus}
+          bodyHeight={bodyHeight}
+          onSearchStatus={()=>{}}
+          onSearchLoadStatus={onSearchLoadStatus}
+          onVoteSelect={onVoteSelect}
+        /> */}
+        <div className="flex-1" onClick={()=>navigate("/search")}>
+          <Search
+            // viewStatus={viewStatus}
+             placeholder="public.search"
+            // bodyHeight={bodyHeight}
+            // onSearchStatus={()=>{}}
+            // onSearchLoadStatus={onSearchLoadStatus}
+            // onVoteSelect={onVoteSelect}
+          />
+        </div>
+
+        {/* <div className="flex-1" /> */}
         {/* 电报 */}
         <UserIcon
           onClick={() => {
-            window.open(t("openScreenAnimation.telegramUrl"), '_blank', 'noopener,noreferrer');
+            window.open(
+              t("openScreenAnimation.telegramUrl"),
+              "_blank",
+              "noopener,noreferrer"
+            );
           }}
         >
           <Icon name="telegram" />

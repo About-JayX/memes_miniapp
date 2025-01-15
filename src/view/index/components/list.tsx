@@ -7,13 +7,13 @@ import VoteComponent from './vote'
 
 interface ListContainerProps {
   bodyHeight: number
-  searchStatus: boolean
+  // searchStatus: boolean
   onVoteSelect: (data: ItokenData) => void
 }
 
 export default function ListContainer({
   bodyHeight,
-  searchStatus,
+  // searchStatus,
   onVoteSelect,
 }: ListContainerProps) {
   const dispatch = useAppDispatch()
@@ -24,14 +24,14 @@ export default function ListContainer({
   }
 
   return (
-    <Container className="pt-[54px]">
+    <Container className="pt-[0]">
       <InfiniteScroll
-        height={bodyHeight > 0 ? bodyHeight - 55 * 2 : window.innerHeight}
+        height={bodyHeight > 0 ? bodyHeight : window.innerHeight}
         itemSize={70}
         data={tokens.data.bases}
         loadMore={getVoteData}
         count={tokens.total}
-        className={`${searchStatus ? 'opacity-0' : 'opacity-100'}`}
+        // className={`${searchStatus ? 'opacity-0' : 'opacity-100'}`}
         render={({ index, data }) => (
           <VoteComponent
             data={data[index]}

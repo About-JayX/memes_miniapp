@@ -5,6 +5,7 @@ export const HIDE_TAB_BAR_PATHS: Array<string> = [
   '/integral',
   '/task/list',
   '/collect',
+  '/search',
 ]
 
 interface TabItem {

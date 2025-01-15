@@ -6,7 +6,7 @@ import Vote from '@/components/lib/vote'
 import { useAppDispatch, useAppSelector } from '@/store'
 import { updateToken } from '@/store/list'
 import { basePair } from '@/util/baseData'
-import SearchContainer from './components/search'
+// import SearchContainer from './components/search'
 import ListContainer from './components/list'
 import UserInfo from './components/userInfo'
 import type { ItokenData } from '@/store/interface'
@@ -14,7 +14,7 @@ import type { ItokenData } from '@/store/interface'
 export default function Home() {
   const [voteStatus, setVoteStatus] = useState(false)
   const [voteData, setVoteData] = useState<ItokenData | null>(basePair)
-  const [searchStatus, setSearchStatus] = useState(false)
+  // const [searchStatus, setSearchStatus] = useState(false)
   const [searchLoadStatus, setSearchLoadStatus] = useState(false)
   const [viewStatus, setViewStatus] = useState(false)
   const [bodyHeight, setBodyHeight] = useState(0)
@@ -68,22 +68,28 @@ export default function Home() {
         onBodyHeight={setBodyHeight}
         header={
           <Container className="py-0">
-            <UserHeader />
+            <UserHeader
+              viewStatus={viewStatus}
+              bodyHeight={bodyHeight}
+              // onSearchStatus={setSearchStatus}
+              onSearchLoadStatus={setSearchLoadStatus}
+              onVoteSelect={handleVoteSelect}
+            />
           </Container>
         }
         body={<UserInfo searchLoadStatus={searchLoadStatus} />}
       >
-        <SearchContainer
+        {/* <SearchContainer
           viewStatus={viewStatus}
           bodyHeight={bodyHeight}
           onSearchStatus={setSearchStatus}
           onSearchLoadStatus={setSearchLoadStatus}
           onVoteSelect={handleVoteSelect}
-        />
+        /> */}
 
         <ListContainer
           bodyHeight={bodyHeight}
-          searchStatus={searchStatus}
+          // searchStatus={searchStatus}
           onVoteSelect={handleVoteSelect}
         />
       </Box>

@@ -61,7 +61,7 @@ export default function OpenScreenAnimation({
 
   return (
     <div {...props} onClick={handleClick}>
-      <div className="fixed top-0 left-0 w-full h-full animated-bg -z-10">
+      <div className="fixed top-0 left-0 w-full  h-screen animated-bg -z-10">
         <div className="glow"></div>
         <div className="sparkles"></div>
         <div className="sparkles-extra-1"></div>

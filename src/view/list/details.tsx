@@ -297,7 +297,7 @@ export const ProjectInformation = ({
       <Grid.Item>
         <Collapse defaultActiveKey={["details"]}>
           <Collapses.Panel key="details" title={t("public.details")}>
-            <Grid columns={1} gap={3}>
+            <Grid columns={1} gap={16}>
               <Grid.Item className="flex items-center gap-2 justify-between text-sm">
                 <span className="font-normal text-nowrap flex-1 text-[#FFB800]">
                   {t("public.contractAddress")}
@@ -327,14 +327,14 @@ export const ProjectInformation = ({
                   }`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex gap-2 hover:text-[--primary-color]"
+                  className="flex gap-1 items-center hover:text-[--primary-color] text-current opacity-50"
                 >
                   <Ellipsis
-                    className="font-bold break-all text-end"
+                    className="font-normal break-all text-end"
                     direction="middle"
                     content={formatAddress(token.pair?.pairAddress || "")}
                   />
-                  <Icon name="link" className="w-4 h-4" />
+                  <Icon name="link" className="w-3.5 h-3.5" />
                 </a>
               </Grid.Item>
             </Grid>

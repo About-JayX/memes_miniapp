@@ -27,7 +27,7 @@ const Loading = ({
             }}
           />
           <div 
-            className="absolute w-16 h-16 border-2 border-transparent border-t-[--primary-text-color] rounded-full"
+            className="absolute w-16 h-16 border-2 border-transparent border-t-[--primarys-color] rounded-full"
             style={{
               animation: "spin 1.2s linear infinite reverse"
             }}

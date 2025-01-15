@@ -31,7 +31,7 @@ export default function Share({
   const { tgs } = useAppSelector((state) => state.tgs);
 
   const handleTwitterShare = () => {
-    const text = `${title}\n\n${t("invite.inviteFriendsTexts")}\n\n`;
+    const text = `${t("invite.inviteFriendsTexts")}\n\n`;
     const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
       text
     )}&url=${encodeURIComponent(url)}`;
@@ -104,6 +104,16 @@ export default function Share({
                 className="w-full !text-[--primary] !border-[--primary]"
               >
                 {t("public.share")}
+              </Button>
+            </Grid.Item>
+            <Grid.Item>
+              <Button
+                size="large"
+                onClick={handleTwitterShare}
+                color="default"
+                className="w-full !text-[--primary] !border-[--primary]"
+              >
+                {t("public.shareToX")}
               </Button>
             </Grid.Item>
           </Grid>

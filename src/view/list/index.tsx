@@ -206,7 +206,7 @@ export const PointsList = () => {
           <Grid columns={1} gap={16}>
             <Grid.Item className="text-left text-base flex justify-between items-center gap-2">
               <span className="font-bold flex items-center">
-                {t('public.rankingList')}&nbsp;<span className="font-bold">({ranks.total || 0})</span>&nbsp;
+                {t('public.rankingList')}&nbsp;-&nbsp;<span className="font-bold">{ranks.total || 0}</span>&nbsp;
                 <TgsAnimation icon="top" className="w-6 h-6" />
               </span>
             </Grid.Item>

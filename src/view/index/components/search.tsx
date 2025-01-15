@@ -31,7 +31,6 @@ export default function SearchContainer({
   const pageSize = useRef(20)
   const [searchData, setSearchData] = useState<ItokenData[]>([])
   const [searchValue, setSearchValue] = useState('')
-  const [hasMore, setHasMore] = useState(true)
   const [isSearching, setIsSearching] = useState(false)
   const loadlock = useRef(true)
   const currentSearchCount = useRef(0)
@@ -86,9 +85,6 @@ export default function SearchContainer({
         return
       }
 
-      if (result.length < pageSize.current) {
-        setHasMore(false)
-      }
       pageParams ? setPage(pageParams + 1) : setPage(page + 1)
 
       let parsePairs = result.map((item: any) => {
@@ -155,7 +151,6 @@ export default function SearchContainer({
       dispatch(updateSearchs(newSearchData))
     } catch (error) {
       console.error('[search][SearchContainer] Error in loadSearch:', error)
-      setHasMore(false)
     } finally {
       setIsSearching(false)
       loadlock.current = true
@@ -173,11 +168,11 @@ export default function SearchContainer({
               onBodyHeight={() => {}}
               onStatus={onSearchStatus}
               onSearchLoadStatus={onSearchLoadStatus}
-              isLoading={isSearching}
+              value={searchValue}
               onChange={async (search: string) => {
                 console.log('[search][SearchContainer] Search onChange:', search)
-                loadlock.current = true
-                setHasMore(true)
+                setSearchValue(search)
+                setPage(1)
                 setSearchData([]) 
                 if (!search) {
                   loadlock.current = false
@@ -200,7 +195,6 @@ export default function SearchContainer({
                     await loadSearch(searchValue)
                   }}
                   count={searchData.length}
-                  hasMore={hasMore}
                   render={({ index, data }) => (
                     <VoteComponent
                       data={data[index]}

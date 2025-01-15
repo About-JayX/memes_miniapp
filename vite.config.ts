@@ -1,15 +1,15 @@
-import autoprefixer from "autoprefixer";
-import cssnano from "cssnano";
-import path from "path";
-import postcssPxtoRem from "postcss-pxtorem";
-import copy from "rollup-plugin-copy";
-import tailwindcss from "tailwindcss";
-import { defineConfig } from "vite";
-import { createHtmlPlugin } from "vite-plugin-html";
-import viteImagemin from "vite-plugin-imagemin";
-import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
-import fs from 'fs';
-import react from "@vitejs/plugin-react-swc";
+import autoprefixer from 'autoprefixer'
+import cssnano from 'cssnano'
+import path from 'path'
+import postcssPxtoRem from 'postcss-pxtorem'
+import copy from 'rollup-plugin-copy'
+import tailwindcss from 'tailwindcss'
+import { defineConfig } from 'vite'
+import { createHtmlPlugin } from 'vite-plugin-html'
+import viteImagemin from 'vite-plugin-imagemin'
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+import fs from 'fs'
+import react from '@vitejs/plugin-react-swc'
 
 const env = process.argv[process.argv.indexOf('--mode') + 1].split('-')[1]
 
@@ -17,27 +17,27 @@ const env = process.argv[process.argv.indexOf('--mode') + 1].split('-')[1]
 const logger = {
   tgs: (message: string, type: 'info' | 'error' = 'info') => {
     if (process.env.DEBUG) {
-      type === 'error' 
+      type === 'error'
         ? console.error(`[TGS] ${message}`)
-        : console.log(`[TGS] ${message}`);
+        : console.log(`[TGS] ${message}`)
     }
-  }
-};
+  },
+}
 
 export default defineConfig({
   base: '/',
-  envDir: "_env",
+  envDir: '_env',
   plugins: [
     {
       name: 'vite-plugin-mime-type',
       configureServer(server) {
         server.middlewares.use((req, res, next) => {
           if (req.url?.endsWith('.js')) {
-            res.setHeader('Content-Type', 'application/javascript');
+            res.setHeader('Content-Type', 'application/javascript')
           }
-          next();
-        });
-      }
+          next()
+        })
+      },
     },
     {
       name: 'vite-plugin-tgs',
@@ -48,21 +48,27 @@ export default defineConfig({
             const filePath = path.join(process.cwd(), req.url)
             try {
               if (fs.existsSync(filePath)) {
-                logger.tgs(`Processing: ${path.basename(filePath)}`);
+                logger.tgs(`Processing: ${path.basename(filePath)}`)
                 const content = fs.readFileSync(filePath)
                 const isJson = filePath.endsWith('.json')
-                res.setHeader('Content-Type', isJson ? 'application/json' : 'application/octet-stream')
+                res.setHeader(
+                  'Content-Type',
+                  isJson ? 'application/json' : 'application/octet-stream'
+                )
                 res.end(content)
                 return
               }
-              logger.tgs(`File not found: ${path.basename(filePath)}`, 'error');
+              logger.tgs(`File not found: ${path.basename(filePath)}`, 'error')
             } catch (error) {
-              logger.tgs(`Error processing file: ${path.basename(filePath)}`, 'error');
+              logger.tgs(
+                `Error processing file: ${path.basename(filePath)}`,
+                'error'
+              )
             }
           }
           next()
         })
-      }
+      },
     },
     {
       name: 'serve-tgs-files',
@@ -70,38 +76,38 @@ export default defineConfig({
         server.middlewares.use((req, res, next) => {
           if (req.url?.startsWith('/assets/tgs/')) {
             // 重写路径到源文件目录
-            const newPath = req.url.replace('/assets/tgs/', `/src/assets/tgs/${env}/`);
-            req.url = newPath;
+            const newPath = req.url.replace(
+              '/assets/tgs/',
+              `/src/assets/tgs/${env}/`
+            )
+            req.url = newPath
           }
-          next();
-        });
-      }
+          next()
+        })
+      },
     },
     {
       name: 'copy-tgs-files',
       closeBundle() {
         // 在构建完成后复制文件
-        const srcDir = path.resolve(process.cwd(), 'src/assets/tgs', env);
-        const destDir = path.resolve(process.cwd(), 'dist/assets/tgs');
-        
+        const srcDir = path.resolve(process.cwd(), 'src/assets/tgs', env)
+        const destDir = path.resolve(process.cwd(), 'dist/assets/tgs')
+
         if (!fs.existsSync(destDir)) {
-          fs.mkdirSync(destDir, { recursive: true });
+          fs.mkdirSync(destDir, { recursive: true })
         }
 
         try {
-          const files = fs.readdirSync(srcDir);
+          const files = fs.readdirSync(srcDir)
           files.forEach(file => {
             if (file.endsWith('.tgs') || file.endsWith('.json')) {
-              fs.copyFileSync(
-                path.join(srcDir, file),
-                path.join(destDir, file)
-              );
+              fs.copyFileSync(path.join(srcDir, file), path.join(destDir, file))
             }
-          });
+          })
         } catch (error) {
-          console.error('Error copying files:', error);
+          console.error('Error copying files:', error)
         }
-      }
+      },
     },
     createSvgIconsPlugin({
       iconDirs: [path.resolve(process.cwd(), 'src/assets/icon')], // 修复路径
@@ -109,9 +115,12 @@ export default defineConfig({
     }),
     react(),
     viteImagemin({
-      filter: (file) => {
+      filter: file => {
         // 只处理当前项目的图片
-        return file.includes(`/image/${env}/`) || file.includes('/image/openScreenAnimation/');
+        return (
+          file.includes(`/image/${env}/`) ||
+          file.includes('/image/openScreenAnimation/')
+        )
       },
       gifsicle: {
         optimizationLevel: 7,
@@ -145,12 +154,8 @@ export default defineConfig({
       template: 'index.html',
       inject: {
         data: {
-          title: `${
-            env === 'memes' ? 'MEMES' : env === 'minidoge' ? 'MINIDOGE' : 'MEGO'
-          } - Earn Tokens/NFT Airdrops`,
-          description: `${
-            env === 'memes' ? 'MEMES' : env === 'minidoge' ? 'MINIDOGE' : 'MEGO'
-          } - Earn Tokens/NFT Airdrops`,
+          title: `${env.toLocaleUpperCase()} - Earn Tokens/NFT Airdrops`,
+          description: `${env.toLocaleUpperCase()} - Earn Tokens/NFT Airdrops`,
         },
         tags: [
           {
@@ -158,13 +163,7 @@ export default defineConfig({
             tag: 'link',
             attrs: {
               rel: 'stylesheet',
-              href: `/${
-                env === 'memes'
-                  ? 'src/style/memes/global.scss'
-                  : env === 'minidoge'
-                  ? 'src/style/minidoge/global.scss'
-                  : 'src/style/mego/global.scss'
-              }`,
+              href: `/${`src/style/${env}/global.scss`}`,
               as: 'style',
             },
           },
@@ -233,23 +232,23 @@ export default defineConfig({
           targets: [
             {
               src: `src/assets/tgs/${env}/*.tgs`,
-              dest: "dist/assets/tgs",
-              rename: (name, extension) => `${name}.${extension}`
+              dest: 'dist/assets/tgs',
+              rename: (name, extension) => `${name}.${extension}`,
             },
             {
               src: `src/assets/tgs/${env}/*.json`,
-              dest: "dist/assets/tgs",
-              rename: (name, extension) => `${name}.${extension}`
+              dest: 'dist/assets/tgs',
+              rename: (name, extension) => `${name}.${extension}`,
             },
             {
               src: [
                 `public/image/${env}/**/*`,
-                'public/image/openScreenAnimation/**/*'
+                'public/image/openScreenAnimation/**/*',
               ],
-              dest: "dist/image"
-            }
+              dest: 'dist/image',
+            },
           ],
-          hook: "writeBundle",
+          hook: 'writeBundle',
         }),
       ],
     },

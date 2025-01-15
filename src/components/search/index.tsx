@@ -103,7 +103,7 @@ export default function Search({
           ref={popupRef}
           className={`w-full h-full rounded-xl overflow-hidden pointer-events-auto absolute top-[54px] left-4`}
           style={{
-            height: `calc(100vh - ${popupTop + 72 * 1}px)`,
+            height: `calc(100% - 54px)`,
             width: `calc(100% - 32px)`,
           }}
         >

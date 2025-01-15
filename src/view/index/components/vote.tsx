@@ -25,18 +25,6 @@ export default function Vote({
   const navigate = useNavigate()
   const { tokens } = useAppSelector(state => state.list)
 
-  const style:any = {
-    memes: {
-      background: '!bg-[#313549] !border-[#313549]',
-    },
-    mego: {
-      background: '!bg-[#313549] !border-[#313549]',
-    },
-    minidoge: {
-      background: '',
-    },
-  }
-
   return (
     <Grid.Item className={className}>
       <Card animation={false}>
@@ -53,22 +41,22 @@ export default function Vote({
             <div className="grid grid-flow-col !grid-cols-[40px,1fr] items-center gap-3">
               <Image
                 src={data?.pair?.info?.imageUrl || data?.logo || ''}
-                className="!w-[40px] !h-[40px] rounded-lg"
+                className="!w-[40px] !h-[40px] rounded-full"
               />
               <Grid columns={1} gap={2} className="text-left">
                 <Grid.Item className="text-sm font-bold flex gap-1">
                   <Ellipsis
                     direction="end"
-                    content={data?.pair?.baseToken.name || data?.name || ''}
+                    content={data?.pair?.baseToken.symbol || data?.symbol || ''}
                     className="flex-1"
                   />
                 </Grid.Item>
                 <Grid.Item
-                  className={`text-xs font-medium grid grid-flow-col !grid-cols-[repeat(10px,1fr)] items-center gap-1`}
+                  className={`text-xs font-medium grid grid-flow-col !grid-cols-[repeat(10px,1fr)] items-center gap-1 opacity-50`}
                 >
                   <Ellipsis
                     direction="end"
-                    content={data?.pair?.baseToken.symbol || data?.symbol || ''}
+                    content={data?.pair?.baseToken.name || data?.name || ''}
                   />
                 </Grid.Item>
               </Grid>
@@ -92,10 +80,9 @@ export default function Vote({
                 className={`text-xs w-fit font-medium text-[--success-color] grid grid-flow-col !grid-cols-[repeat(10px,1fr)] items-center gap-1`}
               >
                 {data?.pair ? (
-                  <>
-                    {' '}
-                    {t('vote.votes')} {data?.votes || 0}
-                  </>
+                  <span className="text-[var(--primary)] text-[1.2em]">
+                    {data?.votes || 0}  🚀
+                  </span>
                 ) : (
                   <>---</>
                 )}
@@ -110,7 +97,7 @@ export default function Vote({
               onClick={() => onChange && onChange(1)}
               disabled={!data?.pair}
               color="default"
-              className={`!font-medium !border-[2px]  relative overflow-hidden min-w-[70px] ${style[ENV_NAME].background}`}
+              className={`!font-medium !border-[2px] !bg-[var(--vote-button-bg)] !border-[var(--vote-button-border)] !text-[var(--vote-button-text)] relative overflow-hidden min-w-[70px]`}
             >
               <div
                 className="absolute z-0 top-0 left-0 h-full bg-[--primary]"

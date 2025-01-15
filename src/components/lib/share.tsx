@@ -38,6 +38,25 @@ export default function Share({
     window.location.href = twitterUrl;
     onClose && onClose();
   };
+
+  // 检测是否为移动端
+  const isMobile = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
+  };
+
+  const copyTelegram = (type: "copy" | "share") => {
+    if (type === "copy") {
+      copy(
+        tgs,
+        `${url}${isMobile() ? "\n\n" : "\n"}${t("invite.inviteFriendsTexts")}`
+      );
+    } else {
+      utils && utils.shareURL(url, t("invite.inviteFriendsTexts"));
+    }
+    onClose && onClose();
+  };
   return (
     <Popup visible={open} onClose={onClose} height={null} className="!z-[1001]">
       <Grid
@@ -56,12 +75,7 @@ export default function Share({
         </Grid.Item>
         <Grid.Item className="flex gap-2">
           {/* 电报 */}
-          <UserIcon
-            onClick={() => {
-              utils && utils.shareURL(url, t("invite.inviteFriendsTexts"));
-              onClose && onClose();
-            }}
-          >
+          <UserIcon onClick={() => copyTelegram("share")}>
             <Icon name="telegram" />
           </UserIcon>
           {/* 推特 */}
@@ -69,12 +83,7 @@ export default function Share({
             <Icon name="twitter" />
           </UserIcon>
           {/* 复制 */}
-          <UserIcon
-            onClick={() => {
-              copy(tgs, `${url}\n${t("invite.inviteFriendsTexts")}`);
-              onClose && onClose();
-            }}
-          >
+          <UserIcon onClick={() => copyTelegram("copy")}>
             <Icon name="copy" />
           </UserIcon>
         </Grid.Item>
@@ -85,10 +94,7 @@ export default function Share({
                 size="large"
                 color="primary"
                 className="w-full [&>span]:!text-black"
-                onClick={() => {
-                  copy(tgs, `${url}\n${t("invite.inviteFriendsTexts")}`);
-                  onClose && onClose();
-                }}
+                onClick={() => copyTelegram("copy")}
               >
                 {t("public.copy")}
               </Button>
@@ -96,10 +102,7 @@ export default function Share({
             <Grid.Item>
               <Button
                 size="large"
-                onClick={() => {
-                  utils && utils.shareURL(url, t("invite.inviteFriendsTexts"));
-                  onClose && onClose();
-                }}
+                onClick={() => copyTelegram("share")}
                 color="default"
                 className="w-full !text-[--primary] !border-[--primary]"
               >

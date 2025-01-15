@@ -32,11 +32,7 @@
 
 /* 浮动面板样式 */
 .adm-floating-panel {
-  background: linear-gradient(
-    180deg,
-    #110f1a 0%,
-    var(--primary-body-color) 100%
-  ) !important;
+  background: var(--primary-body-color) !important;
   border-radius: 1rem;
   
   .adm-floating-panel-header {
@@ -44,7 +40,7 @@
     width: calc(100% + 1px);
     margin-bottom: -1px;
     background: transparent !important;
-    border-top: 4px solid #201e3a;
+    border-top: 4px solid var(--primary-border-color);
     
     .adm-floating-panel-bar {
       width: 80px !important;

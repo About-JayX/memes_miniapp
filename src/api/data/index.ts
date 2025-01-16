@@ -35,7 +35,7 @@ export const searchTokensAPI = ({
   })
   console.log('[search][API] request URL:', `ranking/search?${params}`)
   return dataRequest
-    .get(`ranking/search?${params}`)
+    .get(`tokens/search?${params}`)
     .then(response => {
       console.log('[search][API] response:', response)
       return response

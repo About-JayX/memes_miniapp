@@ -202,14 +202,17 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      crypto: 'crypto-js',
     },
   },
   optimizeDeps: {
     exclude: ['*.tgs', '*.json'],
+    include: ['crypto-js'],
   },
+
   build: {
     rollupOptions: {
-      external: [/\.tgs$/, /\.json$/],
+      external: [/\.tgs$/, /\.json$/, 'crypto'],
       output: {
         entryFileNames: 'assets/[name].js',
         chunkFileNames: file => {

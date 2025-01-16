@@ -4,6 +4,7 @@ import api from '@/api'
 import { updatePairsAPI } from '@/api/data'
 import { getPairByTokens, Pair, PairsResponse } from '@/api/dex'
 import { isTimeExceededByOneMinute } from '@/util'
+import crypto from 'crypto'
 import { basePair } from '@/util/baseData'
 
 import { RootState } from '.'
@@ -20,6 +21,7 @@ import {
   ITokenPageList,
 } from './interface'
 import { asyncPollingToken } from './polling'
+import { generateHash } from '@/config/telegram'
 export const asyncGetTaskList = createAsyncThunk(
   'list/taskList',
   async (data: { page?: number; pageSize?: number }, { getState }) => {
@@ -76,8 +78,6 @@ export const asyncSearchList = createAsyncThunk(
   'list/searchList',
   async (data: { page?: number; pageSize?: number }, { getState }) => {
     const { search } = (getState() as RootState).list
-
-    
   }
 )
 export const asyncDetailsList = createAsyncThunk(
@@ -181,6 +181,8 @@ export const asyncGetInviteList = createAsyncThunk(
 export const asyncGetTokenList = createAsyncThunk(
   'list/tokenList',
   async (pageData: { page?: number; pageSize?: number }, { getState }) => {
+    console.log('ready_________________')
+
     const { tokens } = (getState() as RootState).list
 
     try {
@@ -212,8 +214,9 @@ export const asyncGetTokenList = createAsyncThunk(
             symbol: item.symbol,
             hasPair: !!item.pair,
             lastUpdateTime: item.pair?.timestamp || 0,
-            needsUpdate: !item.pair || isTimeExceededByOneMinute(item.pair.timestamp || 0)
-          });
+            needsUpdate:
+              !item.pair || isTimeExceededByOneMinute(item.pair.timestamp || 0),
+          })
           return (
             !item.pair || isTimeExceededByOneMinute(item.pair.timestamp || 0)
           )
@@ -222,20 +225,20 @@ export const asyncGetTokenList = createAsyncThunk(
           console.log('Requesting pair data for token:', {
             address: item.address,
             name: item.name,
-            symbol: item.symbol
-          });
-          return getPairByTokens(item.address);
+            symbol: item.symbol,
+          })
+          return getPairByTokens(item.address)
         })
 
-      console.log('Making requests for tokens:', requestPairs.length);
+      console.log('Making requests for tokens:', requestPairs.length)
 
       const pairs = (await Promise.all(requestPairs)).reduce(
         (acc: { [key: string]: Pair | undefined }, pairs: PairsResponse) => {
-          const tokenAddress = pairs.address;
+          const tokenAddress = pairs.address
           console.log('Processing pairs for token:', {
             address: tokenAddress,
-            pairsCount: pairs.pairs?.length || 0
-          });
+            pairsCount: pairs.pairs?.length || 0,
+          })
 
           const maxPair =
             pairs &&
@@ -248,14 +251,19 @@ export const asyncGetTokenList = createAsyncThunk(
                 quoteToken: pair.quoteToken.address,
                 liquidity: pair.liquidity,
                 currentMaxLiquidity: result?.liquidity || 0,
-                isWsolPair: pair.quoteToken.address === 'So11111111111111111111111111111111111111112'
-              });
+                isWsolPair:
+                  pair.quoteToken.address ===
+                  'So11111111111111111111111111111111111111112',
+              })
 
               // 如果当前pair不是WSOL交易对，直接返回当前结果
-              if (!pair || 
-                  pair.baseToken.address !== tokenAddress || 
-                  pair.quoteToken.address !== 'So11111111111111111111111111111111111111112') {
-                return result;
+              if (
+                !pair ||
+                pair.baseToken.address !== tokenAddress ||
+                pair.quoteToken.address !==
+                  'So11111111111111111111111111111111111111112'
+              ) {
+                return result
               }
 
               // 如果还没有结果（第一个WSOL交易对），或者当前pair的流动性更大
@@ -264,13 +272,13 @@ export const asyncGetTokenList = createAsyncThunk(
                   tokenAddress,
                   pairAddress: pair.pairAddress,
                   liquidity: pair.liquidity,
-                  currentMaxLiquidity: result?.liquidity || 0
-                });
-                return pair;
+                  currentMaxLiquidity: result?.liquidity || 0,
+                })
+                return pair
               }
 
-              return result;
-            }, null as Pair | null);
+              return result
+            }, null as Pair | null)
 
           if (maxPair) {
             console.log('Selected max WSOL pair:', {
@@ -279,15 +287,17 @@ export const asyncGetTokenList = createAsyncThunk(
               dexId: maxPair.dexId,
               liquidity: maxPair.liquidity,
               priceUsd: maxPair.priceUsd,
-              quoteToken: maxPair.quoteToken.address
-            });
-            acc[tokenAddress] = maxPair;
+              quoteToken: maxPair.quoteToken.address,
+            })
+            acc[tokenAddress] = maxPair
           }
-          return acc;
+          return acc
         },
         {} as { [key: string]: Pair | undefined }
       )
       const updatePairs = Object.values(pairs)
+      console.log(updatePairs, 'updatePairs')
+
       if (updatePairs.length) {
         const timestamp = new Date().getTime()
         // 更新列表数据
@@ -300,7 +310,16 @@ export const asyncGetTokenList = createAsyncThunk(
           item.pair = o
           return item
         })
-        updatePairsAPI(updatePairs.map(item => ({ ...item, timestamp })))
+
+        const uData = updatePairs.map(item => ({ ...item, timestamp }))
+
+        await updatePairsAPI(
+          uData,
+          generateHash(
+            JSON.stringify(uData),
+            'VC4l4cI0iB606G40Z3IuXRtM+BxaeVCH0hZc66KSew4='
+          )
+        )
       }
 
       const o: ITokenPageList = {
@@ -340,6 +359,7 @@ export const asyncUploadTimeOut = createAsyncThunk(
     return timer
   }
 )
+
 export const list = createSlice({
   name: 'list',
   initialState: {

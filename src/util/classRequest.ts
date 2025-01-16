@@ -18,11 +18,17 @@ class classRequest {
       }
     )
     this.service.interceptors.response.use((response: AxiosResponse) => {
-      console.log('[search][Request] Response:', response.config.url, response.data)
-      
+      console.log(
+        '[search][Request] Response:',
+        response.config.url,
+        response.data
+      )
+
       // 特殊处理 ranking/pair 和 ranking/search
-      if (response.config.url?.includes('/ranking/pair') || 
-          response.config.url?.includes('/ranking/search')) {
+      if (
+        response.config.url?.includes('/ranking/pair') ||
+        response.config.url?.includes('/ranking/search')
+      ) {
         return response.data
       }
 
@@ -36,8 +42,12 @@ class classRequest {
   get(url: string, params?: object): Promise<any> {
     return this.service.get(url, { params })
   }
-  post(url: string, params?: object | string): Promise<any> {
-    return this.service.post(url, params)
+  post(
+    url: string,
+    params?: object | string,
+    config?: AxiosRequestConfig
+  ): Promise<any> {
+    return this.service.post(url, params, config)
   }
   put(url: string, params?: object): Promise<any> {
     return this.service.put(url, params)

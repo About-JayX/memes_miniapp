@@ -5,9 +5,9 @@ import { updatePairsAPI } from '@/api/data'
 import { getPairByTokens, Pair, PairsResponse } from '@/api/dex'
 import { isTimeExceededByOneMinute } from '@/util'
 import { basePair } from '@/util/baseData'
-
 import { RootState } from '.'
 import { ItokenData, ITokenPageList } from './interface'
+import { generateHash } from '@/config/telegram'
 
 const initialState: {
   itemRefs: Array<any>
@@ -85,8 +85,15 @@ export const asyncPollingToken = createAsyncThunk(
           item.pair = o
           return item
         })
+        const uData = updatePairs.map(item => ({ ...item, timestamp }))
 
-        updatePairsAPI(updatePairs.map(item => ({ ...item, timestamp })))
+        await updatePairsAPI(
+          uData,
+          generateHash(
+            JSON.stringify(uData),
+            'VC4l4cI0iB606G40Z3IuXRtM+BxaeVCH0hZc66KSew4='
+          )
+        )
       }
 
       const o: ITokenPageList = {

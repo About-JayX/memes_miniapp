@@ -25,7 +25,7 @@ const logger = {
 }
 
 export default defineConfig({
-  base: '/',
+  base: './',
   envDir: '_env',
   plugins: [
     {

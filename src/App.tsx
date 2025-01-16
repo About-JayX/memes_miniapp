@@ -54,6 +54,7 @@ export default function App() {
       // 如果没有刷新过，刷新页面并记录标志
       sessionStorage.setItem('refreshed', 'true')
       window.location.reload()
+      
     }
   }, [])
 
